@@ -49,7 +49,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed, onShow } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
+import { onShow } from "@dcloudio/uni-app";
 import { UserInfoManager } from "@/utils/userInfoManager.js";
 import { userStore } from "@/store/userStore.js";
 import { HttpError } from "@/utils/api.js";

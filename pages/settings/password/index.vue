@@ -5,7 +5,7 @@
         ref="formRef"
         :model="formData"
         :rules="rules"
-        label-width="170rpx"
+        label-width="180rpx"
         label-align="right"
       >
         <uni-forms-item label="当前密码" name="currentPassword" required>
