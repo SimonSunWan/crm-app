@@ -1,5 +1,6 @@
 import { userStore } from "@/store/userStore.js";
 import { UserService } from "@/api/userApi.js";
+import { storage } from "@/utils/storage.js";
 import { HttpError } from "@/utils/api.js";
 
 export class UserInfoManager {
@@ -45,6 +46,12 @@ export class UserInfoManager {
   static async changePassword(currentPassword, newPassword) {
     try {
       await UserService.changePassword(currentPassword, newPassword);
+
+      const rememberedAccount = storage.getRememberedAccount();
+      if (rememberedAccount.flag && rememberedAccount.username) {
+        storage.setRememberedAccount(rememberedAccount.username, newPassword);
+      }
+
       return true;
     } catch (error) {
       if (error instanceof HttpError) {

@@ -48,16 +48,12 @@ const request = async (config) => {
     const { statusCode, data: responseData } = response;
 
     if (statusCode >= 200 && statusCode < 300) {
-      if (responseData && responseData.code === 200) {
-        return responseData.data;
-      } else {
-        throw new HttpError(
-          responseData?.message || "请求失败",
-          responseData?.code || statusCode
-        );
-      }
+      return responseData.data;
     } else {
-      throw new HttpError("网络请求失败", statusCode);
+      throw new HttpError(
+        responseData?.message || "请求失败",
+        responseData?.code || statusCode
+      );
     }
   } catch (error) {
     if (error instanceof HttpError) {
