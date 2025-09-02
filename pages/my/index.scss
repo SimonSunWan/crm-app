@@ -6,7 +6,7 @@
   .my-header {
     display: flex;
     align-items: center;
-    padding: 20rpx 40rpx;
+    padding: 30rpx 40rpx;
     background: #ffffff;
     box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
     margin-bottom: 40rpx;
@@ -58,6 +58,13 @@
       }
       
       .user-phone {
+        display: block;
+        font-size: 28rpx;
+        color: #999999;
+        margin-bottom: 10rpx;
+      }
+      
+      .user-email {
         display: block;
         font-size: 28rpx;
         color: #999999;

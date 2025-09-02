@@ -13,6 +13,7 @@
                 <text class="user-name">{{ userInfo.userName }}</text>
                 <text v-if="userInfo.nickName" class="user-nickname">{{ userInfo.nickName }}</text>
                 <text v-if="userInfo.phone" class="user-phone">{{ userInfo.phone }}</text>
+                <text v-if="userInfo.email" class="user-email">{{ userInfo.email }}</text>
             </view>
         </view>
         <view class="my-content">
@@ -32,20 +33,18 @@
             </view>
         </view>
         <view class="my-footer">
-            <view class="logout-btn">退出登录</view>
+            <view class="logout-btn" @click="handleLogout">退出登录</view>
         </view>
     </view>
 </template>
   
 <script setup>
-import { ref } from "vue";
+import { ref, reactive, onMounted } from "vue";
+import { UserService } from '@/api/userApi.js'
+import { userStore } from '@/store/userStore.js'
+import { HttpError } from '@/utils/api.js'
 
-const userInfo = ref({
-    userName: 'test',
-    nickName: '测试',
-    phone: '13800138000',
-    avatar: ''
-})
+const userInfo = ref({})
 
 const menuList = ref([
     {
@@ -62,6 +61,32 @@ const menuList = ref([
     }
 ])
 
+onMounted(() => {
+    loadUserInfo()
+})
+
+const loadUserInfo = async () => {
+    try {
+        const data = await UserService.getUserInfo()
+        if (data) {
+            userStore.setUserInfo(data)
+            userInfo.value = data
+        }
+    } catch (error) {
+        if (error instanceof HttpError) {
+            uni.showToast({
+                title: error.message || '获取用户信息失败',
+                icon: 'none'
+            })
+        } else {
+            uni.showToast({
+                title: '获取用户信息失败',
+                icon: 'none'
+            })
+        }
+    }
+}
+
 const getAvatarText = (text) => {
     return text ? text.charAt(0) : ''
 }
@@ -69,6 +94,18 @@ const getAvatarText = (text) => {
 const handleItemClick = (item) => {
     uni.navigateTo({
         url: item.path
+    })
+}
+
+const handleLogout = () => {
+    uni.showModal({
+        title: '提示',
+        content: '确定要退出登录吗？',
+        success: (res) => {
+            if (res.confirm) {
+                userStore.logout()
+            }
+        }
     })
 }
 </script>

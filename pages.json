@@ -1,6 +1,12 @@
 {
 	"pages": [
 		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页"
@@ -13,9 +19,15 @@
 			}
 		},
 		{
-			"path": "pages/login/index",
+			"path": "pages/settings/basic",
 			"style": {
-				"navigationBarTitleText": "登录"
+				"navigationBarTitleText": "基本设置"
+			}
+		},
+		{
+			"path": "pages/settings/password",
+			"style": {
+				"navigationBarTitleText": "更改密码"
 			}
 		}
 	],
