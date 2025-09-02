@@ -1,0 +1,126 @@
+.login-container {
+  background: #ffffff;
+  padding: 0 60rpx;
+
+  .login-header {
+    display: flex;
+    justify-content: center;
+    margin: 60rpx 0 120rpx;
+
+    .logo {
+      width: 160rpx;
+      height: 160rpx;
+      border-radius: 50%;
+    }
+  }
+
+  .login-form {
+    .input-group {
+      margin-bottom: 40rpx;
+
+      .input-field {
+        width: 100%;
+        height: 88rpx;
+        padding: 0 40rpx;
+        border: 2rpx solid #e5e7eb;
+        border-radius: 44rpx;
+        font-size: 28rpx;
+        background: #ffffff;
+        box-sizing: border-box;
+
+        &:focus {
+          border-color: #3b82f6;
+          outline: none;
+        }
+
+        &::placeholder {
+          color: #9ca3af;
+        }
+      }
+    }
+
+    .slider-group {
+      margin-bottom: 40rpx;
+    }
+
+    .options-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40rpx;
+
+      .remember-password {
+        display: flex;
+        align-items: center;
+
+        .checkbox {
+          width: 40rpx;
+          height: 40rpx;
+          border: 2rpx solid #d1d5db;
+          border-radius: 6rpx;
+          margin-right: 20rpx;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: #ffffff;
+
+          &.checked {
+            background: #3b82f6;
+            border-color: #3b82f6;
+
+            .checkmark {
+              color: #ffffff;
+              font-size: 24rpx;
+              font-weight: bold;
+            }
+          }
+        }
+
+        .checkbox-label {
+          font-size: 28rpx;
+          color: #333333;
+        }
+      }
+
+      .forgot-link {
+        font-size: 28rpx;
+        color: #3b82f6;
+      }
+    }
+
+    .login-btn {
+      width: 100%;
+      height: 88rpx;
+      line-height: 88rpx;
+      background: #3b82f6;
+      color: #ffffff;
+      border: none;
+      border-radius: 44rpx;
+      font-size: 28rpx;
+      margin-bottom: 40rpx;
+
+      &:disabled {
+        opacity: 0.6;
+      }
+
+      &:active {
+        opacity: 0.8;
+      }
+    }
+
+    .register-section {
+      text-align: left;
+
+      .register-text {
+        font-size: 28rpx;
+        color: #666666;
+      }
+
+      .register-link {
+        font-size: 28rpx;
+        color: #3b82f6;
+        margin-left: 10rpx;
+      }
+    }
+  }
+}

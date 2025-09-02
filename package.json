@@ -1,0 +1,29 @@
+{
+  "name": "crm-app",
+  "version": "1.0.0",
+  "description": "CRM Application",
+  "main": "main.js",
+  "scripts": {
+    "dev": "uni",
+    "build": "uni build",
+    "dev:h5": "uni -p h5",
+    "build:h5": "uni build -p h5",
+    "dev:mp-weixin": "uni -p mp-weixin",
+    "build:mp-weixin": "uni build -p mp-weixin"
+  },
+  "dependencies": {
+    "@dcloudio/uni-app": "3.0.0-alpha-4080120250821001",
+    "@dcloudio/uni-h5": "3.0.0-alpha-4080120250821001",
+    "@dcloudio/uni-mp-weixin": "3.0.0-alpha-4080120250821001",
+    "vue": "^3.2.45"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^3.3.2",
+    "@dcloudio/vue-cli-plugin-uni": "3.0.0-alpha-2632020024003",
+    "@vue/cli-service": "~5.0.0"
+  },
+  "browserslist": [
+    "Android >= 4.4",
+    "ios >= 9"
+  ]
+}
