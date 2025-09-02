@@ -1,0 +1,15 @@
+.basic-settings {
+  background-color: #f5f5f5;
+  height: 100vh;
+  box-sizing: border-box;
+
+  .form-container {
+    background-color: #fff;
+    padding: 40rpx;
+    box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.1);
+
+    .form-actions {
+      margin-top: 40rpx;
+    }
+  }
+}

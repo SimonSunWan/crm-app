@@ -1,7 +1,7 @@
 <template>
   <view class="change-password">
     <view class="form-container">
-      <uni-forms 
+      <uni-forms
         ref="formRef"
         :model="formData"
         :rules="rules"
@@ -17,7 +17,7 @@
             trim="both"
           />
         </uni-forms-item>
-        
+
         <uni-forms-item label="新密码" name="newPassword" required>
           <uni-easyinput
             v-model="formData.newPassword"
@@ -27,7 +27,7 @@
             trim="both"
           />
         </uni-forms-item>
-        
+
         <uni-forms-item label="确认新密码" name="confirmPassword" required>
           <uni-easyinput
             v-model="formData.confirmPassword"
@@ -37,7 +37,7 @@
             trim="both"
           />
         </uni-forms-item>
-        
+
         <view class="form-actions">
           <common-button
             text="保存"
@@ -52,99 +52,96 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
-import { UserService } from '@/api/userApi.js'
-import { HttpError } from '@/utils/api.js'
-import CommonButton from '@/components/common-button/index.vue'
+import { ref, reactive } from "vue";
+import { UserService } from "@/api/userApi.js";
+import { HttpError } from "@/utils/api.js";
+import CommonButton from "@/components/common-button/index.vue";
 
-const loading = ref(false)
-const formRef = ref()
+const loading = ref(false);
+const formRef = ref();
 
 const formData = reactive({
-  currentPassword: '',
-  newPassword: '',
-  confirmPassword: ''
-})
+  currentPassword: "",
+  newPassword: "",
+  confirmPassword: "",
+});
 
 const rules = {
   currentPassword: {
-    rules: [{
-      required: true,
-      errorMessage: '请输入当前密码'
-    }]
+    rules: [
+      {
+        required: true,
+        errorMessage: "请输入当前密码",
+      },
+    ],
   },
   newPassword: {
-    rules: [{
-      required: true,
-      errorMessage: '请输入新密码'
-    }, {
-      minLength: 6,
-      errorMessage: '新密码长度不能少于6位'
-    }]
+    rules: [
+      {
+        required: true,
+        errorMessage: "请输入新密码",
+      },
+      {
+        minLength: 6,
+        errorMessage: "新密码长度不能少于6位",
+      },
+    ],
   },
   confirmPassword: {
-    rules: [{
-      required: true,
-      errorMessage: '请再次输入新密码'
-    }, {
-      validateFunction: (rule, value, data, callback) => {
-        if (value !== data.newPassword) {
-          callback('两次输入的密码不一致')
-        }
-        return true
-      }
-    }]
-  }
-}
+    rules: [
+      {
+        required: true,
+        errorMessage: "请再次输入新密码",
+      },
+      {
+        validateFunction: (rule, value, data, callback) => {
+          if (value !== data.newPassword) {
+            callback("两次输入的密码不一致");
+          }
+          return true;
+        },
+      },
+    ],
+  },
+};
 
 const handleSave = async () => {
   try {
-    const valid = await formRef.value.validate()
-    if (!valid) return
-    
-    loading.value = true
-    
-    await UserService.changePassword(formData.currentPassword, formData.newPassword)
-    
+    const valid = await formRef.value.validate();
+    if (!valid) return;
+
+    loading.value = true;
+
+    await UserService.changePassword(
+      formData.currentPassword,
+      formData.newPassword
+    );
+
     uni.showToast({
-      title: '密码修改成功',
-      icon: 'success'
-    })
-    
-    formData.currentPassword = ''
-    formData.newPassword = ''
-    formData.confirmPassword = ''
-    
+      title: "密码修改成功",
+      icon: "success",
+    });
+
+    formData.currentPassword = "";
+    formData.newPassword = "";
+    formData.confirmPassword = "";
+
     setTimeout(() => {
-      uni.navigateBack()
-    }, 1500)
+      uni.navigateBack();
+    }, 1500);
   } catch (error) {
     if (error instanceof HttpError) {
       uni.showToast({
-        title: error.message || '修改密码失败',
-        icon: 'none'
-      })
+        title: error.message || "修改密码失败",
+        icon: "none",
+      });
     }
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-.change-password {
-  background-color: #f5f5f5;
-  height: 100vh;
-  box-sizing: border-box;
-  
-  .form-container {
-    background-color: #fff;
-    padding: 40rpx;
-    box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.1);
-    
-    .form-actions {
-      margin-top: 40rpx;
-    }
-  }
-}
+@import "./index.scss";
 </style>
