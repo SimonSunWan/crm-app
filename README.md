@@ -1,0 +1,67 @@
+# CRM 应用
+
+基于 uni-app 开发的跨平台 CRM 管理系统。
+
+## 技术栈
+
+- uni-app (Vue 3)
+- Vite
+- pnpm
+- uni-ui
+
+## 项目结构
+
+```
+crm-app/
+├── api/                    # API 接口
+├── components/            # 自定义组件
+├── pages/                 # 页面文件
+├── store/                # 状态管理
+├── static/               # 静态资源
+├── utils/                # 工具函数
+├── uni_modules/          # uni-app 组件库
+├── App.vue              # 应用入口
+├── main.js              # 主入口文件
+├── manifest.json        # 应用配置
+├── pages.json           # 页面配置
+└── vite.config.js       # Vite 配置
+```
+
+## 快速开始
+
+### 安装依赖
+
+```bash
+pnpm install
+```
+
+### 开发运行
+
+```bash
+# 微信小程序
+pnpm dev:mp-weixin
+
+# H5
+pnpm dev:h5
+```
+
+### 构建发布
+
+```bash
+# 微信小程序
+pnpm build:mp-weixin
+
+# H5
+pnpm build:h5
+```
+
+## 功能模块
+
+- 用户登录
+- 首页功能
+- 个人中心
+- 设置功能
+
+## 配置说明
+
+微信小程序 AppID 已配置在 `manifest.json` 中。
