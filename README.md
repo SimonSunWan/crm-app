@@ -13,19 +13,43 @@
 
 ```
 crm-app/
-├── api/                    # API 接口
-├── components/            # 自定义组件
-├── pages/                 # 页面文件
-├── store/                # 状态管理
-├── static/               # 静态资源
-├── utils/                # 工具函数
-├── uni_modules/          # uni-app 组件库
+├── api/                 # API 接口
+├── components/          # 自定义组件
+├── pages/               # 页面文件
+│   ├── index/           # 首页 (主包)
+│   ├── login/           # 登录页 (主包)
+│   ├── my/              # 我的页面 (主包)
+│   └── settings/        # 设置页面 (分包)
+├── store/               # 状态管理
+├── static/              # 静态资源
+├── utils/               # 工具函数
+├── uni_modules/         # uni-app 组件库
 ├── App.vue              # 应用入口
 ├── main.js              # 主入口文件
 ├── manifest.json        # 应用配置
 ├── pages.json           # 页面配置
 └── vite.config.js       # Vite 配置
 ```
+
+## 分包说明
+
+项目采用分包加载策略，提高应用启动速度：
+
+### 主包 (pages/)
+
+- 登录页面 (`pages/login/`)
+- 首页 (`pages/index/`)
+- 我的页面 (`pages/my/`)
+
+### 设置分包 (pages/settings/)
+
+- 基本设置 (`pages/settings/basic/`)
+- 更改密码 (`pages/settings/password/`)
+
+### 预加载配置
+
+- 当用户进入"我的"页面时，自动预加载设置分包
+- 提升页面跳转速度和用户体验
 
 ## 快速开始
 

@@ -49,25 +49,26 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import { UserService } from "@/api/userApi.js";
+import { ref, reactive, onMounted, computed, onShow } from "vue";
+import { UserInfoManager } from "@/utils/userInfoManager.js";
 import { userStore } from "@/store/userStore.js";
 import { HttpError } from "@/utils/api.js";
+import { pagePaths } from "@/utils/subPackages.js";
 
-const userInfo = ref({});
+const userInfo = computed(() => userStore.userInfo);
 
 const menuList = ref([
   {
     id: 1,
     name: "基本设置",
     icon: "icon-setting",
-    path: "/pages/settings/basic/index",
+    path: pagePaths.basicSettings,
   },
   {
     id: 2,
     name: "更改密码",
     icon: "icon-password",
-    path: "/pages/settings/password/index",
+    path: pagePaths.passwordSettings,
   },
 ]);
 
@@ -75,13 +76,13 @@ onMounted(() => {
   loadUserInfo();
 });
 
+onShow(() => {
+  loadUserInfo();
+});
+
 const loadUserInfo = async () => {
   try {
-    const data = await UserService.getUserInfo();
-    if (data) {
-      userStore.setUserInfo(data);
-      userInfo.value = data;
-    }
+    await UserInfoManager.refreshUserInfo();
   } catch (error) {
     if (error instanceof HttpError) {
       uni.showToast({

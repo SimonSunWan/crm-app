@@ -53,7 +53,7 @@
 
 <script setup>
 import { ref, reactive } from "vue";
-import { UserService } from "@/api/userApi.js";
+import { UserInfoManager } from "@/utils/userInfoManager.js";
 import { HttpError } from "@/utils/api.js";
 import CommonButton from "@/components/common-button/index.vue";
 
@@ -112,7 +112,7 @@ const handleSave = async () => {
 
     loading.value = true;
 
-    await UserService.changePassword(
+    await UserInfoManager.changePassword(
       formData.currentPassword,
       formData.newPassword
     );

@@ -17,20 +17,33 @@
       "style": {
         "navigationBarTitleText": "我的"
       }
-    },
-    {
-      "path": "pages/settings/basic/index",
-      "style": {
-        "navigationBarTitleText": "基本设置"
-      }
-    },
-    {
-      "path": "pages/settings/password/index",
-      "style": {
-        "navigationBarTitleText": "更改密码"
-      }
     }
   ],
+  "subPackages": [
+    {
+      "root": "pages/settings",
+      "pages": [
+        {
+          "path": "basic/index",
+          "style": {
+            "navigationBarTitleText": "基本设置"
+          }
+        },
+        {
+          "path": "password/index",
+          "style": {
+            "navigationBarTitleText": "更改密码"
+          }
+        }
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/my/index": {
+      "network": "all",
+      "packages": ["pages/settings"]
+    }
+  },
   "globalStyle": {
     "navigationBarBackgroundColor": "#f8f8f8",
     "navigationBarTextStyle": "black"

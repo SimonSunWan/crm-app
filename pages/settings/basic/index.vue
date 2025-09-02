@@ -57,7 +57,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { UserService } from "@/api/userApi.js";
+import { UserInfoManager } from "@/utils/userInfoManager.js";
 import { HttpError } from "@/utils/api.js";
 import CommonButton from "@/components/common-button/index.vue";
 
@@ -116,7 +116,7 @@ onMounted(() => {
 
 const loadUserInfo = async () => {
   try {
-    const data = await UserService.getUserInfo();
+    const data = await UserInfoManager.refreshUserInfo();
     if (data) {
       formData.userName = data.userName || "";
       formData.nickName = data.nickName || "";
@@ -138,14 +138,12 @@ const handleSave = async () => {
 
     loading.value = true;
 
-    await UserService.updateCurrentUser({
+    await UserInfoManager.updateUserInfo({
       userName: formData.userName,
       nickName: formData.nickName,
       phone: formData.phone,
       email: formData.email,
     });
-
-    await loadUserInfo();
 
     uni.showToast({
       title: "保存成功",
