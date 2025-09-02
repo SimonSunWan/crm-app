@@ -47,7 +47,7 @@ const request = async (config) => {
 
     const { statusCode, data: responseData } = response;
 
-    if (statusCode >= 200 && statusCode < 300) {
+    if (statusCode === 200) {
       return responseData.data;
     } else {
       throw new HttpError(
