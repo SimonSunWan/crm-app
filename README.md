@@ -1,6 +1,6 @@
-# CRM 应用
+# crm-app
 
-基于 uni-app 开发的跨平台 CRM 管理系统。
+基于 uni-app 开发的跨平台 CRM APP。
 
 ## 技术栈
 
