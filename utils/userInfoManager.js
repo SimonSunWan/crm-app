@@ -43,13 +43,13 @@ export class UserInfoManager {
     }
   }
 
-  static async changePassword(currentPassword, newPassword) {
+  static async changePassword(data) {
     try {
-      await UserService.changePassword(currentPassword, newPassword);
+      await UserService.changePassword(data);
 
       const rememberedAccount = storage.getRememberedAccount();
       if (rememberedAccount.flag && rememberedAccount.username) {
-        storage.setRememberedAccount(rememberedAccount.username, newPassword);
+        storage.setRememberedAccount(rememberedAccount.username, data.newPassword);
       }
 
       return true;

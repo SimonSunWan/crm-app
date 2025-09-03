@@ -13,11 +13,8 @@ export class UserService {
     return api.put("/users/me", data);
   }
 
-  static changePassword(currentPassword, newPassword) {
-    return api.put("/users/me/change-password", {
-      current_password: currentPassword,
-      new_password: newPassword,
-    });
+  static changePassword(data) {
+    return api.put("/users/me/change-password", data);
   }
 
   static uploadAvatar(file) {

@@ -112,10 +112,10 @@ const handleSave = async () => {
 
     loading.value = true;
 
-    await UserInfoManager.changePassword(
-      formData.currentPassword,
-      formData.newPassword
-    );
+    await UserInfoManager.changePassword({
+      currentPassword: formData.currentPassword,
+      newPassword: formData.newPassword,
+    });
 
     uni.showToast({
       title: "密码修改成功",
