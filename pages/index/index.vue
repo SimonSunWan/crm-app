@@ -6,7 +6,7 @@
       </view>
     </view>
     <view class="index-content">
-      <view class="content-item" v-for="(item, index) in menuList" :key="index">
+      <view class="content-item" v-for="(item, index) in menuList" :key="index" @click="handleMenuClick(item)">
         <view class="content-icon" :style="{ background: item.gradient }">
           <text class="iconfont icon-text" :class="item.icon"></text>
         </view>
@@ -24,13 +24,21 @@ const menuList = ref([
     name: "保内工单",
     icon: "icon-gongdanxinxi",
     gradient: "linear-gradient(to bottom, #00ceaa, #00c09c)",
+    path: "/pages/order/internal-order/index"
   },
   {
     name: "保外工单",
     icon: "icon-waibu-02",
     gradient: "linear-gradient(to bottom, #f9b06f, #ff7721)",
+    path: "/pages/order/external-order/index"
   },
 ]);
+
+const handleMenuClick = (item) => {
+  uni.navigateTo({
+    url: item.path
+  });
+};
 </script>
 
 <style lang="scss" scoped>

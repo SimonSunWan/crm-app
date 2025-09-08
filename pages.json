@@ -21,6 +21,23 @@
   ],
   "subPackages": [
     {
+      "root": "pages/order",
+      "pages": [
+        {
+          "path": "internal-order/index",
+          "style": {
+            "navigationBarTitleText": "保内工单"
+          }
+        },
+        {
+          "path": "external-order/index",
+          "style": {
+            "navigationBarTitleText": "保外工单"
+          }
+        }
+      ]
+    },
+    {
       "root": "pages/settings",
       "pages": [
         {
@@ -39,6 +56,10 @@
     }
   ],
   "preloadRule": {
+    "pages/index/index": {
+      "network": "all",
+      "packages": ["pages/order"]
+    },
     "pages/my/index": {
       "network": "all",
       "packages": ["pages/settings"]
