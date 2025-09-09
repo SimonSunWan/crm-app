@@ -52,6 +52,16 @@
             }
           }
 
+          &.inline-layout {
+            flex-direction: row;
+            align-items: flex-start;
+
+            .label {
+              margin-bottom: 0;
+              margin-right: 20rpx;
+            }
+          }
+
           .label {
             font-size: 26rpx;
             color: #666666;

@@ -121,7 +121,7 @@
               {{ orderData.underWarranty ? "是" : "否" }}
             </view>
           </view>
-          <view class="info-item full-width">
+          <view class="info-item inline-layout">
             <text class="label">故障描述：</text>
             <text class="value">{{ orderData.faultDescription || "-" }}</text>
           </view>
@@ -176,7 +176,7 @@
               ) || "-"
             }}</text>
           </view>
-          <view class="info-item full-width">
+          <view class="info-item inline-layout">
             <text class="label">维修描述：</text>
             <text class="value">{{
               getDetailValue("repairDescription") || "-"
