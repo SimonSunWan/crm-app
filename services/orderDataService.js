@@ -36,7 +36,6 @@ export class OrderDataService {
           const response = await DictionaryService.getDictionaryByCode(code);
           dictionaryOptions[key] = response?.enums || [];
         } catch (error) {
-          console.error(`获取字典数据失败 ${code}:`, error);
           dictionaryOptions[key] = [];
         }
       }
@@ -55,7 +54,6 @@ export class OrderDataService {
         total: response?.total || 0,
       };
     } catch (error) {
-      console.error("获取订单列表失败:", error);
       return {
         success: false,
         data: [],
@@ -73,7 +71,6 @@ export class OrderDataService {
         data: response,
       };
     } catch (error) {
-      console.error("获取订单详情失败:", error);
       return {
         success: false,
         data: null,
@@ -90,7 +87,6 @@ export class OrderDataService {
         data: response,
       };
     } catch (error) {
-      console.error("创建订单失败:", error);
       return {
         success: false,
         data: null,
@@ -107,7 +103,6 @@ export class OrderDataService {
         data: response,
       };
     } catch (error) {
-      console.error("更新订单失败:", error);
       return {
         success: false,
         data: null,
@@ -123,7 +118,6 @@ export class OrderDataService {
         success: true,
       };
     } catch (error) {
-      console.error("删除订单失败:", error);
       return {
         success: false,
         error: error.message || "删除失败",

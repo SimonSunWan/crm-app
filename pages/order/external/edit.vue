@@ -609,14 +609,12 @@ const feeTypeData = ref([]);
 const repairItemsData = ref([]);
 
 const getOrderDetail = async () => {
-  console.log("getOrderDetail");
   loading.value = true;
   try {
     const response = await ExternalOrderService.getOrderById(orderId.value);
     if (response) {
       // 设置基本信息
       Object.assign(formData, response);
-      console.log(response, carModelData.value);
 
       if (
         response.customer &&
@@ -644,10 +642,8 @@ const getOrderDetail = async () => {
           response.customer,
           response.vehicleModel
         );
-        console.log(cascaderPath);
         if (cascaderPath) {
           formData.carSelection = cascaderPath;
-          console.log(formData.carSelection);
         }
       }
 

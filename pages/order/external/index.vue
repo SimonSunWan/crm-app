@@ -259,7 +259,6 @@ const loadDictionaryData = async () => {
     dictionaryOptions.value =
       await ExternalOrderDataService.loadDictionaryData();
   } catch (error) {
-    console.error("加载字典数据失败:", error);
     ExternalOrderDataService.showErrorToast("加载字典数据失败");
   }
 };

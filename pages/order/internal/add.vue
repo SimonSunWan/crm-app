@@ -623,12 +623,10 @@ const initOptionsArrays = () => {
 };
 
 const onCarChange = (e) => {
-  console.log("onCarChange", e);
   if (e && e.detail && e.detail.value && Array.isArray(e.detail.value)) {
     formData.customer = e.detail.value[0]?.value || "";
     formData.vehicleModel = e.detail.value[1]?.value || "";
   }
-  console.log("formData", formData);
 };
 
 const onProjectTypeChange = (e) => {};

@@ -59,7 +59,6 @@ const request = async (config) => {
     if (error instanceof HttpError) {
       throw error;
     } else {
-      console.error("Request error:", error);
       throw new HttpError("网络请求失败", 500);
     }
   }

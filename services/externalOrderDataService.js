@@ -11,7 +11,6 @@ export class ExternalOrderDataService {
         total: response?.total || 0,
       };
     } catch (error) {
-      console.error("获取保外工单列表失败:", error);
       return {
         success: false,
         data: [],
@@ -29,7 +28,6 @@ export class ExternalOrderDataService {
         data: response,
       };
     } catch (error) {
-      console.error("创建保外工单失败:", error);
       return {
         success: false,
         data: null,
@@ -46,7 +44,6 @@ export class ExternalOrderDataService {
         data: response,
       };
     } catch (error) {
-      console.error("获取保外工单详情失败:", error);
       return {
         success: false,
         data: null,
@@ -63,7 +60,6 @@ export class ExternalOrderDataService {
         data: response,
       };
     } catch (error) {
-      console.error("更新保外工单失败:", error);
       return {
         success: false,
         data: null,
@@ -79,7 +75,6 @@ export class ExternalOrderDataService {
         success: true,
       };
     } catch (error) {
-      console.error("删除保外工单失败:", error);
       return {
         success: false,
         error: error.message || "删除失败",
@@ -109,7 +104,6 @@ export class ExternalOrderDataService {
           const response = await DictionaryService.getDictionaryByCode(code);
           dictionaryOptions[key] = response?.enums || [];
         } catch (error) {
-          console.error(`加载字典数据失败 ${key}:`, error);
           dictionaryOptions[key] = [];
         }
       }
