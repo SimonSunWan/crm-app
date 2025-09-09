@@ -130,11 +130,31 @@ export class OrderDataService {
   }
 
   static buildNavigationParams(dictionaryOptions, additionalParams = {}) {
-    const params = DictionaryUtils.buildQueryParams(dictionaryOptions);
-    return { ...params, ...additionalParams };
+    // 将字典数据存储到本地存储中，避免URL过长
+    const storageKey = 'internal_order_dictionary_data';
+    uni.setStorageSync(storageKey, dictionaryOptions);
+    
+    // 只传递必要的参数
+    const params = {
+      _dictData: 'true', // 标记表示字典数据已存储
+      ...additionalParams
+    };
+    
+    return params;
   }
 
   static parseNavigationParams(options) {
+    // 检查是否有存储的字典数据
+    if (options._dictData === 'true') {
+      const storageKey = 'internal_order_dictionary_data';
+      const dictionaryOptions = uni.getStorageSync(storageKey) || {};
+      
+      // 移除标记参数
+      const { _dictData, ...otherParams } = options;
+      return { ...dictionaryOptions, ...otherParams };
+    }
+    
+    // 如果没有存储数据，使用传统方式解析
     return DictionaryUtils.parseQueryParams(options);
   }
 

@@ -386,6 +386,7 @@
 import { ref, reactive, onMounted, nextTick } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { InternalOrderService, DictionaryService } from "@/api/orderApi.js";
+import { OrderDataService } from "@/services/orderDataService.js";
 
 const loading = ref(false);
 const submitLoading = ref(false);
@@ -850,40 +851,23 @@ const handleCancel = () => {
 };
 
 onLoad((options) => {
+  const parsedParams = OrderDataService.parseNavigationParams(options);
   
-  orderId.value = options.id || "";
+  orderId.value = parsedParams.id || "";
   
-  if (options.carModel) {
-    dictionaryOptions.value.carModel = JSON.parse(decodeURIComponent(options.carModel));
-  }
-  if (options.projectType) {
-    dictionaryOptions.value.projectType = JSON.parse(decodeURIComponent(options.projectType));
-  }
-  if (options.projectPhase) {
-    dictionaryOptions.value.projectPhase = JSON.parse(decodeURIComponent(options.projectPhase));
-  }
-  if (options.faultClassification) {
-    dictionaryOptions.value.faultClassification = JSON.parse(decodeURIComponent(options.faultClassification));
-  }
-  if (options.faultLocation) {
-    dictionaryOptions.value.faultLocation = JSON.parse(decodeURIComponent(options.faultLocation));
-  }
-  if (options.partCategory) {
-    dictionaryOptions.value.partCategory = JSON.parse(decodeURIComponent(options.partCategory));
-  }
-  if (options.spareLocation) {
-    dictionaryOptions.value.spareLocation = JSON.parse(decodeURIComponent(options.spareLocation));
-  }
-  if (options.partNumber) {
-    dictionaryOptions.value.partNumber = JSON.parse(decodeURIComponent(options.partNumber));
-  }
-  if (options.feeType) {
-    dictionaryOptions.value.feeType = JSON.parse(decodeURIComponent(options.feeType));
-  }
-  if (options.repairItems) {
-    dictionaryOptions.value.repairItems = JSON.parse(decodeURIComponent(options.repairItems));
-  }
-  
+  // 设置字典数据
+  dictionaryOptions.value = {
+    carModel: parsedParams.carModel || [],
+    projectType: parsedParams.projectType || [],
+    projectPhase: parsedParams.projectPhase || [],
+    faultClassification: parsedParams.faultClassification || [],
+    faultLocation: parsedParams.faultLocation || [],
+    partCategory: parsedParams.partCategory || [],
+    spareLocation: parsedParams.spareLocation || [],
+    partNumber: parsedParams.partNumber || [],
+    feeType: parsedParams.feeType || [],
+    repairItems: parsedParams.repairItems || []
+  };
   
   initOptionsArrays();
   
