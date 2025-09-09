@@ -255,107 +255,107 @@
       }
     }
 
-      .card-list {
-        .spare-part-card,
-        .cost-card,
-        .labor-card {
-          background: #ffffff;
+    .card-list {
+      .spare-part-card,
+      .cost-card,
+      .labor-card {
+        background: #ffffff;
+        margin-bottom: 20rpx;
+        padding: 30rpx;
+        border-radius: 16rpx;
+        box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+
+        &:active {
+          transform: scale(0.98);
+          box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
           margin-bottom: 20rpx;
-          padding: 30rpx;
-          border-radius: 16rpx;
-          box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-          transition: all 0.3s ease;
+          padding-bottom: 20rpx;
+          border-bottom: 1rpx solid #f0f0f0;
 
-          &:active {
-            transform: scale(0.98);
-            box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
+          .card-title {
+            font-size: 28rpx;
+            font-weight: bold;
+            font-family: $uni-font-family;
+            color: #333333;
           }
 
-          .card-header {
+          .card-actions {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20rpx;
-            padding-bottom: 20rpx;
-            border-bottom: 1rpx solid #f0f0f0;
+            gap: 15rpx;
 
-            .card-title {
+            .action-btn {
+              width: 50rpx;
+              height: 50rpx;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
               font-size: 28rpx;
-              font-weight: bold;
-              font-family: $uni-font-family;
-              color: #333333;
-            }
+              font-weight: 600;
+              transition: all 0.3s ease;
 
-            .card-actions {
-              display: flex;
-              gap: 15rpx;
+              &.add {
+                background: #f0f9ff;
+                color: #3b82f6;
 
-              .action-btn {
-                width: 50rpx;
-                height: 50rpx;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-                font-size: 28rpx;
-                font-weight: 600;
-                transition: all 0.3s ease;
-
-                &.add {
-                  background: #f0f9ff;
-                  color: #3b82f6;
-
-                  &:active {
-                    background: #dbeafe;
-                    transform: scale(0.95);
-                  }
-                }
-
-                &.remove {
-                  background: #fef2f2;
-                  color: #ef4444;
-
-                  &:active {
-                    background: #fee2e2;
-                    transform: scale(0.95);
-                  }
-
-                  &.disabled {
-                    background: #f9fafb;
-                    color: #9ca3af;
-                    cursor: not-allowed;
-                  }
+                &:active {
+                  background: #dbeafe;
+                  transform: scale(0.95);
                 }
               }
-            }
-          }
 
-          .card-content {
-            .form-row {
-              display: flex;
-              gap: 20rpx;
-              margin-bottom: 20rpx;
+              &.remove {
+                background: #fef2f2;
+                color: #ef4444;
 
-              &:last-child {
-                margin-bottom: 0;
-              }
+                &:active {
+                  background: #fee2e2;
+                  transform: scale(0.95);
+                }
 
-              .form-item {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-
-                .label {
-                  font-size: 28rpx;
-                  color: #333333;
-                  margin-bottom: 15rpx;
-                  font-weight: 500;
+                &.disabled {
+                  background: #f9fafb;
+                  color: #9ca3af;
+                  cursor: not-allowed;
                 }
               }
             }
           }
         }
+
+        .card-content {
+          .form-row {
+            display: flex;
+            gap: 20rpx;
+            margin-bottom: 20rpx;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+
+            .form-item {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+
+              .label {
+                font-size: 28rpx;
+                color: #333333;
+                margin-bottom: 15rpx;
+                font-weight: 500;
+              }
+            }
+          }
+        }
       }
+    }
 
     .table-container {
       .table-header {

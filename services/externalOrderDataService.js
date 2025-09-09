@@ -8,15 +8,15 @@ export class ExternalOrderDataService {
       return {
         success: true,
         data: response?.records || [],
-        total: response?.total || 0
+        total: response?.total || 0,
       };
     } catch (error) {
-      console.error('获取保外工单列表失败:', error);
+      console.error("获取保外工单列表失败:", error);
       return {
         success: false,
         data: [],
         total: 0,
-        error: error.message || "获取数据失败"
+        error: error.message || "获取数据失败",
       };
     }
   }
@@ -26,14 +26,14 @@ export class ExternalOrderDataService {
       const response = await ExternalOrderService.createOrder(data);
       return {
         success: true,
-        data: response
+        data: response,
       };
     } catch (error) {
-      console.error('创建保外工单失败:', error);
+      console.error("创建保外工单失败:", error);
       return {
         success: false,
         data: null,
-        error: error.message || "创建失败"
+        error: error.message || "创建失败",
       };
     }
   }
@@ -43,14 +43,14 @@ export class ExternalOrderDataService {
       const response = await ExternalOrderService.getOrderById(id);
       return {
         success: true,
-        data: response
+        data: response,
       };
     } catch (error) {
-      console.error('获取保外工单详情失败:', error);
+      console.error("获取保外工单详情失败:", error);
       return {
         success: false,
         data: null,
-        error: error.message || "获取数据失败"
+        error: error.message || "获取数据失败",
       };
     }
   }
@@ -60,14 +60,14 @@ export class ExternalOrderDataService {
       const response = await ExternalOrderService.updateOrder(id, data);
       return {
         success: true,
-        data: response
+        data: response,
       };
     } catch (error) {
-      console.error('更新保外工单失败:', error);
+      console.error("更新保外工单失败:", error);
       return {
         success: false,
         data: null,
-        error: error.message || "更新失败"
+        error: error.message || "更新失败",
       };
     }
   }
@@ -76,42 +76,44 @@ export class ExternalOrderDataService {
     try {
       await ExternalOrderService.deleteOrder(id);
       return {
-        success: true
+        success: true,
       };
     } catch (error) {
-      console.error('删除保外工单失败:', error);
+      console.error("删除保外工单失败:", error);
       return {
         success: false,
-        error: error.message || "删除失败"
+        error: error.message || "删除失败",
       };
     }
   }
 
   static async loadDictionaryData() {
     const dictionaryCodes = {
-      carModel: 'order_car_model',
-      projectType: 'order_project_type',
-      projectPhase: 'order_project_phase',
-      faultClassification: 'order_fault_classification',
-      faultLocation: 'order_fault_location',
-      partCategory: 'order_part_category',
-      spareLocation: 'order_spare_location',
-      partNumber: 'order_part_number',
-      feeType: 'order_fee_type',
-      repairItems: 'order_repair_items'
+      carModel: "order_car_model",
+      projectType: "order_project_type",
+      projectPhase: "order_project_phase",
+      faultClassification: "order_fault_classification",
+      faultLocation: "order_fault_location",
+      partCategory: "order_part_category",
+      spareLocation: "order_spare_location",
+      partNumber: "order_part_number",
+      feeType: "order_fee_type",
+      repairItems: "order_repair_items",
     };
 
     const dictionaryOptions = {};
-    
-    const loadPromises = Object.entries(dictionaryCodes).map(async ([key, code]) => {
-      try {
-        const response = await DictionaryService.getDictionaryByCode(code);
-        dictionaryOptions[key] = response?.enums || [];
-      } catch (error) {
-        console.error(`加载字典数据失败 ${key}:`, error);
-        dictionaryOptions[key] = [];
+
+    const loadPromises = Object.entries(dictionaryCodes).map(
+      async ([key, code]) => {
+        try {
+          const response = await DictionaryService.getDictionaryByCode(code);
+          dictionaryOptions[key] = response?.enums || [];
+        } catch (error) {
+          console.error(`加载字典数据失败 ${key}:`, error);
+          dictionaryOptions[key] = [];
+        }
       }
-    });
+    );
 
     await Promise.all(loadPromises);
     return dictionaryOptions;
@@ -119,36 +121,36 @@ export class ExternalOrderDataService {
 
   static buildNavigationParams(dictionaryOptions, additionalParams = {}) {
     // 将字典数据存储到本地存储中，避免URL过长
-    const storageKey = 'external_order_dictionary_data';
+    const storageKey = "external_order_dictionary_data";
     uni.setStorageSync(storageKey, dictionaryOptions);
-    
+
     // 只传递必要的参数
     const params = {
-      _dictData: 'true', // 标记表示字典数据已存储
-      ...additionalParams
+      _dictData: "true", // 标记表示字典数据已存储
+      ...additionalParams,
     };
-    
+
     return params;
   }
 
   static parseNavigationParams(options) {
     // 检查是否有存储的字典数据
-    if (options._dictData === 'true') {
-      const storageKey = 'external_order_dictionary_data';
+    if (options._dictData === "true") {
+      const storageKey = "external_order_dictionary_data";
       const dictionaryOptions = uni.getStorageSync(storageKey) || {};
-      
+
       // 移除标记参数
       const { _dictData, ...otherParams } = options;
       return { ...dictionaryOptions, ...otherParams };
     }
-    
+
     // 如果没有存储数据，使用传统方式解析
     return DictionaryUtils.parseQueryParams(options);
   }
 
   static validateFormData(formData, repairData) {
     const errors = [];
-    
+
     if (!formData.carSelection || formData.carSelection.length === 0) {
       errors.push("请选择整车厂/车型");
     }
@@ -185,24 +187,24 @@ export class ExternalOrderDataService {
     if (!formData.faultDescription || formData.faultDescription.trim() === "") {
       errors.push("请输入故障描述");
     }
-    
+
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 
   static showSuccessToast(message) {
     uni.showToast({
       title: message,
-      icon: "success"
+      icon: "success",
     });
   }
 
   static showErrorToast(message) {
     uni.showToast({
       title: message,
-      icon: "error"
+      icon: "error",
     });
   }
 
@@ -213,7 +215,7 @@ export class ExternalOrderDataService {
         content: content,
         success: (res) => {
           resolve(res.confirm);
-        }
+        },
       });
     });
   }

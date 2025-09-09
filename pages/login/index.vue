@@ -14,14 +14,14 @@
           type="text"
         />
       </view>
-        <uni-easyinput
-          v-model="formData.password"
-          class="input-field"
-          placeholder="请输入密码"
-          type="password"
-          password-icon
-          trim="both"
-        />
+      <uni-easyinput
+        v-model="formData.password"
+        class="input-field"
+        placeholder="请输入密码"
+        type="password"
+        password-icon
+        trim="both"
+      />
 
       <view class="slider-group">
         <slider-verify ref="sliderVerifyRef" @verify="onSliderVerify" />

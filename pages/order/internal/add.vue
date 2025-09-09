@@ -1,9 +1,22 @@
 <template>
   <view class="add-order-container">
     <uni-steps :active="currentStep" direction="row">
-      <uni-steps-item title="报修信息" :status="currentStep >= 0 ? (currentStep > 0 ? 'finish' : 'process') : 'wait'"></uni-steps-item>
-      <uni-steps-item title="维修记录" :status="currentStep >= 1 ? (currentStep > 1 ? 'finish' : 'process') : 'wait'"></uni-steps-item>
-      <uni-steps-item title="详情记录" :status="currentStep >= 2 ? 'process' : 'wait'"></uni-steps-item>
+      <uni-steps-item
+        title="报修信息"
+        :status="
+          currentStep >= 0 ? (currentStep > 0 ? 'finish' : 'process') : 'wait'
+        "
+      ></uni-steps-item>
+      <uni-steps-item
+        title="维修记录"
+        :status="
+          currentStep >= 1 ? (currentStep > 1 ? 'finish' : 'process') : 'wait'
+        "
+      ></uni-steps-item>
+      <uni-steps-item
+        title="详情记录"
+        :status="currentStep >= 2 ? 'process' : 'wait'"
+      ></uni-steps-item>
     </uni-steps>
 
     <view v-show="currentStep === 0" class="form-step">
@@ -12,16 +25,19 @@
         <view class="form-row">
           <view class="form-item">
             <text class="label">整车厂/车型</text>
-            <uni-data-picker 
-              v-model="formData.carSelection" 
-              :localdata="carModelData" 
+            <uni-data-picker
+              v-model="formData.carSelection"
+              :localdata="carModelData"
               placeholder="请选择整车厂/车型"
               @change="onCarChange"
             />
           </view>
           <view class="form-item">
             <text class="label">维修店(4S)</text>
-            <uni-easyinput v-model="formData.repairShop" placeholder="请输入维修店名称" />
+            <uni-easyinput
+              v-model="formData.repairShop"
+              placeholder="请输入维修店名称"
+            />
           </view>
         </view>
       </view>
@@ -31,20 +47,29 @@
         <view class="form-row">
           <view class="form-item">
             <text class="label">报修人</text>
-            <uni-easyinput v-model="formData.reporterName" placeholder="请输入报修人姓名" />
+            <uni-easyinput
+              v-model="formData.reporterName"
+              placeholder="请输入报修人姓名"
+            />
           </view>
           <view class="form-item">
             <text class="label">联系方式</text>
-            <uni-easyinput v-model="formData.contactInfo" placeholder="请输入联系方式" />
+            <uni-easyinput
+              v-model="formData.contactInfo"
+              placeholder="请输入联系方式"
+            />
           </view>
         </view>
         <view class="form-row">
           <view class="form-item">
             <text class="label">报修日期</text>
-            <uni-datetime-picker v-model="formData.reportDate" type="date" placeholder="请选择报修日期" />
+            <uni-datetime-picker
+              v-model="formData.reportDate"
+              type="date"
+              placeholder="请选择报修日期"
+            />
           </view>
-          <view class="form-item">
-          </view>
+          <view class="form-item"> </view>
         </view>
       </view>
 
@@ -53,18 +78,18 @@
         <view class="form-row">
           <view class="form-item">
             <text class="label">项目类型</text>
-            <uni-data-select 
-              v-model="formData.projectType" 
-              :localdata="projectTypeData" 
+            <uni-data-select
+              v-model="formData.projectType"
+              :localdata="projectTypeData"
               placeholder="请选择项目类型"
               @change="onProjectTypeChange"
             />
           </view>
           <view class="form-item">
             <text class="label">项目阶段</text>
-            <uni-data-select 
-              v-model="formData.projectStage" 
-              :localdata="projectStageData" 
+            <uni-data-select
+              v-model="formData.projectStage"
+              :localdata="projectStageData"
               placeholder="请选择项目阶段"
               @change="onProjectStageChange"
             />
@@ -77,40 +102,63 @@
         <view class="form-row">
           <view class="form-item">
             <text class="label">车牌号</text>
-            <uni-easyinput v-model="formData.licensePlate" placeholder="请输入车牌号" />
+            <uni-easyinput
+              v-model="formData.licensePlate"
+              placeholder="请输入车牌号"
+            />
           </view>
           <view class="form-item">
             <text class="label">车架号</text>
-            <uni-easyinput v-model="formData.vinNumber" placeholder="请输入车架号" />
+            <uni-easyinput
+              v-model="formData.vinNumber"
+              placeholder="请输入车架号"
+            />
           </view>
         </view>
         <view class="form-row">
           <view class="form-item">
             <text class="label">里程(KM)</text>
-            <uni-easyinput v-model="formData.mileage" type="number" placeholder="请输入里程" />
+            <uni-easyinput
+              v-model="formData.mileage"
+              type="number"
+              placeholder="请输入里程"
+            />
           </view>
           <view class="form-item">
             <text class="label">车辆位置</text>
-            <uni-easyinput v-model="formData.vehicleLocation" placeholder="请输入车辆位置" />
+            <uni-easyinput
+              v-model="formData.vehicleLocation"
+              placeholder="请输入车辆位置"
+            />
           </view>
         </view>
         <view class="form-row">
           <view class="form-item">
             <text class="label">车辆日期</text>
-            <uni-datetime-picker v-model="formData.vehicleDate" type="date" placeholder="请选择车辆日期" />
+            <uni-datetime-picker
+              v-model="formData.vehicleDate"
+              type="date"
+              placeholder="请选择车辆日期"
+            />
           </view>
           <view class="form-item">
             <text class="label">PACK码</text>
-            <uni-easyinput v-model="formData.packCode" placeholder="请输入PACK码" />
+            <uni-easyinput
+              v-model="formData.packCode"
+              placeholder="请输入PACK码"
+            />
           </view>
         </view>
         <view class="form-row">
           <view class="form-item">
             <text class="label">PACK日期</text>
-            <uni-datetime-picker v-model="formData.packDate" type="date" placeholder="请选择PACK日期" />
+            <uni-datetime-picker
+              v-model="formData.packDate"
+              type="date"
+              placeholder="请选择PACK日期"
+            />
           </view>
-          <view class="form-item">
-          </view>
+          <view class="form-item"> </view>
         </view>
       </view>
 
@@ -119,9 +167,12 @@
         <view class="form-row">
           <view class="form-item">
             <text class="label">是否在保</text>
-            <uni-data-checkbox 
-              v-model="formData.underWarranty" 
-              :localdata="[{value: true, text: '是'}, {value: false, text: '否'}]"
+            <uni-data-checkbox
+              v-model="formData.underWarranty"
+              :localdata="[
+                { value: true, text: '是' },
+                { value: false, text: '否' },
+              ]"
               mode="button"
               :multiple="false"
             />
@@ -130,10 +181,10 @@
         <view class="form-row">
           <view class="form-item full-width">
             <text class="label">故障描述</text>
-            <uni-easyinput 
-              v-model="formData.faultDescription" 
-              type="textarea" 
-              placeholder="请输入故障描述" 
+            <uni-easyinput
+              v-model="formData.faultDescription"
+              type="textarea"
+              placeholder="请输入故障描述"
               :autoHeight="true"
             />
           </view>
@@ -146,28 +197,38 @@
         <view class="form-row">
           <view class="form-item">
             <text class="label">维修人</text>
-            <uni-easyinput v-model="repairData.repairPerson" placeholder="请输入维修人姓名" />
+            <uni-easyinput
+              v-model="repairData.repairPerson"
+              placeholder="请输入维修人姓名"
+            />
           </view>
           <view class="form-item">
             <text class="label">维修日期</text>
-            <uni-datetime-picker v-model="repairData.repairDate" type="date" placeholder="请选择维修日期" />
+            <uni-datetime-picker
+              v-model="repairData.repairDate"
+              type="date"
+              placeholder="请选择维修日期"
+            />
           </view>
         </view>
         <view class="form-row">
           <view class="form-item">
             <text class="label">中航责任</text>
-            <uni-data-checkbox 
-              v-model="repairData.avicResponsibility" 
-              :localdata="[{value: true, text: '是'}, {value: false, text: '否'}]"
+            <uni-data-checkbox
+              v-model="repairData.avicResponsibility"
+              :localdata="[
+                { value: true, text: '是' },
+                { value: false, text: '否' },
+              ]"
               mode="button"
               :multiple="false"
             />
           </view>
           <view class="form-item">
             <text class="label">故障分类</text>
-            <uni-data-select 
-              v-model="repairData.faultClassification" 
-              :localdata="faultClassificationData" 
+            <uni-data-select
+              v-model="repairData.faultClassification"
+              :localdata="faultClassificationData"
               placeholder="请选择故障分类"
               @change="onFaultClassificationChange"
             />
@@ -176,18 +237,18 @@
         <view class="form-row">
           <view class="form-item">
             <text class="label">故障位置</text>
-            <uni-data-select 
-              v-model="repairData.faultLocation" 
-              :localdata="faultLocationData" 
+            <uni-data-select
+              v-model="repairData.faultLocation"
+              :localdata="faultLocationData"
               placeholder="请选择故障位置"
               @change="onFaultLocationChange"
             />
           </view>
           <view class="form-item">
             <text class="label">零件类别/定位</text>
-            <uni-data-picker 
-              v-model="repairData.partSelection" 
-              :localdata="partCategoryData" 
+            <uni-data-picker
+              v-model="repairData.partSelection"
+              :localdata="partCategoryData"
               placeholder="请选择零件类别/定位"
               @change="onPartSelectionChange"
             />
@@ -196,10 +257,10 @@
         <view class="form-row">
           <view class="form-item full-width">
             <text class="label">维修描述</text>
-            <uni-easyinput 
-              v-model="repairData.repairDescription" 
-              type="textarea" 
-              placeholder="请填写维修过程" 
+            <uni-easyinput
+              v-model="repairData.repairDescription"
+              type="textarea"
+              placeholder="请填写维修过程"
               :autoHeight="true"
             />
           </view>
@@ -212,61 +273,81 @@
         <view class="section-header">
           <text class="section-title">备件使用详情</text>
         </view>
-        
 
-          
-            <view class="bei-row">
-              <text class="label">备件所属库位</text>
-              <uni-data-select 
-                v-model="repairData.sparePartLocation" 
-                :localdata="spareLocationData" 
-                placeholder="请选择备件所属库位"
-                @change="onSparePartLocationChange"
-              />
-            </view>
+        <view class="bei-row">
+          <text class="label">备件所属库位</text>
+          <uni-data-select
+            v-model="repairData.sparePartLocation"
+            :localdata="spareLocationData"
+            placeholder="请选择备件所属库位"
+            @change="onSparePartLocationChange"
+          />
+        </view>
 
         <view class="card-list">
-          <view v-for="(item, index) in spareParts" :key="index" class="spare-part-card">
+          <view
+            v-for="(item, index) in spareParts"
+            :key="index"
+            class="spare-part-card"
+          >
             <view class="card-header">
               <text class="card-title">备件信息 {{ index + 1 }}</text>
               <view class="card-actions">
                 <text class="action-btn add" @click="addSparePart">+</text>
-                <text class="action-btn remove" @click="removeSparePart(index)" :class="{ disabled: spareParts.length <= 1 }">-</text>
+                <text
+                  class="action-btn remove"
+                  @click="removeSparePart(index)"
+                  :class="{ disabled: spareParts.length <= 1 }"
+                  >-</text
+                >
               </view>
             </view>
-            
+
             <view class="card-content">
               <view class="form-row">
                 <view class="form-item">
                   <text class="label">备件料号</text>
-                  <uni-easyinput v-model="item.partNumber" placeholder="备件料号" disabled />
+                  <uni-easyinput
+                    v-model="item.partNumber"
+                    placeholder="备件料号"
+                    disabled
+                  />
                 </view>
                 <view class="form-item">
                   <text class="label">使用数量</text>
-                  <uni-easyinput v-model="item.quantity" placeholder="使用数量" />
+                  <uni-easyinput
+                    v-model="item.quantity"
+                    placeholder="使用数量"
+                  />
                 </view>
               </view>
-              
+
               <view class="form-row">
                 <view class="form-item">
                   <text class="label">备件名称</text>
-                  <uni-data-select 
-                    v-model="item.name" 
-                    :localdata="partNumberData" 
+                  <uni-data-select
+                    v-model="item.name"
+                    :localdata="partNumberData"
                     placeholder="备件名称"
                     @change="(e) => onPartNameChange(e, index)"
                   />
                 </view>
               </view>
-              
+
               <view class="form-row">
                 <view class="form-item">
                   <text class="label">旧件编码</text>
-                  <uni-easyinput v-model="item.oldPartCode" placeholder="旧件编码" />
+                  <uni-easyinput
+                    v-model="item.oldPartCode"
+                    placeholder="旧件编码"
+                  />
                 </view>
                 <view class="form-item">
                   <text class="label">新件编码</text>
-                  <uni-easyinput v-model="item.newPartCode" placeholder="新件编码" />
+                  <uni-easyinput
+                    v-model="item.newPartCode"
+                    placeholder="新件编码"
+                  />
                 </view>
               </view>
             </view>
@@ -285,27 +366,35 @@
               <text class="card-title">费用信息 {{ index + 1 }}</text>
               <view class="card-actions">
                 <text class="action-btn add" @click="addCost">+</text>
-                <text class="action-btn remove" @click="removeCost(index)" :class="{ disabled: costs.length <= 1 }">-</text>
+                <text
+                  class="action-btn remove"
+                  @click="removeCost(index)"
+                  :class="{ disabled: costs.length <= 1 }"
+                  >-</text
+                >
               </view>
             </view>
-            
+
             <view class="card-content">
               <view class="form-row">
                 <view class="form-item">
                   <text class="label">费用类别</text>
-                  <uni-data-select 
-                    v-model="item.category" 
-                    :localdata="feeTypeData" 
+                  <uni-data-select
+                    v-model="item.category"
+                    :localdata="feeTypeData"
                     placeholder="费用类别"
                     @change="(e) => onCostCategoryChange(e, index)"
                   />
                 </view>
               </view>
-              
+
               <view class="form-row">
                 <view class="form-item">
                   <text class="label">费用金额(元)</text>
-                  <uni-easyinput v-model="item.amount" placeholder="费用金额(元)" />
+                  <uni-easyinput
+                    v-model="item.amount"
+                    placeholder="费用金额(元)"
+                  />
                 </view>
               </view>
             </view>
@@ -324,31 +413,42 @@
               <text class="card-title">工时信息 {{ index + 1 }}</text>
               <view class="card-actions">
                 <text class="action-btn add" @click="addLabor">+</text>
-                <text class="action-btn remove" @click="removeLabor(index)" :class="{ disabled: labors.length <= 1 }">-</text>
+                <text
+                  class="action-btn remove"
+                  @click="removeLabor(index)"
+                  :class="{ disabled: labors.length <= 1 }"
+                  >-</text
+                >
               </view>
             </view>
-            
+
             <view class="card-content">
               <view class="form-row">
                 <view class="form-item">
                   <text class="label">故障位置/维修项目</text>
-                  <uni-data-picker 
-                    v-model="item.repairSelection" 
-                    :localdata="repairItemsData" 
+                  <uni-data-picker
+                    v-model="item.repairSelection"
+                    :localdata="repairItemsData"
                     placeholder="请选择故障位置/维修项目"
                     @change="(e) => onRepairSelectionChange(e, index)"
                   />
                 </view>
               </view>
-              
+
               <view class="form-row">
                 <view class="form-item">
                   <text class="label">维修数量</text>
-                  <uni-easyinput v-model="item.quantity" placeholder="维修数量" />
+                  <uni-easyinput
+                    v-model="item.quantity"
+                    placeholder="维修数量"
+                  />
                 </view>
                 <view class="form-item">
                   <text class="label">系数</text>
-                  <uni-easyinput v-model="item.coefficient" placeholder="系数" />
+                  <uni-easyinput
+                    v-model="item.coefficient"
+                    placeholder="系数"
+                  />
                 </view>
               </view>
             </view>
@@ -358,10 +458,34 @@
     </view>
 
     <view class="bottom-actions">
-      <button type="default" class="action-btn cancel" @click="handleCancel">取消</button>
-      <button v-if="currentStep > 0" type="primary" class="action-btn prev" @click="prevStep">上一步</button>
-      <button v-if="currentStep < 2" type="primary" class="action-btn next" @click="nextStep">下一步</button>
-      <button v-if="currentStep === 2" type="primary" class="action-btn submit" @click="handleSubmit" :loading="loading">保存并完成</button>
+      <button type="default" class="action-btn cancel" @click="handleCancel">
+        取消
+      </button>
+      <button
+        v-if="currentStep > 0"
+        type="primary"
+        class="action-btn prev"
+        @click="prevStep"
+      >
+        上一步
+      </button>
+      <button
+        v-if="currentStep < 2"
+        type="primary"
+        class="action-btn next"
+        @click="nextStep"
+      >
+        下一步
+      </button>
+      <button
+        v-if="currentStep === 2"
+        type="primary"
+        class="action-btn submit"
+        @click="handleSubmit"
+        :loading="loading"
+      >
+        保存并完成
+      </button>
     </view>
   </view>
 </template>
@@ -385,7 +509,7 @@ const dictionaryOptions = ref({
   spareLocation: [],
   partNumber: [],
   feeType: [],
-  repairItems: []
+  repairItems: [],
 });
 
 const formData = reactive({
@@ -406,7 +530,7 @@ const formData = reactive({
   packCode: "",
   packDate: "",
   underWarranty: null,
-  faultDescription: ""
+  faultDescription: "",
 });
 
 const repairData = reactive({
@@ -419,7 +543,7 @@ const repairData = reactive({
   partLocation: "", // 零件定位
   sparePartLocation: "",
   partSelection: [], // 级联选择器：零件类别/定位
-  repairDescription: ""
+  repairDescription: "",
 });
 
 const spareParts = ref([
@@ -430,8 +554,8 @@ const spareParts = ref([
     nameText: "",
     quantity: "",
     oldPartCode: "",
-    newPartCode: ""
-  }
+    newPartCode: "",
+  },
 ]);
 
 const costs = ref([
@@ -439,8 +563,8 @@ const costs = ref([
     category: "",
     categoryIndex: 0,
     categoryText: "",
-    amount: ""
-  }
+    amount: "",
+  },
 ]);
 
 const labors = ref([
@@ -449,8 +573,8 @@ const labors = ref([
     repairSelectionIndex: 0,
     repairSelectionText: "",
     quantity: "",
-    coefficient: ""
-  }
+    coefficient: "",
+  },
 ]);
 
 const carModelData = ref([]);
@@ -465,25 +589,44 @@ const feeTypeData = ref([]);
 const repairItemsData = ref([]);
 
 const initOptionsArrays = () => {
-  carModelData.value = DictionaryUtils.convertToUniDataPickerFormat(dictionaryOptions.value.carModel || []);
-  partCategoryData.value = DictionaryUtils.convertToUniDataPickerFormat(dictionaryOptions.value.partCategory || []);
-  
-  projectTypeData.value = DictionaryUtils.convertToUniDataSelectFormat(dictionaryOptions.value.projectType || []);
-  projectStageData.value = DictionaryUtils.convertToUniDataSelectFormat(dictionaryOptions.value.projectPhase || []);
-  faultClassificationData.value = DictionaryUtils.convertToUniDataSelectFormat(dictionaryOptions.value.faultClassification || []);
-  faultLocationData.value = DictionaryUtils.convertToUniDataSelectFormat(dictionaryOptions.value.faultLocation || []);
-  spareLocationData.value = DictionaryUtils.convertToUniDataSelectFormat(dictionaryOptions.value.spareLocation || []);
-  partNumberData.value = DictionaryUtils.convertToUniDataSelectFormat(dictionaryOptions.value.partNumber || []);
-  feeTypeData.value = DictionaryUtils.convertToUniDataSelectFormat(dictionaryOptions.value.feeType || []);
-  repairItemsData.value = DictionaryUtils.convertToUniDataPickerFormat(dictionaryOptions.value.repairItems || []);
-};
+  carModelData.value = DictionaryUtils.convertToUniDataPickerFormat(
+    dictionaryOptions.value.carModel || []
+  );
+  partCategoryData.value = DictionaryUtils.convertToUniDataPickerFormat(
+    dictionaryOptions.value.partCategory || []
+  );
 
+  projectTypeData.value = DictionaryUtils.convertToUniDataSelectFormat(
+    dictionaryOptions.value.projectType || []
+  );
+  projectStageData.value = DictionaryUtils.convertToUniDataSelectFormat(
+    dictionaryOptions.value.projectPhase || []
+  );
+  faultClassificationData.value = DictionaryUtils.convertToUniDataSelectFormat(
+    dictionaryOptions.value.faultClassification || []
+  );
+  faultLocationData.value = DictionaryUtils.convertToUniDataSelectFormat(
+    dictionaryOptions.value.faultLocation || []
+  );
+  spareLocationData.value = DictionaryUtils.convertToUniDataSelectFormat(
+    dictionaryOptions.value.spareLocation || []
+  );
+  partNumberData.value = DictionaryUtils.convertToUniDataSelectFormat(
+    dictionaryOptions.value.partNumber || []
+  );
+  feeTypeData.value = DictionaryUtils.convertToUniDataSelectFormat(
+    dictionaryOptions.value.feeType || []
+  );
+  repairItemsData.value = DictionaryUtils.convertToUniDataPickerFormat(
+    dictionaryOptions.value.repairItems || []
+  );
+};
 
 const onCarChange = (e) => {
   console.log("onCarChange", e);
   if (e && e.detail && e.detail.value && Array.isArray(e.detail.value)) {
-    formData.customer = e.detail.value[0]?.value || '';
-    formData.vehicleModel = e.detail.value[1]?.value || '';
+    formData.customer = e.detail.value[0]?.value || "";
+    formData.vehicleModel = e.detail.value[1]?.value || "";
   }
   console.log("formData", formData);
 };
@@ -498,8 +641,8 @@ const onFaultLocationChange = (e) => {};
 
 const onPartSelectionChange = (e) => {
   if (e && e.detail && e.detail.value && Array.isArray(e.detail.value)) {
-    repairData.partCategory = e.detail.value[0]?.value || '';
-    repairData.partLocation = e.detail.value[1]?.value || '';
+    repairData.partCategory = e.detail.value[0]?.value || "";
+    repairData.partLocation = e.detail.value[1]?.value || "";
   }
 };
 
@@ -515,14 +658,20 @@ const onPartNameChange = (e, index) => {
 const onCostCategoryChange = (e, index) => {};
 
 const onRepairSelectionChange = (e, index) => {
-  if (e && e.detail && e.detail.value && Array.isArray(e.detail.value) && labors.value[index]) {
+  if (
+    e &&
+    e.detail &&
+    e.detail.value &&
+    Array.isArray(e.detail.value) &&
+    labors.value[index]
+  ) {
     labors.value[index].repairSelection = e.detail.value;
   }
 };
 
 const validateStep0 = () => {
   const errors = [];
-  
+
   if (!formData.carSelection || formData.carSelection.length === 0) {
     errors.push("请选择整车厂/车型");
   }
@@ -559,13 +708,13 @@ const validateStep0 = () => {
   if (!formData.faultDescription || formData.faultDescription.trim() === "") {
     errors.push("请输入故障描述");
   }
-  
+
   return errors;
 };
 
 const validateStep1 = () => {
   const errors = [];
-  
+
   if (!repairData.repairPerson || repairData.repairPerson.trim() === "") {
     errors.push("请输入维修人姓名");
   }
@@ -575,7 +724,10 @@ const validateStep1 = () => {
   if (repairData.avicResponsibility === null) {
     errors.push("请选择中航责任");
   }
-  if (!repairData.faultClassification || repairData.faultClassification.trim() === "") {
+  if (
+    !repairData.faultClassification ||
+    repairData.faultClassification.trim() === ""
+  ) {
     errors.push("请选择故障分类");
   }
   if (!repairData.faultLocation || repairData.faultLocation.trim() === "") {
@@ -584,20 +736,26 @@ const validateStep1 = () => {
   if (!repairData.partSelection || repairData.partSelection.length === 0) {
     errors.push("请选择零件类别/定位");
   }
-  if (!repairData.repairDescription || repairData.repairDescription.trim() === "") {
+  if (
+    !repairData.repairDescription ||
+    repairData.repairDescription.trim() === ""
+  ) {
     errors.push("请输入维修描述");
   }
-  
+
   return errors;
 };
 
 const validateStep2 = () => {
   const errors = [];
-  
-  if (!repairData.sparePartLocation || repairData.sparePartLocation.trim() === "") {
+
+  if (
+    !repairData.sparePartLocation ||
+    repairData.sparePartLocation.trim() === ""
+  ) {
     errors.push("请选择备件所属库位");
   }
-  
+
   for (let i = 0; i < spareParts.value.length; i++) {
     const part = spareParts.value[i];
     if (!part.name || part.name.trim() === "") {
@@ -607,7 +765,7 @@ const validateStep2 = () => {
       errors.push(`备件信息${i + 1}：请输入使用数量`);
     }
   }
-  
+
   for (let i = 0; i < costs.value.length; i++) {
     const cost = costs.value[i];
     if (!cost.category || cost.category.trim() === "") {
@@ -617,7 +775,7 @@ const validateStep2 = () => {
       errors.push(`费用信息${i + 1}：请输入费用金额`);
     }
   }
-  
+
   for (let i = 0; i < labors.value.length; i++) {
     const labor = labors.value[i];
     if (!labor.repairSelection || labor.repairSelection.length === 0) {
@@ -630,29 +788,29 @@ const validateStep2 = () => {
       errors.push(`工时信息${i + 1}：请输入系数`);
     }
   }
-  
+
   return errors;
 };
 
 const nextStep = () => {
   if (currentStep.value < 2) {
     let errors = [];
-    
+
     if (currentStep.value === 0) {
       errors = validateStep0();
     } else if (currentStep.value === 1) {
       errors = validateStep1();
     }
-    
+
     if (errors.length > 0) {
       uni.showToast({
         title: errors[0],
-        icon: 'none',
-        duration: 2000
+        icon: "none",
+        duration: 2000,
       });
       return;
     }
-    
+
     currentStep.value++;
   }
 };
@@ -671,7 +829,7 @@ const addSparePart = () => {
     nameText: "",
     quantity: "",
     oldPartCode: "",
-    newPartCode: ""
+    newPartCode: "",
   });
 };
 
@@ -686,7 +844,7 @@ const addCost = () => {
     category: "",
     categoryIndex: 0,
     categoryText: "",
-    amount: ""
+    amount: "",
   });
 };
 
@@ -702,7 +860,7 @@ const addLabor = () => {
     repairSelectionIndex: 0,
     repairSelectionText: "",
     quantity: "",
-    coefficient: ""
+    coefficient: "",
   });
 };
 
@@ -717,12 +875,12 @@ const handleSubmit = async () => {
   if (step2Errors.length > 0) {
     uni.showToast({
       title: step2Errors[0],
-      icon: 'none',
-      duration: 2000
+      icon: "none",
+      duration: 2000,
     });
     return;
   }
-  
+
   const validation = OrderDataService.validateFormData(formData, repairData);
   if (!validation.isValid) {
     OrderDataService.showErrorToast(validation.errors[0]);
@@ -760,11 +918,11 @@ const handleSubmit = async () => {
       repairDescription: repairData.repairDescription,
       spareParts: spareParts.value,
       costs: costs.value,
-      labors: labors.value
+      labors: labors.value,
     };
 
     const result = await OrderDataService.createOrder(submitData);
-    
+
     if (result.success) {
       OrderDataService.showSuccessToast("保存成功");
       setTimeout(() => {
