@@ -24,13 +24,13 @@ const menuList = ref([
     name: "保内工单",
     icon: "icon-gongdanxinxi",
     gradient: "linear-gradient(to bottom, #00ceaa, #00c09c)",
-    path: "/pages/order/internal-order/index"
+    path: "/pages/order/internal/index"
   },
   {
     name: "保外工单",
     icon: "icon-waibu-02",
     gradient: "linear-gradient(to bottom, #f9b06f, #ff7721)",
-    path: "/pages/order/external-order/index"
+    path: "/pages/order/external/index"
   },
 ]);
 

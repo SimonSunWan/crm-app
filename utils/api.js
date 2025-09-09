@@ -1,4 +1,4 @@
-const BASE_URL = "http://139.224.133.59:8000/api";
+const BASE_URL = "http://127.0.0.1:8000/api";
 
 class HttpError extends Error {
   constructor(message, code) {
@@ -67,7 +67,8 @@ const request = async (config) => {
 
 const api = {
   get(url, config = {}) {
-    return request({ ...config, url, method: "GET" });
+    const { params, ...restConfig } = config;
+    return request({ ...restConfig, url, method: "GET", params });
   },
 
   post(url, data, config = {}) {

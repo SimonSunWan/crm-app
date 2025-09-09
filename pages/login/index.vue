@@ -14,8 +14,6 @@
           type="text"
         />
       </view>
-
-      <view class="input-group">
         <uni-easyinput
           v-model="formData.password"
           class="input-field"
@@ -24,7 +22,6 @@
           password-icon
           trim="both"
         />
-      </view>
 
       <view class="slider-group">
         <slider-verify ref="sliderVerifyRef" @verify="onSliderVerify" />

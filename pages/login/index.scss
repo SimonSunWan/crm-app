@@ -119,20 +119,11 @@
   background: #ffffff;
   padding: 0 20rpx;
   box-sizing: border-box;
+  margin-bottom: 40rpx;
 
   &:focus-within {
     border-color: #3b82f6;
   }
-}
-
-:deep(.uni-easyinput__content-input) {
-  height: 88rpx;
-  font-size: 28rpx;
-  color: #000000 !important;
-  background: transparent;
-  border: none;
-  padding: 0;
-  box-sizing: border-box;
 }
 
 :deep(.uni-easyinput__placeholder-class) {

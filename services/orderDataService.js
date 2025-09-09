@@ -1,0 +1,209 @@
+import { InternalOrderService } from "@/api/orderApi.js";
+import { DictionaryService } from "@/api/orderApi.js";
+import { DictionaryUtils } from "@/utils/dictionaryUtils.js";
+
+export class OrderDataService {
+  static async loadDictionaryData() {
+    const dictionaryCodes = {
+      carModel: 'order_car_model',
+      projectType: 'order_project_type',
+      projectPhase: 'order_project_phase',
+      faultClassification: 'order_fault_classification',
+      faultLocation: 'order_fault_location',
+      partCategory: 'order_part_category',
+      spareLocation: 'order_spare_location',
+      partNumber: 'order_part_number',
+      feeType: 'order_fee_type',
+      repairItems: 'order_repair_items'
+    };
+
+    const dictionaryOptions = {
+      carModel: [],
+      projectType: [],
+      projectPhase: [],
+      faultClassification: [],
+      faultLocation: [],
+      partCategory: [],
+      spareLocation: [],
+      partNumber: [],
+      feeType: [],
+      repairItems: []
+    };
+
+    const loadPromises = Object.entries(dictionaryCodes).map(async ([key, code]) => {
+      try {
+        const response = await DictionaryService.getDictionaryByCode(code);
+        dictionaryOptions[key] = response?.enums || [];
+      } catch (error) {
+        console.error(`获取字典数据失败 ${code}:`, error);
+        dictionaryOptions[key] = [];
+      }
+    });
+
+    await Promise.all(loadPromises);
+    return dictionaryOptions;
+  }
+
+  static async getOrderList(params) {
+    try {
+      const response = await InternalOrderService.getOrderList(params);
+      return {
+        success: true,
+        data: response?.records || [],
+        total: response?.total || 0
+      };
+    } catch (error) {
+      console.error('获取订单列表失败:', error);
+      return {
+        success: false,
+        data: [],
+        total: 0,
+        error: error.message || '获取数据失败'
+      };
+    }
+  }
+
+  static async getOrderDetail(id) {
+    try {
+      const response = await InternalOrderService.getOrderById(id);
+      return {
+        success: true,
+        data: response
+      };
+    } catch (error) {
+      console.error('获取订单详情失败:', error);
+      return {
+        success: false,
+        data: null,
+        error: error.message || '获取数据失败'
+      };
+    }
+  }
+
+  static async createOrder(data) {
+    try {
+      const response = await InternalOrderService.createOrder(data);
+      return {
+        success: true,
+        data: response
+      };
+    } catch (error) {
+      console.error('创建订单失败:', error);
+      return {
+        success: false,
+        data: null,
+        error: error.message || '创建失败'
+      };
+    }
+  }
+
+  static async updateOrder(id, data) {
+    try {
+      const response = await InternalOrderService.updateOrder(id, data);
+      return {
+        success: true,
+        data: response
+      };
+    } catch (error) {
+      console.error('更新订单失败:', error);
+      return {
+        success: false,
+        data: null,
+        error: error.message || '更新失败'
+      };
+    }
+  }
+
+  static async deleteOrder(id) {
+    try {
+      await InternalOrderService.deleteOrder(id);
+      return {
+        success: true
+      };
+    } catch (error) {
+      console.error('删除订单失败:', error);
+      return {
+        success: false,
+        error: error.message || '删除失败'
+      };
+    }
+  }
+
+  static buildNavigationParams(dictionaryOptions, additionalParams = {}) {
+    const params = DictionaryUtils.buildQueryParams(dictionaryOptions);
+    return { ...params, ...additionalParams };
+  }
+
+  static parseNavigationParams(options) {
+    return DictionaryUtils.parseQueryParams(options);
+  }
+
+  static validateFormData(formData, repairData) {
+    const errors = [];
+
+    if (!formData.carSelection || formData.carSelection.length === 0) {
+      errors.push('请选择整车厂/车型');
+    }
+
+    if (!formData.repairShop) {
+      errors.push('请输入维修店名称');
+    }
+
+    if (!formData.reporterName) {
+      errors.push('请输入报修人姓名');
+    }
+
+    if (!formData.contactInfo) {
+      errors.push('请输入联系方式');
+    }
+
+    if (!formData.reportDate) {
+      errors.push('请选择报修日期');
+    }
+
+    if (!formData.projectType) {
+      errors.push('请选择项目类型');
+    }
+
+    if (!formData.projectStage) {
+      errors.push('请选择项目阶段');
+    }
+
+    if (!formData.faultDescription) {
+      errors.push('请输入故障描述');
+    }
+
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
+  }
+
+  static showErrorToast(message) {
+    uni.showToast({
+      title: message,
+      icon: "error",
+      duration: 2000
+    });
+  }
+
+  static showSuccessToast(message) {
+    uni.showToast({
+      title: message,
+      icon: "success",
+      duration: 1500
+    });
+  }
+
+  static showConfirmDialog(title, content) {
+    return new Promise((resolve) => {
+      uni.showModal({
+        title,
+        content,
+        success: (res) => {
+          resolve(res.confirm);
+        }
+      });
+    });
+  }
+}
