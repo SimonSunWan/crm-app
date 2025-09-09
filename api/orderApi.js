@@ -22,6 +22,28 @@ export class InternalOrderService {
   }
 }
 
+export class ExternalOrderService {
+  static getOrderList(params) {
+    return api.get("/orders/external/", { params });
+  }
+
+  static createOrder(data) {
+    return api.post("/orders/external/", data);
+  }
+
+  static getOrderById(id) {
+    return api.get(`/orders/external/${id}`);
+  }
+
+  static updateOrder(id, data) {
+    return api.put(`/orders/external/${id}`, data);
+  }
+
+  static deleteOrder(id) {
+    return api.delete(`/orders/external/${id}`);
+  }
+}
+
 export class DictionaryService {
   static getDictionaryByCode(code) {
     return api.get(`/dictionary/public/by-code/${code}`);

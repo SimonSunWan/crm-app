@@ -38,19 +38,37 @@
         {
           "path": "internal/detail",
           "style": {
-            "navigationBarTitleText": "工单详情"
+            "navigationBarTitleText": "保内工单详情"
           }
         },
         {
           "path": "internal/edit",
           "style": {
-            "navigationBarTitleText": "编辑工单"
+            "navigationBarTitleText": "编辑保内工单"
           }
         },
         {
           "path": "external/index",
           "style": {
             "navigationBarTitleText": "保外工单"
+          }
+        },
+        {
+          "path": "external/add",
+          "style": {
+            "navigationBarTitleText": "新增保外工单"
+          }
+        },
+        {
+          "path": "external/detail",
+          "style": {
+            "navigationBarTitleText": "保外工单详情"
+          }
+        },
+        {
+          "path": "external/edit",
+          "style": {
+            "navigationBarTitleText": "编辑保外工单"
           }
         }
       ]
