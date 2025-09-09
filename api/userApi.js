@@ -17,6 +17,14 @@ export class UserService {
     return api.put("/users/me/change-password", data);
   }
 
+  static register(data) {
+    return api.post("/users/register", data);
+  }
+
+  static forgetPassword(data) {
+    return api.post("/users/forget-password", data);
+  }
+
   static uploadAvatar(file) {
     const formData = new FormData();
     formData.append("avatar", file);

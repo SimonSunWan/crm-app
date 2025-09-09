@@ -56,6 +56,7 @@ import { ref, reactive } from "vue";
 import { UserInfoManager } from "@/utils/userInfoManager.js";
 import { HttpError } from "@/utils/api.js";
 import CommonButton from "@/components/common-button/index.vue";
+import { validatePassword } from "@/utils/validation.js";
 
 const loading = ref(false);
 const formRef = ref();
@@ -82,8 +83,12 @@ const rules = {
         errorMessage: "请输入新密码",
       },
       {
-        minLength: 6,
-        errorMessage: "新密码长度不能少于6位",
+        validateFunction: (rule, value, data, callback) => {
+          if (!validatePassword(value)) {
+            callback("6-20位, 必须包含字母和数字");
+          }
+          return true;
+        },
       },
     ],
   },
@@ -96,7 +101,7 @@ const rules = {
       {
         validateFunction: (rule, value, data, callback) => {
           if (value !== data.newPassword) {
-            callback("两次输入的密码不一致");
+            callback("两次输入密码不一致");
           }
           return true;
         },

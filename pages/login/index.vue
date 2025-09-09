@@ -172,16 +172,14 @@ const resetSliderVerify = () => {
 };
 
 const forgotPassword = () => {
-  uni.showToast({
-    title: "功能开发中",
-    icon: "none",
+  uni.navigateTo({
+    url: "/pages/forget-password/index",
   });
 };
 
 const goToRegister = () => {
-  uni.showToast({
-    title: "功能开发中",
-    icon: "none",
+  uni.navigateTo({
+    url: "/pages/register/index",
   });
 };
 </script>

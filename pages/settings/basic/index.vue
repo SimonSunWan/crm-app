@@ -60,6 +60,12 @@ import { ref, reactive, onMounted } from "vue";
 import { UserInfoManager } from "@/utils/userInfoManager.js";
 import { HttpError } from "@/utils/api.js";
 import CommonButton from "@/components/common-button/index.vue";
+import {
+  validatePhone,
+  validateEmail,
+  validateAccount,
+  validateName,
+} from "@/utils/validation.js";
 
 const loading = ref(false);
 const formRef = ref();
@@ -76,7 +82,15 @@ const rules = {
     rules: [
       {
         required: true,
-        errorMessage: "请输入用户名",
+        errorMessage: "请输入账号",
+      },
+      {
+        validateFunction: (rule, value, data, callback) => {
+          if (!validateAccount(value)) {
+            callback("字母开头, 5-20位, 支持字母、数字、下划线");
+          }
+          return true;
+        },
       },
     ],
   },
@@ -84,7 +98,15 @@ const rules = {
     rules: [
       {
         required: true,
-        errorMessage: "请输入昵称",
+        errorMessage: "请输入姓名",
+      },
+      {
+        validateFunction: (rule, value, data, callback) => {
+          if (!validateName(value)) {
+            callback("2-20位, 支持中文、英文字母、空格");
+          }
+          return true;
+        },
       },
     ],
   },
@@ -95,16 +117,24 @@ const rules = {
         errorMessage: "请输入手机号",
       },
       {
-        pattern: /^1[3-9]\d{9}$/,
-        errorMessage: "请输入正确的手机号格式",
+        validateFunction: (rule, value, data, callback) => {
+          if (!validatePhone(value)) {
+            callback("请输入正确的手机号");
+          }
+          return true;
+        },
       },
     ],
   },
   email: {
     rules: [
       {
-        pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        errorMessage: "请输入正确的邮箱格式",
+        validateFunction: (rule, value, data, callback) => {
+          if (value && !validateEmail(value)) {
+            callback("请输入正确的邮箱格式");
+          }
+          return true;
+        },
       },
     ],
   },
