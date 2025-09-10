@@ -115,6 +115,8 @@ import { reactive, ref, onMounted } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { ExternalOrderDataService } from "@/services/externalOrderDataService.js";
 import { DictionaryUtils } from "@/utils/dictionaryUtils.js";
+import { PermissionManager } from "@/utils/permissionManager.js";
+import { userStore } from "@/store/userStore.js";
 
 const loading = ref(false);
 const refreshing = ref(false);
@@ -228,6 +230,11 @@ const getOrderList = async (isLoadMore = false) => {
       current: pagination.value.current,
       size: pagination.value.size,
     };
+
+    // 检查权限，没有view_all权限则只查看自己创建的工单
+    if (!PermissionManager.hasPagePermission('/order/external', 'view_all')) {
+      params.createdBy = userStore.userInfo.id;
+    }
 
     const result = await ExternalOrderDataService.getOrderList(params);
 

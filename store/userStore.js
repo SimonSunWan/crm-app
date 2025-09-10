@@ -4,6 +4,7 @@ const userStore = reactive({
   isLogin: false,
   userInfo: {},
   accessToken: "",
+  menuPermissions: [],
 
   setUserInfo(info) {
     this.userInfo = info;
@@ -18,10 +19,15 @@ const userStore = reactive({
     uni.setStorageSync("accessToken", token);
   },
 
+  setMenuPermissions(permissions) {
+    this.menuPermissions = permissions;
+  },
+
   logout() {
     this.userInfo = {};
     this.isLogin = false;
     this.accessToken = "";
+    this.menuPermissions = [];
     uni.removeStorageSync("accessToken");
     uni.reLaunch({
       url: "/pages/login/index",

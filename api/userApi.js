@@ -34,4 +34,8 @@ export class UserService {
       },
     });
   }
+
+  static getNavigationMenus() {
+    return api.get("/menus/navigation");
+  }
 }
