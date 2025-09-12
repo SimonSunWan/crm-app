@@ -493,7 +493,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { OrderDataService } from "@/services/orderDataService.js";
+import { InternalOrderDataService } from "@/services/internalOrderDataService.js";
 import { DictionaryUtils } from "@/utils/dictionaryUtils.js";
 
 const currentStep = ref(0);
@@ -879,9 +879,12 @@ const handleSubmit = async () => {
     return;
   }
 
-  const validation = OrderDataService.validateFormData(formData, repairData);
+  const validation = InternalOrderDataService.validateFormData(
+    formData,
+    repairData
+  );
   if (!validation.isValid) {
-    OrderDataService.showErrorToast(validation.errors[0]);
+    InternalOrderDataService.showErrorToast(validation.errors[0]);
     return;
   }
 
@@ -919,18 +922,18 @@ const handleSubmit = async () => {
       labors: labors.value,
     };
 
-    const result = await OrderDataService.createOrder(submitData);
+    const result = await InternalOrderDataService.createOrder(submitData);
 
     if (result.success) {
-      OrderDataService.showSuccessToast("保存成功");
+      InternalOrderDataService.showSuccessToast("保存成功");
       setTimeout(() => {
         uni.navigateBack();
       }, 1500);
     } else {
-      OrderDataService.showErrorToast(result.error || "保存失败");
+      InternalOrderDataService.showErrorToast(result.error || "保存失败");
     }
   } catch (error) {
-    OrderDataService.showErrorToast("保存失败");
+    InternalOrderDataService.showErrorToast("保存失败");
   } finally {
     loading.value = false;
   }
@@ -941,7 +944,8 @@ const handleCancel = () => {
 };
 
 onLoad((options) => {
-  dictionaryOptions.value = OrderDataService.parseNavigationParams(options);
+  dictionaryOptions.value =
+    InternalOrderDataService.parseNavigationParams(options);
   initOptionsArrays();
 });
 

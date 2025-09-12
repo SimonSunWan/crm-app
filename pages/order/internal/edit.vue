@@ -513,7 +513,7 @@
 import { ref, reactive, onMounted, nextTick } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { InternalOrderService, DictionaryService } from "@/api/orderApi.js";
-import { OrderDataService } from "@/services/orderDataService.js";
+import { InternalOrderDataService } from "@/services/internalOrderDataService.js";
 
 const loading = ref(false);
 const submitLoading = ref(false);
@@ -1017,7 +1017,7 @@ const handleCancel = () => {
 };
 
 onLoad((options) => {
-  const parsedParams = OrderDataService.parseNavigationParams(options);
+  const parsedParams = InternalOrderDataService.parseNavigationParams(options);
 
   orderId.value = parsedParams.id || "";
 

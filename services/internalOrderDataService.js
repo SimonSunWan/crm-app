@@ -2,7 +2,7 @@ import { InternalOrderService } from "@/api/orderApi.js";
 import { DictionaryService } from "@/api/orderApi.js";
 import { DictionaryUtils } from "@/utils/dictionaryUtils.js";
 
-export class OrderDataService {
+export class InternalOrderDataService {
   static async loadDictionaryData() {
     const dictionaryCodes = {
       carModel: "order_car_model",

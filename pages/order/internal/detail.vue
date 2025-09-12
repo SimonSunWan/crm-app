@@ -287,7 +287,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { OrderDataService } from "@/services/orderDataService.js";
+import { InternalOrderDataService } from "@/services/internalOrderDataService.js";
 import { DictionaryUtils } from "@/utils/dictionaryUtils.js";
 
 const loading = ref(false);
@@ -318,14 +318,14 @@ const hasDetailRecords = computed(() => {
 const getOrderDetail = async (id) => {
   loading.value = true;
   try {
-    const result = await OrderDataService.getOrderDetail(id);
+    const result = await InternalOrderDataService.getOrderDetail(id);
     if (result.success) {
       orderData.value = result.data;
     } else {
-      OrderDataService.showErrorToast(result.error || "获取数据失败");
+      InternalOrderDataService.showErrorToast(result.error || "获取数据失败");
     }
   } catch (error) {
-    OrderDataService.showErrorToast("获取数据失败");
+    InternalOrderDataService.showErrorToast("获取数据失败");
   } finally {
     loading.value = false;
   }
@@ -436,7 +436,8 @@ const getLabors = () => {
 
 onLoad((options) => {
   orderId.value = options.id || "";
-  dictionaryOptions.value = OrderDataService.parseNavigationParams(options);
+  dictionaryOptions.value =
+    InternalOrderDataService.parseNavigationParams(options);
 
   if (orderId.value) {
     getOrderDetail(orderId.value);

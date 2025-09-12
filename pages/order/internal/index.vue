@@ -113,7 +113,7 @@
 <script setup>
 import { reactive, ref, onMounted } from "vue";
 import { onShow } from "@dcloudio/uni-app";
-import { OrderDataService } from "@/services/orderDataService.js";
+import { InternalOrderDataService } from "@/services/internalOrderDataService.js";
 import { DictionaryUtils } from "@/utils/dictionaryUtils.js";
 import { PermissionManager } from "@/utils/permissionManager.js";
 import { userStore } from "@/store/userStore.js";
@@ -147,7 +147,7 @@ const searchForm = ref({
 });
 
 const handleAdd = () => {
-  const params = OrderDataService.buildNavigationParams(
+  const params = InternalOrderDataService.buildNavigationParams(
     dictionaryOptions.value
   );
   const queryString = Object.keys(params)
@@ -173,7 +173,7 @@ const handleReset = () => {
 };
 
 const handleCardClick = (item) => {
-  const params = OrderDataService.buildNavigationParams(
+  const params = InternalOrderDataService.buildNavigationParams(
     dictionaryOptions.value,
     { id: item.id }
   );
@@ -187,7 +187,7 @@ const handleCardClick = (item) => {
 };
 
 const handleEdit = (item) => {
-  const params = OrderDataService.buildNavigationParams(
+  const params = InternalOrderDataService.buildNavigationParams(
     dictionaryOptions.value,
     { id: item.id }
   );
@@ -201,18 +201,18 @@ const handleEdit = (item) => {
 };
 
 const handleDelete = async (item) => {
-  const confirmed = await OrderDataService.showConfirmDialog(
+  const confirmed = await InternalOrderDataService.showConfirmDialog(
     "确认删除",
     `确定要删除工单 ${item.id} 吗？`
   );
 
   if (confirmed) {
-    const result = await OrderDataService.deleteOrder(item.id);
+    const result = await InternalOrderDataService.deleteOrder(item.id);
     if (result.success) {
-      OrderDataService.showSuccessToast("删除成功");
+      InternalOrderDataService.showSuccessToast("删除成功");
       getOrderList();
     } else {
-      OrderDataService.showErrorToast(result.error || "删除失败");
+      InternalOrderDataService.showErrorToast(result.error || "删除失败");
     }
   }
 };
@@ -232,11 +232,11 @@ const getOrderList = async (isLoadMore = false) => {
     };
 
     // 检查权限，没有view_all权限则只查看自己创建的工单
-    if (!PermissionManager.hasPagePermission('/order/internal', 'view_all')) {
+    if (!PermissionManager.hasPagePermission("/order/internal", "view_all")) {
       params.createdBy = userStore.userInfo.id;
     }
 
-    const result = await OrderDataService.getOrderList(params);
+    const result = await InternalOrderDataService.getOrderList(params);
 
     if (result.success) {
       if (isLoadMore) {
@@ -251,10 +251,10 @@ const getOrderList = async (isLoadMore = false) => {
       );
       noMore.value = pagination.value.current >= totalPages;
     } else {
-      OrderDataService.showErrorToast(result.error || "获取数据失败");
+      InternalOrderDataService.showErrorToast(result.error || "获取数据失败");
     }
   } catch (error) {
-    OrderDataService.showErrorToast("获取数据失败");
+    InternalOrderDataService.showErrorToast("获取数据失败");
   } finally {
     loading.value = false;
     loadingMore.value = false;
@@ -263,9 +263,10 @@ const getOrderList = async (isLoadMore = false) => {
 
 const loadDictionaryData = async () => {
   try {
-    dictionaryOptions.value = await OrderDataService.loadDictionaryData();
+    dictionaryOptions.value =
+      await InternalOrderDataService.loadDictionaryData();
   } catch (error) {
-    OrderDataService.showErrorToast("加载字典数据失败");
+    InternalOrderDataService.showErrorToast("加载字典数据失败");
   }
 };
 
