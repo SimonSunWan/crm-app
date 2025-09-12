@@ -491,7 +491,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { ExternalOrderDataService } from "@/packageA/services/externalOrderDataService.js";
 import { DictionaryUtils } from "@/packageA/utils/dictionaryUtils.js";

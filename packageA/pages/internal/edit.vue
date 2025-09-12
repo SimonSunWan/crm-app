@@ -510,7 +510,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, nextTick } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
 import {
   InternalOrderService,
@@ -665,25 +665,6 @@ const getOrderDetail = async () => {
         });
 
         if (detail.partCategory && partCategoryData.value.length > 0) {
-          const findPartCascaderPath = (data, targetCategory) => {
-            for (let i = 0; i < data.length; i++) {
-              const parent = data[i];
-
-              if (parent.children) {
-                for (let j = 0; j < parent.children.length; j++) {
-                  const child = parent.children[j];
-                  if (child.value === targetCategory) {
-                    return [parent.value, child.value];
-                  }
-                }
-              }
-              if (parent.value === targetCategory) {
-                return [parent.value];
-              }
-            }
-            return null;
-          };
-
           if (detail.partCategory && detail.partLocation) {
             repairData.partSelection = [
               detail.partCategory,
@@ -867,14 +848,6 @@ const onCarChange = (e) => {
   }
 };
 
-const onProjectTypeChange = (e) => {};
-
-const onProjectStageChange = (e) => {};
-
-const onFaultClassificationChange = (e) => {};
-
-const onFaultLocationChange = (e) => {};
-
 const onPartSelectionChange = (e) => {
   if (e && e.detail && e.detail.value && Array.isArray(e.detail.value)) {
     repairData.partCategory = e.detail.value[0]?.value || "";
@@ -882,16 +855,12 @@ const onPartSelectionChange = (e) => {
   }
 };
 
-const onSparePartLocationChange = (e) => {};
-
 const onPartNameChange = (e, index) => {
   const selectedValue = e;
   if (selectedValue && spareParts.value[index]) {
     spareParts.value[index].partNumber = selectedValue;
   }
 };
-
-const onCostCategoryChange = (e, index) => {};
 
 const onRepairSelectionChange = (e, index) => {
   if (

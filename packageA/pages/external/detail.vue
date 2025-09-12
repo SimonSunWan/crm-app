@@ -307,14 +307,6 @@ const dictionaryOptions = ref({
   repairItems: [],
 });
 
-const hasDetailRecords = computed(() => {
-  return (
-    getSpareParts().length > 0 ||
-    getCosts().length > 0 ||
-    getLabors().length > 0
-  );
-});
-
 const getOrderDetail = async (id) => {
   loading.value = true;
   try {

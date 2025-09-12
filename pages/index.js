@@ -1,8 +1,6 @@
 // 主包入口文件
 // 统一管理主包相关的页面跳转和状态
 
-import { UserInfoManager } from "@/utils/userInfoManager.js";
-
 export const MainPackage = {
   // 页面路径常量
   paths: {
@@ -30,11 +28,6 @@ export const MainPackage = {
     toMy() {
       uni.switchTab({ url: this.paths.my });
     },
-  },
-
-  // 工具方法
-  utils: {
-    UserInfoManager,
   },
 
   // 分包信息

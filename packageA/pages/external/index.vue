@@ -111,7 +111,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { ExternalOrderDataService } from "@/packageA/services/externalOrderDataService.js";
 import { DictionaryUtils } from "@/packageA/utils/dictionaryUtils.js";
