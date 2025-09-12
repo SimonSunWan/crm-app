@@ -24,9 +24,9 @@ export const subPackages = {
 // 页面路径配置
 export const pagePaths = {
   // 主包页面
-  login: "/pages/auth/login/index",
-  register: "/pages/auth/register/index",
-  forgetPassword: "/pages/auth/forget-password/index",
+  login: "/pages/login/index",
+  register: "/pages/register/index",
+  forgetPassword: "/pages/forget-password/index",
   index: "/pages/home/index",
   my: "/pages/profile/index",
 

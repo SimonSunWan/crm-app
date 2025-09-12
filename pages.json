@@ -1,19 +1,19 @@
 {
   "pages": [
     {
-      "path": "pages/auth/login/index",
+      "path": "pages/login/index",
       "style": {
         "navigationBarTitleText": "登录"
       }
     },
     {
-      "path": "pages/auth/register/index",
+      "path": "pages/register/index",
       "style": {
         "navigationBarTitleText": "注册"
       }
     },
     {
-      "path": "pages/auth/forget-password/index",
+      "path": "pages/forget-password/index",
       "style": {
         "navigationBarTitleText": "忘记密码"
       }

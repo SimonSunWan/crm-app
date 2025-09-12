@@ -15,7 +15,9 @@ crm-app/
 ├── api/                     # API 接口
 ├── components/              # 自定义组件
 ├── pages/                   # 页面文件
-│   ├── auth/                # 认证页面
+│   ├── login/               # 登录页面
+│   ├── register/            # 注册页面
+│   ├── forget-password/     # 忘记密码
 │   ├── home/                # 首页
 │   ├── profile/             # 个人中心
 │   └── index.js             # 页面入口

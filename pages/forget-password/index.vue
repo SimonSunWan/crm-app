@@ -144,7 +144,7 @@ const handleResetPassword = async () => {
 
     setTimeout(() => {
       uni.navigateTo({
-        url: "/pages/auth/login/index",
+        url: "/pages/login/index",
       });
     }, 1000);
   } catch (error) {

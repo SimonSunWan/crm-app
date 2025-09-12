@@ -4,9 +4,9 @@
 export const MainPackage = {
   // 页面路径常量
   paths: {
-    login: "/pages/auth/login/index",
-    register: "/pages/auth/register/index",
-    forgetPassword: "/pages/auth/forget-password/index",
+    login: "/pages/login/index",
+    register: "/pages/register/index",
+    forgetPassword: "/pages/forget-password/index",
     index: "/pages/home/index",
     my: "/pages/profile/index",
   },

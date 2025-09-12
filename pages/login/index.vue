@@ -173,13 +173,13 @@ const resetSliderVerify = () => {
 
 const forgotPassword = () => {
   uni.navigateTo({
-    url: "/pages/auth/forget-password/index",
+    url: "/pages/forget-password/index",
   });
 };
 
 const goToRegister = () => {
   uni.navigateTo({
-    url: "/pages/auth/register/index",
+    url: "/pages/register/index",
   });
 };
 </script>
