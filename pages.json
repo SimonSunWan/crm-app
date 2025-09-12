@@ -1,31 +1,31 @@
 {
   "pages": [
     {
-      "path": "pages/login/index",
+      "path": "pages/main/auth/login/index",
       "style": {
         "navigationBarTitleText": "登录"
       }
     },
     {
-      "path": "pages/register/index",
+      "path": "pages/main/auth/register/index",
       "style": {
         "navigationBarTitleText": "注册"
       }
     },
     {
-      "path": "pages/forget-password/index",
+      "path": "pages/main/auth/forget-password/index",
       "style": {
         "navigationBarTitleText": "忘记密码"
       }
     },
     {
-      "path": "pages/index/index",
+      "path": "pages/main/home/index/index",
       "style": {
         "navigationBarTitleText": "首页"
       }
     },
     {
-      "path": "pages/my/index",
+      "path": "pages/main/profile/my/index",
       "style": {
         "navigationBarTitleText": "我的"
       }
@@ -33,7 +33,7 @@
   ],
   "subPackages": [
     {
-      "root": "pages/order",
+      "root": "pages/subpackages/order/order",
       "pages": [
         {
           "path": "internal/index",
@@ -86,7 +86,7 @@
       ]
     },
     {
-      "root": "pages/settings",
+      "root": "pages/subpackages/settings/settings",
       "pages": [
         {
           "path": "basic/index",
@@ -104,13 +104,13 @@
     }
   ],
   "preloadRule": {
-    "pages/index/index": {
+    "pages/main/home/index/index": {
       "network": "all",
-      "packages": ["pages/order"]
+      "packages": ["pages/subpackages/order/order"]
     },
-    "pages/my/index": {
+    "pages/main/profile/my/index": {
       "network": "all",
-      "packages": ["pages/settings"]
+      "packages": ["pages/subpackages/settings/settings"]
     }
   },
   "globalStyle": {
@@ -124,13 +124,13 @@
     "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/main/home/index/index",
         "text": "首页",
         "iconPath": "static/tabbar/home.png",
         "selectedIconPath": "static/tabbar/activeHome.png"
       },
       {
-        "pagePath": "pages/my/index",
+        "pagePath": "pages/main/profile/my/index",
         "text": "我的",
         "iconPath": "static/tabbar/my.png",
         "selectedIconPath": "static/tabbar/activeMy.png"

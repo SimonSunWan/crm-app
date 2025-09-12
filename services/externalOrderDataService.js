@@ -1,4 +1,7 @@
-import { ExternalOrderService, DictionaryService } from "@/api/orderApi.js";
+import {
+  ExternalOrderService,
+  DictionaryService,
+} from "@/api/subpackages/order/orderApi.js";
 import { DictionaryUtils } from "@/utils/dictionaryUtils.js";
 
 export class ExternalOrderDataService {
