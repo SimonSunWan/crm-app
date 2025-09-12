@@ -1,4 +1,5 @@
-const BASE_URL = "http://127.0.0.1:8000/api";
+// const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = "http://139.224.133.59:8000/api"
 
 class HttpError extends Error {
   constructor(message, code) {

@@ -355,8 +355,7 @@ const getFaultClassificationLabel = (keyValue) =>
 const getFaultLocationLabel = (keyValue) =>
   DictionaryUtils.getDictionaryLabel(
     keyValue,
-    dictionaryOptions.value.repairItems,
-    true
+    dictionaryOptions.value.faultLocation
   );
 const getPartCategoryLabel = (categoryKey, locationKey) => {
   const category = DictionaryUtils.getDictionaryLabel(
