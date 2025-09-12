@@ -31,7 +31,7 @@
         </view>
       </view>
 
-      <view v-show="currentStep === 0" class="form-step">
+      <view v-if="currentStep === 0" class="form-step">
         <view class="form-section">
           <view class="section-title">客户信息</view>
           <view class="form-row">
@@ -204,7 +204,7 @@
         </view>
       </view>
 
-      <view v-show="currentStep === 1" class="form-step">
+      <view v-if="currentStep === 1" class="form-step">
         <view class="form-section">
           <view class="form-row">
             <view class="form-item">
@@ -280,7 +280,7 @@
         </view>
       </view>
 
-      <view v-show="currentStep === 2" class="form-step">
+      <view v-if="currentStep === 2" class="form-step">
         <view class="detail-section">
           <view class="section-header">
             <text class="section-title">备件使用详情</text>
