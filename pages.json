@@ -1,31 +1,31 @@
 {
   "pages": [
     {
-      "path": "pages/main/auth/login/index",
+      "path": "pages/auth/login/index",
       "style": {
         "navigationBarTitleText": "登录"
       }
     },
     {
-      "path": "pages/main/auth/register/index",
+      "path": "pages/auth/register/index",
       "style": {
         "navigationBarTitleText": "注册"
       }
     },
     {
-      "path": "pages/main/auth/forget-password/index",
+      "path": "pages/auth/forget-password/index",
       "style": {
         "navigationBarTitleText": "忘记密码"
       }
     },
     {
-      "path": "pages/main/home/index/index",
+      "path": "pages/home/index",
       "style": {
         "navigationBarTitleText": "首页"
       }
     },
     {
-      "path": "pages/main/profile/my/index",
+      "path": "pages/profile/index",
       "style": {
         "navigationBarTitleText": "我的"
       }
@@ -33,52 +33,52 @@
   ],
   "subPackages": [
     {
-      "root": "pages/subpackages/order/order",
+      "root": "packageA",
       "pages": [
         {
-          "path": "internal/index",
+          "path": "pages/internal/index",
           "style": {
             "navigationBarTitleText": "保内工单"
           }
         },
         {
-          "path": "internal/add",
+          "path": "pages/internal/add",
           "style": {
             "navigationBarTitleText": "新增保内工单"
           }
         },
         {
-          "path": "internal/detail",
+          "path": "pages/internal/detail",
           "style": {
             "navigationBarTitleText": "保内工单详情"
           }
         },
         {
-          "path": "internal/edit",
+          "path": "pages/internal/edit",
           "style": {
             "navigationBarTitleText": "编辑保内工单"
           }
         },
         {
-          "path": "external/index",
+          "path": "pages/external/index",
           "style": {
             "navigationBarTitleText": "保外工单"
           }
         },
         {
-          "path": "external/add",
+          "path": "pages/external/add",
           "style": {
             "navigationBarTitleText": "新增保外工单"
           }
         },
         {
-          "path": "external/detail",
+          "path": "pages/external/detail",
           "style": {
             "navigationBarTitleText": "保外工单详情"
           }
         },
         {
-          "path": "external/edit",
+          "path": "pages/external/edit",
           "style": {
             "navigationBarTitleText": "编辑保外工单"
           }
@@ -86,16 +86,16 @@
       ]
     },
     {
-      "root": "pages/subpackages/settings/settings",
+      "root": "packageB",
       "pages": [
         {
-          "path": "basic/index",
+          "path": "pages/basic/index",
           "style": {
             "navigationBarTitleText": "基本设置"
           }
         },
         {
-          "path": "password/index",
+          "path": "pages/password/index",
           "style": {
             "navigationBarTitleText": "更改密码"
           }
@@ -104,13 +104,13 @@
     }
   ],
   "preloadRule": {
-    "pages/main/home/index/index": {
+    "pages/home/index": {
       "network": "all",
-      "packages": ["pages/subpackages/order/order"]
+      "packages": ["packageA"]
     },
-    "pages/main/profile/my/index": {
+    "pages/profile/index": {
       "network": "all",
-      "packages": ["pages/subpackages/settings/settings"]
+      "packages": ["packageB"]
     }
   },
   "globalStyle": {
@@ -124,13 +124,13 @@
     "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/main/home/index/index",
+        "pagePath": "pages/home/index",
         "text": "首页",
         "iconPath": "static/tabbar/home.png",
         "selectedIconPath": "static/tabbar/activeHome.png"
       },
       {
-        "pagePath": "pages/main/profile/my/index",
+        "pagePath": "pages/profile/index",
         "text": "我的",
         "iconPath": "static/tabbar/my.png",
         "selectedIconPath": "static/tabbar/activeMy.png"

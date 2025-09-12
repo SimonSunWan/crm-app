@@ -30,7 +30,7 @@ const userStore = reactive({
     this.menuPermissions = [];
     uni.removeStorageSync("accessToken");
     uni.reLaunch({
-      url: "/pages/main/auth/login/index",
+      url: "/pages/auth/login/index",
     });
   },
 });
