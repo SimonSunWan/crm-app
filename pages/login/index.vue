@@ -2,7 +2,6 @@
   <view class="login-container">
     <view class="login-header">
       <image class="logo" src="/static/logo.png" mode="aspectFit"></image>
-      <text class="logo-text">电驱护卫</text>
     </view>
 
     <view class="login-form">

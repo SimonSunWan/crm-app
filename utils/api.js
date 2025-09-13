@@ -1,5 +1,5 @@
 // const BASE_URL = "http://127.0.0.1:8000/api";
-const BASE_URL = "http://139.224.133.59:8000/api"
+const BASE_URL = "http://8.135.237.19:8000/api";
 
 class HttpError extends Error {
   constructor(message, code) {
@@ -10,7 +10,14 @@ class HttpError extends Error {
 }
 
 const request = async (config) => {
-  const { url, method = "GET", data, params, headers = {}, showErrorMessage = true } = config;
+  const {
+    url,
+    method = "GET",
+    data,
+    params,
+    headers = {},
+    showErrorMessage = true,
+  } = config;
 
   let fullUrl = `${BASE_URL}${url}`;
   if (params) {
@@ -64,7 +71,7 @@ const request = async (config) => {
         errorMessage = error.message;
       } else if (error.response?.data) {
         const responseData = error.response.data;
-        
+
         if (responseData.message) {
           errorMessage = responseData.message;
         } else if (responseData.detail) {
