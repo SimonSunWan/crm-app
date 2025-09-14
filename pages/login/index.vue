@@ -11,6 +11,7 @@
           class="input-field"
           placeholder="请输入账号"
           type="text"
+          @blur="formData.username = formData.username?.trim()"
         />
       </view>
       <uni-easyinput
@@ -99,7 +100,10 @@ const toggleRemember = () => {
 };
 
 const handleLogin = async () => {
-  if (!formData.username || !formData.password) {
+  const username = formData.username?.trim();
+  const password = formData.password?.trim();
+
+  if (!username || !password) {
     uni.showToast({
       title: "请输入账号和密码",
       icon: "none",
@@ -119,8 +123,8 @@ const handleLogin = async () => {
 
   try {
     const loginResponse = await UserService.login({
-      userName: formData.username,
-      password: formData.password,
+      userName: username,
+      password: password,
     });
 
     const { accessToken, tokenType } = loginResponse;
@@ -130,7 +134,7 @@ const handleLogin = async () => {
     userStore.setLoginStatus(true);
 
     if (rememberPassword.value) {
-      storage.setRememberedAccount(formData.username, formData.password);
+      storage.setRememberedAccount(username, password);
     } else {
       storage.clearRememberedAccount();
     }
