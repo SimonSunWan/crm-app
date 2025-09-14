@@ -790,7 +790,42 @@ const validateStep2 = () => {
   return errors;
 };
 
-const nextStep = () => {
+// 构建提交数据
+const buildSubmitData = () => {
+  return {
+    customer: formData.customer || null,
+    vehicleModel: formData.vehicleModel || null,
+    repairShop: formData.repairShop || null,
+    reporterName: formData.reporterName || null,
+    contactInfo: formData.contactInfo || null,
+    reportDate: formData.reportDate || null,
+    projectType: formData.projectType || null,
+    projectStage: formData.projectStage || null,
+    licensePlate: formData.licensePlate || null,
+    vinNumber: formData.vinNumber || null,
+    mileage: formData.mileage || null,
+    vehicleLocation: formData.vehicleLocation || null,
+    vehicleDate: formData.vehicleDate || null,
+    packCode: formData.packCode || null,
+    packDate: formData.packDate || null,
+    underWarranty: formData.underWarranty ?? false,
+    faultDescription: formData.faultDescription || null,
+    repairPerson: repairData.repairPerson || null,
+    repairDate: repairData.repairDate || null,
+    avicResponsibility: repairData.avicResponsibility ?? false,
+    faultClassification: repairData.faultClassification || null,
+    faultLocation: repairData.faultLocation || null,
+    partCategory: repairData.partCategory || null,
+    partLocation: repairData.partLocation || null,
+    sparePartLocation: repairData.sparePartLocation || null,
+    repairDescription: repairData.repairDescription || null,
+    spareParts: spareParts.value || null,
+    costs: costs.value || null,
+    labors: labors.value || null,
+  };
+};
+
+const nextStep = async () => {
   if (currentStep.value < 2) {
     let errors = [];
 
@@ -809,7 +844,26 @@ const nextStep = () => {
       return;
     }
 
-    currentStep.value++;
+    // 验证通过后，保存当前步骤的数据
+    try {
+      const submitData = buildSubmitData();
+
+      if (!formData.id) {
+        // 新增工单
+        const result = await InternalOrderDataService.createOrder(submitData);
+        if (result && result.data) {
+          formData.id = result.data.id;
+        }
+      } else {
+        // 更新工单
+        await InternalOrderDataService.updateOrder(formData.id, submitData);
+      }
+
+      // 进入下一步
+      currentStep.value++;
+    } catch (error) {
+      console.error(error);
+    }
   }
 };
 
@@ -890,39 +944,22 @@ const handleSubmit = async () => {
 
   loading.value = true;
   try {
-    const submitData = {
-      customer: formData.customer,
-      vehicleModel: formData.vehicleModel,
-      repairShop: formData.repairShop,
-      reporterName: formData.reporterName,
-      contactInfo: formData.contactInfo,
-      reportDate: formData.reportDate,
-      projectType: formData.projectType,
-      projectStage: formData.projectStage,
-      licensePlate: formData.licensePlate,
-      vinNumber: formData.vinNumber,
-      mileage: formData.mileage,
-      vehicleLocation: formData.vehicleLocation,
-      vehicleDate: formData.vehicleDate,
-      packCode: formData.packCode,
-      packDate: formData.packDate,
-      underWarranty: formData.underWarranty ?? false,
-      faultDescription: formData.faultDescription,
-      repairPerson: repairData.repairPerson,
-      repairDate: repairData.repairDate,
-      avicResponsibility: repairData.avicResponsibility ?? false,
-      faultClassification: repairData.faultClassification,
-      faultLocation: repairData.faultLocation,
-      partCategory: repairData.partCategory,
-      partLocation: repairData.partLocation,
-      sparePartLocation: repairData.sparePartLocation,
-      repairDescription: repairData.repairDescription,
-      spareParts: spareParts.value,
-      costs: costs.value,
-      labors: labors.value,
-    };
+    const submitData = buildSubmitData();
+    let result;
 
-    const result = await InternalOrderDataService.createOrder(submitData);
+    if (!formData.id) {
+      // 新增工单
+      result = await InternalOrderDataService.createOrder(submitData);
+      if (result && result.data) {
+        formData.id = result.data.id;
+      }
+    } else {
+      // 更新工单
+      result = await InternalOrderDataService.updateOrder(
+        formData.id,
+        submitData
+      );
+    }
 
     if (result.success) {
       InternalOrderDataService.showSuccessToast("保存成功");
