@@ -5,6 +5,11 @@ const config = {
     API_BASE_URL: "http://127.0.0.1:8000/api",
     DEBUG: true,
   },
+  // 测试环境
+  test: {
+    API_BASE_URL: "http://8.135.237.19:8000/api",
+    DEBUG: true,
+  },
   // 生产环境
   production: {
     API_BASE_URL: "http://8.135.237.19:8000/api",
