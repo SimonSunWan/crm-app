@@ -339,11 +339,11 @@
                 <view class="form-row">
                   <view class="form-item">
                     <text class="label">备件名称</text>
-                    <uni-data-select
+                    <SearchSelect
                       v-model="item.name"
                       :localdata="partNumberData"
                       placeholder="请选择备件名称"
-                      @change="(e) => onPartNameChange(e, index)"
+                      @change="(value) => onPartNameChange(value, index)"
                     />
                   </view>
                 </view>
@@ -466,11 +466,11 @@
                     />
                   </view>
                   <view class="form-item">
-                    <text class="label">系数</text>
+                    <text class="label">工时</text>
                     <input
                       v-model="item.coefficient"
                       class="input-field"
-                      placeholder="系数"
+                      placeholder="工时"
                     />
                   </view>
                 </view>
@@ -517,6 +517,7 @@ import {
   DictionaryService,
 } from "@/packageA/api/orderApi.js";
 import { InternalOrderDataService } from "@/packageA/services/internalOrderDataService.js";
+import SearchSelect from "@/packageA/components/search-select/index.vue";
 
 const loading = ref(false);
 const submitLoading = ref(false);
@@ -855,10 +856,9 @@ const onPartSelectionChange = (e) => {
   }
 };
 
-const onPartNameChange = (e, index) => {
-  const selectedValue = e;
-  if (selectedValue && spareParts.value[index]) {
-    spareParts.value[index].partNumber = selectedValue;
+const onPartNameChange = (value, index) => {
+  if (value && spareParts.value[index]) {
+    spareParts.value[index].partNumber = value;
   }
 };
 

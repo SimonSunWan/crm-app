@@ -274,7 +274,7 @@
               <text class="value">{{ item.quantity || "-" }}</text>
             </view>
             <view class="info-item">
-              <text class="label">系数：</text>
+              <text class="label">工时：</text>
               <text class="value">{{ item.coefficient || "-" }}</text>
             </view>
           </view>
