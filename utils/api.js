@@ -1,5 +1,7 @@
-// const BASE_URL = "http://127.0.0.1:8000/api";
-const BASE_URL = "http://8.135.237.19:8000/api";
+import getConfig from "@/config/env.js";
+
+const config = getConfig();
+const BASE_URL = config.API_BASE_URL;
 
 class HttpError extends Error {
   constructor(message, code) {

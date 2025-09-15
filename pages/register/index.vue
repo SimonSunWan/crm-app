@@ -116,7 +116,7 @@ const validateForm = () => {
   }
   if (!validateAccount(formData.username)) {
     uni.showToast({
-      title: "字母开头, 5-20位, 支持字母、数字、下划线",
+      title: "字母开头, 4-20位, 支持字母、数字、下划线",
       icon: "none",
     });
     return false;

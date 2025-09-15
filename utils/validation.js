@@ -9,8 +9,8 @@
  * @returns {string} 返回去除首尾空格后的字符串
  */
 export function trimSpaces(value) {
-  if (typeof value !== 'string') {
-    return '';
+  if (typeof value !== "string") {
+    return "";
   }
   return value.trim();
 }
@@ -21,7 +21,7 @@ export function trimSpaces(value) {
  * @returns {boolean} 返回验证结果, true表示格式正确
  */
 export function validatePhone(value) {
-  if (!value || typeof value !== 'string') {
+  if (!value || typeof value !== "string") {
     return false;
   }
 
@@ -34,15 +34,15 @@ export function validatePhone(value) {
  * 验证用户账号
  * @param {string} value 账号字符串
  * @returns {boolean} 返回验证结果, true表示格式正确
- * @description 规则: 字母开头, 5-20位, 支持字母、数字、下划线
+ * @description 规则: 字母开头, 4-20位, 支持字母、数字、下划线
  */
 export function validateAccount(value) {
-  if (!value || typeof value !== 'string') {
+  if (!value || typeof value !== "string") {
     return false;
   }
 
-  /* 字母开头, 5-20位, 支持字母、数字、下划线 */
-  const accountRegex = /^[a-zA-Z][a-zA-Z0-9_]{4,19}$/;
+  /* 字母开头, 4-20位, 支持字母、数字、下划线 */
+  const accountRegex = /^[a-zA-Z][a-zA-Z0-9_]{3,19}$/;
   return accountRegex.test(value.trim());
 }
 
@@ -53,7 +53,7 @@ export function validateAccount(value) {
  * @description 规则: 2-20位, 支持中文、英文字母、空格
  */
 export function validateName(value) {
-  if (!value || typeof value !== 'string') {
+  if (!value || typeof value !== "string") {
     return false;
   }
 
@@ -76,7 +76,7 @@ export function validateName(value) {
  * @description 规则: 6-20位, 必须包含字母和数字
  */
 export function validatePassword(value) {
-  if (!value || typeof value !== 'string') {
+  if (!value || typeof value !== "string") {
     return false;
   }
 
@@ -100,7 +100,7 @@ export function validatePassword(value) {
  * @returns {boolean} 返回验证结果, true表示格式正确
  */
 export function validateEmail(value) {
-  if (!value || typeof value !== 'string') {
+  if (!value || typeof value !== "string") {
     return false;
   }
 

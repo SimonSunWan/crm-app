@@ -87,7 +87,7 @@ const rules = {
       {
         validateFunction: (rule, value, data, callback) => {
           if (!validateAccount(value)) {
-            callback("字母开头, 5-20位, 支持字母、数字、下划线");
+            callback("字母开头, 4-20位, 支持字母、数字、下划线");
           }
           return true;
         },
