@@ -187,7 +187,7 @@
 
       <view v-if="getSpareParts().length > 0" class="info-section">
         <view class="section-title">备件使用详情</view>
-        <view class="info-grid">
+        <view class="info-grid" style="margin-bottom: 10rpx">
           <view class="info-item">
             <text class="label">备件所属库位：</text>
             <text class="value">{{
@@ -384,11 +384,13 @@ const getRepairSelectionText = (repairSelection) => {
   if (!repairSelection) return null;
 
   if (Array.isArray(repairSelection)) {
-    // 如果是数组，提取文本
     const texts = repairSelection
       .map((item) => {
         if (typeof item === "object" && item.text) {
           return item.text;
+        }
+        if (typeof item === "string") {
+          return getRepairItemLabel(item);
         }
         return item;
       })

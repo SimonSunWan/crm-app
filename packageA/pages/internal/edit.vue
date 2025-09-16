@@ -867,6 +867,23 @@ const onRepairSelectionChange = (e, index) => {
 
 // 构建提交数据
 const buildSubmitData = () => {
+  const processedLabors = labors.value
+    ? labors.value.map((labor) => {
+        const repairSelectionValues = Array.isArray(labor.repairSelection)
+          ? labor.repairSelection.map((item) =>
+              typeof item === "object" ? item.value : item
+            )
+          : [];
+
+        return {
+          ...labor,
+          repairSelection: repairSelectionValues,
+          faultLocation: repairSelectionValues[0] || null,
+          repairItem: repairSelectionValues[1] || null,
+        };
+      })
+    : null;
+
   return {
     customer: formData.customer || null,
     vehicleModel: formData.vehicleModel || null,
@@ -896,7 +913,7 @@ const buildSubmitData = () => {
     repairDescription: repairData.repairDescription || null,
     spareParts: spareParts.value || null,
     costs: costs.value || null,
-    labors: labors.value || null,
+    labors: processedLabors,
   };
 };
 
