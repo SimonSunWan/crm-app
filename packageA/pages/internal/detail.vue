@@ -204,18 +204,14 @@
           <view class="section-title">备件信息 {{ index + 1 }}</view>
           <view class="info-grid">
             <view class="info-item">
-              <text class="label">备件料号：</text>
-              <text class="value">{{ item.partNumber || "-" }}</text>
-            </view>
-            <view class="info-item">
-              <text class="label">使用数量：</text>
-              <text class="value">{{ item.quantity || "-" }}</text>
-            </view>
-            <view class="info-item">
               <text class="label">备件名称：</text>
               <text class="value">{{
                 getPartNameLabel(item.name) || item.name || "-"
               }}</text>
+            </view>
+            <view class="info-item">
+              <text class="label">使用数量：</text>
+              <text class="value">{{ item.quantity || "-" }}</text>
             </view>
             <view class="info-item">
               <text class="label">旧件编码：</text>

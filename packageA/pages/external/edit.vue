@@ -318,32 +318,23 @@
               <view class="card-content">
                 <view class="form-row">
                   <view class="form-item">
-                    <text class="label">备件料号</text>
-                    <input
-                      v-model="item.partNumber"
-                      class="input-field"
-                      placeholder="备件料号"
-                      disabled
-                    />
-                  </view>
-                  <view class="form-item">
-                    <text class="label">使用数量</text>
-                    <input
-                      v-model="item.quantity"
-                      class="input-field"
-                      placeholder="使用数量"
-                    />
-                  </view>
-                </view>
-
-                <view class="form-row">
-                  <view class="form-item">
                     <text class="label">备件名称</text>
                     <SearchSelect
                       v-model="item.name"
                       :localdata="partNumberData"
                       placeholder="请选择备件名称"
                       @change="(value) => onPartNameChange(value, index)"
+                    />
+                  </view>
+                </view>
+
+                <view class="form-row">
+                  <view class="form-item">
+                    <text class="label">使用数量</text>
+                    <input
+                      v-model="item.quantity"
+                      class="input-field"
+                      placeholder="使用数量"
                     />
                   </view>
                 </view>
