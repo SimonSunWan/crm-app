@@ -60,10 +60,12 @@
               <text class="order-number">{{ item.id || "-" }}</text>
               <view class="card-actions">
                 <text
+                  v-if="PermissionManager.hasPagePermission('/order/internal', 'view_all')"
                   class="iconfont icon-edit action-btn edit"
                   @click.stop="handleEdit(item)"
                 ></text>
                 <text
+                  v-if="PermissionManager.hasPagePermission('/order/internal', 'view_all')"
                   class="iconfont icon-delete action-btn delete"
                   @click.stop="handleDelete(item)"
                 ></text>
