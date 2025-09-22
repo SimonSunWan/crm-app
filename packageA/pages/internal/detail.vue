@@ -191,7 +191,7 @@
 
       <view v-if="getSpareParts().length > 0" class="info-section">
         <view class="section-title">备件使用详情</view>
-        <view class="info-grid" style="margin-bottom: 10rpx">
+        <view class="info-grid" style="margin-bottom: 20rpx">
           <view class="info-item">
             <text class="label">备件所属库位：</text>
             <text class="value">{{
