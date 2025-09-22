@@ -104,6 +104,12 @@
             <text class="value">{{ orderData.packDate || "-" }}</text>
           </view>
         </view>
+        <view class="info-row">
+          <view class="info-item">
+            <text class="label">封签编码：</text>
+            <text class="value">{{ orderData.sealCode || "-" }}</text>
+          </view>
+        </view>
       </view>
 
       <view class="info-section">

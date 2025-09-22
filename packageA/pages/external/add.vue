@@ -158,7 +158,13 @@
               placeholder="请选择PACK日期"
             />
           </view>
-          <view class="form-item"> </view>
+          <view class="form-item">
+            <text class="label">封签编码</text>
+            <uni-easyinput
+              v-model="formData.sealCode"
+              placeholder="请输入封签编码"
+            />
+          </view>
         </view>
       </view>
 
@@ -522,6 +528,7 @@ const formData = reactive({
   vehicleDate: "",
   packCode: "",
   packDate: "",
+  sealCode: "",
   underWarranty: null,
   faultDescription: "",
 });
@@ -817,6 +824,7 @@ const buildSubmitData = () => {
     vehicleDate: formData.vehicleDate || null,
     packCode: formData.packCode || null,
     packDate: formData.packDate || null,
+    sealCode: formData.sealCode || null,
     underWarranty: formData.underWarranty ?? false,
     faultDescription: formData.faultDescription || null,
     repairPerson: repairData.repairPerson || null,
