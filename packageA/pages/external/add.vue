@@ -69,33 +69,40 @@
               placeholder="请选择报修日期"
             />
           </view>
-          <view class="form-item"> </view>
+          <view class="form-item">
+            <text class="label">备件所属库位</text>
+            <uni-data-select
+              v-model="repairData.sparePartLocation"
+              :localdata="spareLocationData"
+              placeholder="请选择备件所属库位"
+              @change="onSparePartLocationChange"
+            />
+          </view>
         </view>
       </view>
 
       <view class="form-section">
-        <view class="section-title">产品信息</view>
+        <view class="section-title">保司信息</view>
         <view class="form-row">
           <view class="form-item">
-            <text class="label">项目类型</text>
+            <text class="label">出险公司</text>
             <uni-data-select
-              v-model="formData.projectType"
-              :localdata="projectTypeData"
-              placeholder="请选择项目类型"
-              @change="onProjectTypeChange"
+              v-model="formData.insurer"
+              :localdata="insurerData"
+              placeholder="请选择出险公司"
+              @change="onInsurerChange"
             />
           </view>
           <view class="form-item">
-            <text class="label">项目阶段</text>
-            <uni-data-select
-              v-model="formData.projectStage"
-              :localdata="projectStageData"
-              placeholder="请选择项目阶段"
-              @change="onProjectStageChange"
+            <text class="label">定损员</text>
+            <uni-easyinput
+              v-model="formData.assessor"
+              placeholder="请输入定损员姓名"
             />
           </view>
         </view>
       </view>
+
 
       <view class="form-section">
         <view class="section-title">车辆信息</view>
@@ -156,13 +163,6 @@
               v-model="formData.packDate"
               type="date"
               placeholder="请选择PACK日期"
-            />
-          </view>
-          <view class="form-item">
-            <text class="label">封签编码</text>
-            <uni-easyinput
-              v-model="formData.sealCode"
-              placeholder="请输入封签编码"
             />
           </view>
         </view>
@@ -231,17 +231,6 @@
             />
           </view>
           <view class="form-item">
-            <text class="label">故障分类</text>
-            <uni-data-select
-              v-model="repairData.faultClassification"
-              :localdata="faultClassificationData"
-              placeholder="请选择故障分类"
-              @change="onFaultClassificationChange"
-            />
-          </view>
-        </view>
-        <view class="form-row">
-          <view class="form-item">
             <text class="label">故障位置</text>
             <uni-data-select
               v-model="repairData.faultLocation"
@@ -250,13 +239,13 @@
               @change="onFaultLocationChange"
             />
           </view>
+        </view>
+        <view class="form-row">
           <view class="form-item">
-            <text class="label">零件类别/定位</text>
-            <uni-data-picker
-              v-model="repairData.partSelection"
-              :localdata="partCategoryData"
-              placeholder="请选择零件类别/定位"
-              @change="onPartSelectionChange"
+            <text class="label">封签编码</text>
+            <uni-easyinput
+              v-model="formData.sealCode"
+              placeholder="请输入封签编码"
             />
           </view>
         </view>
@@ -280,15 +269,6 @@
           <text class="section-title">备件使用详情</text>
         </view>
 
-        <view class="bei-row">
-          <text class="label">备件所属库位</text>
-          <uni-data-select
-            v-model="repairData.sparePartLocation"
-            :localdata="spareLocationData"
-            placeholder="请选择备件所属库位"
-            @change="onSparePartLocationChange"
-          />
-        </view>
 
         <view class="card-list">
           <view
@@ -500,15 +480,12 @@ const loading = ref(false);
 
 const dictionaryOptions = ref({
   carModel: [],
-  projectType: [],
-  projectPhase: [],
-  faultClassification: [],
   faultLocation: [],
-  partCategory: [],
   spareLocation: [],
   partNumber: [],
   feeType: [],
   repairItems: [],
+  insurer: [],
 });
 
 const formData = reactive({
@@ -519,8 +496,8 @@ const formData = reactive({
   reporterName: "",
   contactInfo: "",
   reportDate: "",
-  projectType: "",
-  projectStage: "",
+  insurer: "",
+  assessor: "",
   licensePlate: "",
   vinNumber: "",
   mileage: "",
@@ -537,12 +514,8 @@ const repairData = reactive({
   repairPerson: "",
   repairDate: "",
   avicResponsibility: null,
-  faultClassification: "",
   faultLocation: "",
-  partCategory: "", // 零件类别
-  partLocation: "", // 零件定位
   sparePartLocation: "",
-  partSelection: [], // 级联选择器：零件类别/定位
   repairDescription: "",
 });
 
@@ -578,38 +551,26 @@ const labors = ref([
 ]);
 
 const carModelData = ref([]);
-const projectTypeData = ref([]);
-const projectStageData = ref([]);
-const faultClassificationData = ref([]);
 const faultLocationData = ref([]);
-const partCategoryData = ref([]);
 const spareLocationData = ref([]);
 const partNumberData = ref([]);
 const feeTypeData = ref([]);
 const repairItemsData = ref([]);
+const insurerData = ref([]);
 
 const initOptionsArrays = () => {
   carModelData.value = DictionaryUtils.convertToUniDataPickerFormat(
     dictionaryOptions.value.carModel || []
   );
-  partCategoryData.value = DictionaryUtils.convertToUniDataPickerFormat(
-    dictionaryOptions.value.partCategory || []
-  );
 
-  projectTypeData.value = DictionaryUtils.convertToUniDataSelectFormat(
-    dictionaryOptions.value.projectType || []
-  );
-  projectStageData.value = DictionaryUtils.convertToUniDataSelectFormat(
-    dictionaryOptions.value.projectPhase || []
-  );
-  faultClassificationData.value = DictionaryUtils.convertToUniDataSelectFormat(
-    dictionaryOptions.value.faultClassification || []
-  );
   faultLocationData.value = DictionaryUtils.convertToUniDataSelectFormat(
     dictionaryOptions.value.faultLocation || []
   );
   spareLocationData.value = DictionaryUtils.convertToUniDataSelectFormat(
     dictionaryOptions.value.spareLocation || []
+  );
+  insurerData.value = DictionaryUtils.convertToUniDataSelectFormat(
+    dictionaryOptions.value.insurer || []
   );
   partNumberData.value = DictionaryUtils.convertToUniDataSelectFormat(
     dictionaryOptions.value.partNumber || []
@@ -629,20 +590,10 @@ const onCarChange = (e) => {
   }
 };
 
-const onProjectTypeChange = (e) => {};
 
-const onProjectStageChange = (e) => {};
-
-const onFaultClassificationChange = (e) => {};
+const onInsurerChange = (e) => {};
 
 const onFaultLocationChange = (e) => {};
-
-const onPartSelectionChange = (e) => {
-  if (e && e.detail && e.detail.value && Array.isArray(e.detail.value)) {
-    repairData.partCategory = e.detail.value[0]?.value || "";
-    repairData.partLocation = e.detail.value[1]?.value || "";
-  }
-};
 
 const onSparePartLocationChange = (e) => {};
 
@@ -684,11 +635,11 @@ const validateStep0 = () => {
   if (!formData.reportDate || formData.reportDate.trim() === "") {
     errors.push("请选择报修日期");
   }
-  if (!formData.projectType || formData.projectType.trim() === "") {
-    errors.push("请选择项目类型");
+  if (!formData.insurer || formData.insurer.trim() === "") {
+    errors.push("请选择出险公司");
   }
-  if (!formData.projectStage || formData.projectStage.trim() === "") {
-    errors.push("请选择项目阶段");
+  if (!formData.assessor || formData.assessor.trim() === "") {
+    errors.push("请输入定损员姓名");
   }
   if (!formData.vinNumber || formData.vinNumber.trim() === "") {
     errors.push("请输入车架号");
@@ -704,6 +655,9 @@ const validateStep0 = () => {
   }
   if (!formData.faultDescription || formData.faultDescription.trim() === "") {
     errors.push("请输入故障描述");
+  }
+  if (!repairData.sparePartLocation || repairData.sparePartLocation.trim() === "") {
+    errors.push("请选择备件所属库位");
   }
 
   return errors;
@@ -721,17 +675,8 @@ const validateStep1 = () => {
   if (repairData.avicResponsibility === null) {
     errors.push("请选择中航责任");
   }
-  if (
-    !repairData.faultClassification ||
-    repairData.faultClassification.trim() === ""
-  ) {
-    errors.push("请选择故障分类");
-  }
   if (!repairData.faultLocation || repairData.faultLocation.trim() === "") {
     errors.push("请选择故障位置");
-  }
-  if (!repairData.partSelection || repairData.partSelection.length === 0) {
-    errors.push("请选择零件类别/定位");
   }
   if (
     !repairData.repairDescription ||
@@ -745,13 +690,6 @@ const validateStep1 = () => {
 
 const validateStep2 = () => {
   const errors = [];
-
-  if (
-    !repairData.sparePartLocation ||
-    repairData.sparePartLocation.trim() === ""
-  ) {
-    errors.push("请选择备件所属库位");
-  }
 
   for (let i = 0; i < spareParts.value.length; i++) {
     const part = spareParts.value[i];
@@ -815,8 +753,6 @@ const buildSubmitData = () => {
     reporterName: formData.reporterName || null,
     contactInfo: formData.contactInfo || null,
     reportDate: formData.reportDate || null,
-    projectType: formData.projectType || null,
-    projectStage: formData.projectStage || null,
     licensePlate: formData.licensePlate || null,
     vinNumber: formData.vinNumber || null,
     mileage: formData.mileage || null,
@@ -830,10 +766,7 @@ const buildSubmitData = () => {
     repairPerson: repairData.repairPerson || null,
     repairDate: repairData.repairDate || null,
     avicResponsibility: repairData.avicResponsibility ?? false,
-    faultClassification: repairData.faultClassification || null,
     faultLocation: repairData.faultLocation || null,
-    partCategory: repairData.partCategory || null,
-    partLocation: repairData.partLocation || null,
     sparePartLocation: repairData.sparePartLocation || null,
     repairDescription: repairData.repairDescription || null,
     spareParts: spareParts.value || null,

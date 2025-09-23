@@ -69,7 +69,15 @@
               placeholder="请选择报修日期"
             />
           </view>
-          <view class="form-item"> </view>
+          <view class="form-item">
+            <text class="label">备件所属库位</text>
+            <uni-data-select
+              v-model="repairData.sparePartLocation"
+              :localdata="spareLocationData"
+              placeholder="请选择备件所属库位"
+              @change="onSparePartLocationChange"
+            />
+          </view>
         </view>
       </view>
 
@@ -156,13 +164,6 @@
               v-model="formData.packDate"
               type="date"
               placeholder="请选择PACK日期"
-            />
-          </view>
-          <view class="form-item">
-            <text class="label">封签编码</text>
-            <uni-easyinput
-              v-model="formData.sealCode"
-              placeholder="请输入封签编码"
             />
           </view>
         </view>
@@ -261,6 +262,15 @@
           </view>
         </view>
         <view class="form-row">
+          <view class="form-item">
+            <text class="label">封签编码</text>
+            <uni-easyinput
+              v-model="formData.sealCode"
+              placeholder="请输入封签编码"
+            />
+          </view>
+        </view>
+        <view class="form-row">
           <view class="form-item full-width">
             <text class="label">维修描述</text>
             <uni-easyinput
@@ -280,15 +290,6 @@
           <text class="section-title">备件使用详情</text>
         </view>
 
-        <view class="bei-row">
-          <text class="label">备件所属库位</text>
-          <uni-data-select
-            v-model="repairData.sparePartLocation"
-            :localdata="spareLocationData"
-            placeholder="请选择备件所属库位"
-            @change="onSparePartLocationChange"
-          />
-        </view>
 
         <view class="card-list">
           <view
@@ -705,6 +706,9 @@ const validateStep0 = () => {
   if (!formData.faultDescription || formData.faultDescription.trim() === "") {
     errors.push("请输入故障描述");
   }
+  if (!repairData.sparePartLocation || repairData.sparePartLocation.trim() === "") {
+    errors.push("请选择备件所属库位");
+  }
 
   return errors;
 };
@@ -745,13 +749,6 @@ const validateStep1 = () => {
 
 const validateStep2 = () => {
   const errors = [];
-
-  if (
-    !repairData.sparePartLocation ||
-    repairData.sparePartLocation.trim() === ""
-  ) {
-    errors.push("请选择备件所属库位");
-  }
 
   for (let i = 0; i < spareParts.value.length; i++) {
     const part = spareParts.value[i];

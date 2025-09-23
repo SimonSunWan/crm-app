@@ -49,6 +49,12 @@
             <text class="label">报修日期：</text>
             <text class="value">{{ orderData.reportDate || "-" }}</text>
           </view>
+          <view class="info-item">
+            <text class="label">备件所属库位：</text>
+            <text class="value">{{
+              getSpareLocationLabel(getDetailValue("sparePartLocation")) || "-"
+            }}</text>
+          </view>
         </view>
       </view>
 
@@ -102,10 +108,6 @@
           <view class="info-item">
             <text class="label">PACK日期：</text>
             <text class="value">{{ orderData.packDate || "-" }}</text>
-          </view>
-          <view class="info-item">
-            <text class="label">封签编码：</text>
-            <text class="value">{{ orderData.sealCode || "-" }}</text>
           </view>
         </view>
       </view>
@@ -180,6 +182,10 @@
               ) || "-"
             }}</text>
           </view>
+          <view class="info-item">
+            <text class="label">封签编码：</text>
+            <text class="value">{{ orderData.sealCode || "-" }}</text>
+          </view>
           <view class="info-item inline-layout">
             <text class="label">维修描述：</text>
             <text class="value">{{
@@ -191,14 +197,6 @@
 
       <view v-if="getSpareParts().length > 0" class="info-section">
         <view class="section-title">备件使用详情</view>
-        <view class="info-grid" style="margin-bottom: 20rpx">
-          <view class="info-item">
-            <text class="label">备件所属库位：</text>
-            <text class="value">{{
-              getSpareLocationLabel(getDetailValue("sparePartLocation")) || "-"
-            }}</text>
-          </view>
-        </view>
 
         <view
           v-for="(item, index) in getSpareParts()"

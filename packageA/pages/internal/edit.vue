@@ -81,7 +81,14 @@
                 placeholder="请选择报修日期"
               />
             </view>
-            <view class="form-item"> </view>
+            <view class="form-item">
+              <text class="label">备件所属库位</text>
+              <uni-data-select
+                v-model="repairData.sparePartLocation"
+                :localdata="spareLocationData"
+                placeholder="请选择备件所属库位"
+              />
+            </view>
           </view>
         </view>
 
@@ -168,13 +175,6 @@
                 v-model="formData.packDate"
                 type="date"
                 placeholder="请选择PACK日期"
-              />
-            </view>
-            <view class="form-item">
-              <text class="label">封签编码</text>
-              <uni-easyinput
-                v-model="formData.sealCode"
-                placeholder="请输入封签编码"
               />
             </view>
           </view>
@@ -273,6 +273,15 @@
             </view>
           </view>
           <view class="form-row">
+            <view class="form-item">
+              <text class="label">封签编码</text>
+              <uni-easyinput
+                v-model="formData.sealCode"
+                placeholder="请输入封签编码"
+              />
+            </view>
+          </view>
+          <view class="form-row">
             <view class="form-item full-width">
               <text class="label">维修描述</text>
               <uni-easyinput
@@ -292,15 +301,6 @@
             <text class="section-title">备件使用详情</text>
           </view>
 
-          <view class="bei-row">
-            <text class="label">备件所属库位</text>
-            <uni-data-select
-              v-model="repairData.sparePartLocation"
-              :localdata="spareLocationData"
-              placeholder="请选择备件所属库位"
-              @change="onSparePartLocationChange"
-            />
-          </view>
 
           <view class="card-list">
             <view
@@ -927,6 +927,12 @@ const buildSubmitData = () => {
 
 const nextStep = async () => {
   if (currentStep.value < 2) {
+    // 第一步验证：检查备件所属库位
+    if (currentStep.value === 0 && !repairData.sparePartLocation) {
+      InternalOrderDataService.showErrorToast("请选择备件所属库位");
+      return;
+    }
+    
     // 验证通过后，保存当前步骤的数据
     try {
       const submitData = buildSubmitData();
