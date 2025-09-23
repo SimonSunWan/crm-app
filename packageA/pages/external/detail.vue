@@ -53,19 +53,17 @@
       </view>
 
       <view class="info-section">
-        <view class="section-title">产品信息</view>
+        <view class="section-title">保司信息</view>
         <view class="info-grid">
           <view class="info-item">
-            <text class="label">项目类型：</text>
+            <text class="label">出险公司：</text>
             <text class="value">{{
-              getProjectTypeLabel(orderData.projectType) || "-"
+              getInsurerLabel(orderData.insurer) || "-"
             }}</text>
           </view>
           <view class="info-item">
-            <text class="label">项目阶段：</text>
-            <text class="value">{{
-              getProjectPhaseLabel(orderData.projectStage) || "-"
-            }}</text>
+            <text class="label">定损员：</text>
+            <text class="value">{{ orderData.assessor || "-" }}</text>
           </view>
         </view>
       </view>
@@ -158,26 +156,9 @@
             </view>
           </view>
           <view class="info-item">
-            <text class="label">故障分类：</text>
-            <text class="value">{{
-              getFaultClassificationLabel(
-                getDetailValue("faultClassification")
-              ) || "-"
-            }}</text>
-          </view>
-          <view class="info-item">
             <text class="label">故障位置：</text>
             <text class="value">{{
               getFaultLocationLabel(getDetailValue("faultLocation")) || "-"
-            }}</text>
-          </view>
-          <view class="info-item">
-            <text class="label">零件类别/定位：</text>
-            <text class="value">{{
-              getPartCategoryLabel(
-                getDetailValue("partCategory"),
-                getDetailValue("partLocation")
-              ) || "-"
             }}</text>
           </view>
           <view class="info-item inline-layout">
@@ -216,14 +197,6 @@
             <view class="info-item">
               <text class="label">使用数量：</text>
               <text class="value">{{ item.quantity || "-" }}</text>
-            </view>
-            <view class="info-item">
-              <text class="label">旧件编码：</text>
-              <text class="value">{{ item.oldPartCode || "-" }}</text>
-            </view>
-            <view class="info-item">
-              <text class="label">新件编码：</text>
-              <text class="value">{{ item.newPartCode || "-" }}</text>
             </view>
           </view>
         </view>
@@ -264,9 +237,15 @@
           <view class="section-title">工时信息 {{ index + 1 }}</view>
           <view class="info-grid">
             <view class="info-item">
-              <text class="label">故障位置/维修项目：</text>
+              <text class="label">保外维修项目：</text>
               <text class="value">{{
                 getRepairSelectionText(item.repairSelection) || "-"
+              }}</text>
+            </view>
+            <view class="info-item">
+              <text class="label">故障位置：</text>
+              <text class="value">{{
+                getFaultLocationLabel(item.faultLocation) || "-"
               }}</text>
             </view>
             <view class="info-item">
@@ -296,15 +275,13 @@ const orderId = ref("");
 
 const dictionaryOptions = ref({
   carModel: [],
-  projectType: [],
-  projectPhase: [],
-  faultClassification: [],
+  insurer: [],
+  outRepairItems: [],
+  repairProgress: [],
   faultLocation: [],
-  partCategory: [],
   spareLocation: [],
   partNumber: [],
   feeType: [],
-  repairItems: [],
 });
 
 const getOrderDetail = async (id) => {
@@ -329,42 +306,16 @@ const getCarModelLabel = (keyValue) =>
     dictionaryOptions.value.carModel,
     true
   );
-const getProjectTypeLabel = (keyValue) =>
+const getInsurerLabel = (keyValue) =>
   DictionaryUtils.getDictionaryLabel(
     keyValue,
-    dictionaryOptions.value.projectType
-  );
-const getProjectPhaseLabel = (keyValue) =>
-  DictionaryUtils.getDictionaryLabel(
-    keyValue,
-    dictionaryOptions.value.projectPhase
-  );
-const getFaultClassificationLabel = (keyValue) =>
-  DictionaryUtils.getDictionaryLabel(
-    keyValue,
-    dictionaryOptions.value.faultClassification
+    dictionaryOptions.value.insurer
   );
 const getFaultLocationLabel = (keyValue) =>
   DictionaryUtils.getDictionaryLabel(
     keyValue,
     dictionaryOptions.value.faultLocation
   );
-const getPartCategoryLabel = (categoryKey, locationKey) => {
-  const category = DictionaryUtils.getDictionaryLabel(
-    categoryKey,
-    dictionaryOptions.value.partCategory,
-    true
-  );
-  const location = DictionaryUtils.getDictionaryLabel(
-    locationKey,
-    dictionaryOptions.value.partCategory,
-    true
-  );
-  if (category && location) {
-    return `${category}/${location}`;
-  }
-  return category || location || null;
-};
 const getSpareLocationLabel = (keyValue) =>
   DictionaryUtils.getDictionaryLabel(
     keyValue,
@@ -377,10 +328,10 @@ const getPartNameLabel = (keyValue) =>
   );
 const getFeeTypeLabel = (keyValue) =>
   DictionaryUtils.getDictionaryLabel(keyValue, dictionaryOptions.value.feeType);
-const getRepairItemLabel = (keyValue) =>
+const getOutRepairItemLabel = (keyValue) =>
   DictionaryUtils.getDictionaryLabel(
     keyValue,
-    dictionaryOptions.value.repairItems,
+    dictionaryOptions.value.outRepairItems,
     true
   );
 
@@ -394,7 +345,7 @@ const getRepairSelectionText = (repairSelection) => {
           return item.text;
         }
         if (typeof item === "string") {
-          return getRepairItemLabel(item);
+          return getOutRepairItemLabel(item);
         }
         return item;
       })

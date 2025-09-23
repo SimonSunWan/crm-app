@@ -88,15 +88,13 @@ export class ExternalOrderDataService {
   static async loadDictionaryData() {
     const dictionaryCodes = {
       carModel: "order_car_model",
-      projectType: "order_project_type",
-      projectPhase: "order_project_phase",
-      faultClassification: "order_fault_classification",
+      insurer: "order_insurer",
+      outRepairItems: "order_out_repair_items",
+      repairProgress: "order_repair_progress",
       faultLocation: "order_fault_location",
-      partCategory: "order_part_category",
       spareLocation: "order_spare_location",
       partNumber: "order_part_number",
       feeType: "order_fee_type",
-      repairItems: "order_repair_items",
     };
 
     const dictionaryOptions = {};
@@ -163,11 +161,11 @@ export class ExternalOrderDataService {
     if (!formData.reportDate || formData.reportDate.trim() === "") {
       errors.push("请选择报修日期");
     }
-    if (!formData.projectType || formData.projectType.trim() === "") {
-      errors.push("请选择项目类型");
+    if (!formData.insurer || formData.insurer.trim() === "") {
+      errors.push("请选择出险公司");
     }
-    if (!formData.projectStage || formData.projectStage.trim() === "") {
-      errors.push("请选择项目阶段");
+    if (!formData.assessor || formData.assessor.trim() === "") {
+      errors.push("请输入定损员姓名");
     }
     if (!formData.vinNumber || formData.vinNumber.trim() === "") {
       errors.push("请输入车架号");
