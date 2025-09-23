@@ -241,9 +241,9 @@
               }}</text>
             </view>
             <view class="info-item">
-              <text class="label">故障位置：</text>
+              <text class="label">维修进度：</text>
               <text class="value">{{
-                getFaultLocationLabel(item.faultLocation) || "-"
+                getRepairProgressLabel(item.repairProgress) || "-"
               }}</text>
             </view>
             <view class="info-item">
@@ -353,6 +353,13 @@ const getRepairSelectionText = (repairSelection) => {
   }
 
   return repairSelection;
+};
+
+const getRepairProgressLabel = (keyValue) => {
+  if (!keyValue) return null;
+  const options = dictionaryOptions.value.repairProgress || [];
+  const item = options.find((option) => option.keyValue === keyValue);
+  return item ? item.dictValue : keyValue;
 };
 
 const getDetailValue = (key) => {

@@ -141,7 +141,7 @@ const dictionaryOptions = ref({
   spareLocation: [],
   partNumber: [],
   feeType: [],
-  repairItems: [],
+  outRepairItems: [],
 });
 
 const searchForm = ref({

@@ -312,22 +312,6 @@
                 </view>
               </view>
 
-              <view class="form-row">
-                <view class="form-item">
-                  <text class="label">旧件编码</text>
-                  <uni-easyinput
-                    v-model="item.oldPartCode"
-                    placeholder="旧件编码"
-                  />
-                </view>
-                <view class="form-item">
-                  <text class="label">新件编码</text>
-                  <uni-easyinput
-                    v-model="item.newPartCode"
-                    placeholder="新件编码"
-                  />
-                </view>
-              </view>
             </view>
           </view>
         </view>
@@ -403,12 +387,21 @@
             <view class="card-content">
               <view class="form-row">
                 <view class="form-item">
-                  <text class="label">故障位置/维修项目</text>
-                  <uni-data-picker
+                  <text class="label">保外维修项目</text>
+                  <uni-data-select
                     v-model="item.repairSelection"
                     :localdata="repairItemsData"
-                    placeholder="请选择故障位置/维修项目"
+                    placeholder="请选择保外维修项目"
                     @change="(e) => onRepairSelectionChange(e, index)"
+                  />
+                </view>
+                <view class="form-item">
+                  <text class="label">维修进度</text>
+                  <uni-data-select
+                    v-model="item.repairProgress"
+                    :localdata="repairProgressData"
+                    placeholder="请选择维修进度"
+                    @change="(e) => onRepairProgressChange(e, index)"
                   />
                 </view>
               </view>
@@ -484,7 +477,8 @@ const dictionaryOptions = ref({
   spareLocation: [],
   partNumber: [],
   feeType: [],
-  repairItems: [],
+  outRepairItems: [],
+  repairProgress: [],
   insurer: [],
 });
 
@@ -526,8 +520,6 @@ const spareParts = ref([
     nameIndex: 0,
     nameText: "",
     quantity: "",
-    oldPartCode: "",
-    newPartCode: "",
   },
 ]);
 
@@ -542,9 +534,12 @@ const costs = ref([
 
 const labors = ref([
   {
-    repairSelection: [],
+    repairSelection: "",
     repairSelectionIndex: 0,
     repairSelectionText: "",
+    repairProgress: "",
+    repairProgressIndex: 0,
+    repairProgressText: "",
     quantity: "",
     coefficient: "",
   },
@@ -556,6 +551,7 @@ const spareLocationData = ref([]);
 const partNumberData = ref([]);
 const feeTypeData = ref([]);
 const repairItemsData = ref([]);
+const repairProgressData = ref([]);
 const insurerData = ref([]);
 
 const initOptionsArrays = () => {
@@ -578,8 +574,11 @@ const initOptionsArrays = () => {
   feeTypeData.value = DictionaryUtils.convertToUniDataSelectFormat(
     dictionaryOptions.value.feeType || []
   );
-  repairItemsData.value = DictionaryUtils.convertToUniDataPickerFormat(
-    dictionaryOptions.value.repairItems || []
+  repairItemsData.value = DictionaryUtils.convertToUniDataSelectFormat(
+    dictionaryOptions.value.outRepairItems || []
+  );
+  repairProgressData.value = DictionaryUtils.convertToUniDataSelectFormat(
+    dictionaryOptions.value.repairProgress || []
   );
 };
 
@@ -606,14 +605,14 @@ const onPartNameChange = (value, index) => {
 const onCostCategoryChange = (e, index) => {};
 
 const onRepairSelectionChange = (e, index) => {
-  if (
-    e &&
-    e.detail &&
-    e.detail.value &&
-    Array.isArray(e.detail.value) &&
-    labors.value[index]
-  ) {
+  if (e && e.detail && e.detail.value && labors.value[index]) {
     labors.value[index].repairSelection = e.detail.value;
+  }
+};
+
+const onRepairProgressChange = (e, index) => {
+  if (e && e.detail && e.detail.value && labors.value[index]) {
+    labors.value[index].repairProgress = e.detail.value;
   }
 };
 
@@ -731,17 +730,9 @@ const validateStep2 = () => {
 const buildSubmitData = () => {
   const processedLabors = labors.value
     ? labors.value.map((labor) => {
-        const repairSelectionValues = Array.isArray(labor.repairSelection)
-          ? labor.repairSelection.map((item) =>
-              typeof item === "object" ? item.value : item
-            )
-          : [];
-
         return {
           ...labor,
-          repairSelection: repairSelectionValues,
-          faultLocation: repairSelectionValues[0] || null,
-          repairItem: repairSelectionValues[1] || null,
+          repairSelection: labor.repairSelection || null,
         };
       })
     : null;
@@ -830,8 +821,6 @@ const addSparePart = () => {
     nameIndex: 0,
     nameText: "",
     quantity: "",
-    oldPartCode: "",
-    newPartCode: "",
   });
 };
 
@@ -858,9 +847,12 @@ const removeCost = (index) => {
 
 const addLabor = () => {
   labors.value.push({
-    repairSelection: [],
+    repairSelection: "",
     repairSelectionIndex: 0,
     repairSelectionText: "",
+    repairProgress: "",
+    repairProgressIndex: 0,
+    repairProgressText: "",
     quantity: "",
     coefficient: "",
   });
