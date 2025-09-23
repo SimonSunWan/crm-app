@@ -773,7 +773,7 @@ const onRepairProgressChange = (e, index) => {
 };
 
 // 构建提交数据
-const buildSubmitData = () => {
+const buildSubmitData = (isEnd = false) => {
   const processedLabors = labors.value
     ? labors.value.map((labor) => {
         return {
@@ -783,7 +783,7 @@ const buildSubmitData = () => {
       })
     : null;
 
-  return {
+  const data = {
     customer: formData.customer || null,
     vehicleModel: formData.vehicleModel || null,
     repairShop: formData.repairShop || null,
@@ -810,6 +810,13 @@ const buildSubmitData = () => {
     costs: costs.value || null,
     labors: processedLabors,
   };
+  
+  // 只有最后一步才传递isEnd字段
+  if (isEnd) {
+    data.isEnd = true;
+  }
+  
+  return data;
 };
 
 const nextStep = async () => {
@@ -832,7 +839,7 @@ const nextStep = async () => {
     
     // 验证通过后，保存当前步骤的数据
     try {
-      const submitData = buildSubmitData();
+      const submitData = buildSubmitData(false); // 前面步骤不传递isEnd字段
       // 更新工单
       await ExternalOrderDataService.updateOrder(formData.id, submitData);
       // 进入下一步
@@ -894,7 +901,7 @@ const removeLabor = (index) => {
 const handleSubmit = async () => {
   submitLoading.value = true;
   try {
-    const submitData = buildSubmitData();
+    const submitData = buildSubmitData(true); // 最后一步保存，传递 isEnd=true
     let result;
 
     if (!formData.id) {

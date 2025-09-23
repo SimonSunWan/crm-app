@@ -60,12 +60,12 @@
               <text class="order-number">{{ item.id || "-" }}</text>
               <view class="card-actions">
                 <text
-                  v-if="PermissionManager.hasPagePermission('/order/internal', 'view_all')"
+                  v-if="shouldShowEditDelete(item)"
                   class="iconfont icon-edit action-btn edit"
                   @click.stop="handleEdit(item)"
                 ></text>
                 <text
-                  v-if="PermissionManager.hasPagePermission('/order/internal', 'view_all')"
+                  v-if="shouldShowEditDelete(item)"
                   class="iconfont icon-delete action-btn delete"
                   @click.stop="handleDelete(item)"
                 ></text>
@@ -147,6 +147,12 @@ const dictionaryOptions = ref({
 const searchForm = ref({
   orderNo: "",
 });
+
+// 判断是否显示编辑删除按钮
+const shouldShowEditDelete = (item) => {
+  const hasViewAllPermission = PermissionManager.hasPagePermission('/order/internal', 'view_all');
+  return hasViewAllPermission || !item.isEnd;
+};
 
 const handleAdd = () => {
   const params = InternalOrderDataService.buildNavigationParams(
