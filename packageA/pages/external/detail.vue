@@ -352,6 +352,11 @@ const getRepairSelectionText = (repairSelection) => {
     return texts.length > 0 ? texts.join(" / ") : null;
   }
 
+  // 如果是字符串，使用字典工具函数获取对应的文本标签
+  if (typeof repairSelection === "string") {
+    return getOutRepairItemLabel(repairSelection);
+  }
+
   return repairSelection;
 };
 

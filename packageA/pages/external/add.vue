@@ -744,6 +744,8 @@ const buildSubmitData = () => {
     reporterName: formData.reporterName || null,
     contactInfo: formData.contactInfo || null,
     reportDate: formData.reportDate || null,
+    insurer: formData.insurer || null,
+    assessor: formData.assessor || null,
     licensePlate: formData.licensePlate || null,
     vinNumber: formData.vinNumber || null,
     mileage: formData.mileage || null,
