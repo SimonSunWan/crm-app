@@ -290,11 +290,11 @@
             <view class="card-content">
               <view class="form-row">
                 <view class="form-item">
-                  <text class="label">备件名称</text>
+                  <text class="label">保外备件名称</text>
                   <SearchSelect
                     v-model="item.name"
                     :localdata="partNumberData"
-                    placeholder="备件名称"
+                    placeholder="保外备件名称"
                     @change="(value) => onPartNameChange(value, index)"
                   />
                 </view>
@@ -694,7 +694,7 @@ const validateStep2 = () => {
   for (let i = 0; i < spareParts.value.length; i++) {
     const part = spareParts.value[i];
     if (!part.name || part.name.trim() === "") {
-      errors.push(`备件信息${i + 1}：请选择备件名称`);
+      errors.push(`备件信息${i + 1}：请选择保外备件名称`);
     }
     if (!part.quantity || part.quantity.trim() === "") {
       errors.push(`备件信息${i + 1}：请输入使用数量`);

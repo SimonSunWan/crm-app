@@ -93,7 +93,7 @@ export class ExternalOrderDataService {
       repairProgress: "order_repair_progress",
       faultLocation: "order_fault_location",
       spareLocation: "order_spare_location",
-      partNumber: "order_part_number",
+      partNumber: "order_out_part_number",
       feeType: "order_fee_type",
     };
 
@@ -146,8 +146,8 @@ export class ExternalOrderDataService {
   static validateFormData(formData, repairData) {
     const errors = [];
 
-    if (!formData.carSelection || formData.carSelection.length === 0) {
-      errors.push("请选择整车厂/车型");
+    if (!formData.carModelText || formData.carModelText.trim() === "") {
+      errors.push("请输入整车厂/车型");
     }
     if (!formData.repairShop || formData.repairShop.trim() === "") {
       errors.push("请输入维修店名称");

@@ -301,11 +301,11 @@
               <view class="card-content">
                 <view class="form-row">
                   <view class="form-item">
-                    <text class="label">备件名称</text>
+                    <text class="label">保外备件名称</text>
                     <SearchSelect
                       v-model="item.name"
                       :localdata="partNumberData"
-                      placeholder="请选择备件名称"
+                      placeholder="请选择保外备件名称"
                       @change="(value) => onPartNameChange(value, index)"
                     />
                   </view>

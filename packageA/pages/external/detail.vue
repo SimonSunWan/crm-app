@@ -179,7 +179,7 @@
           <view class="section-title">备件信息 {{ index + 1 }}</view>
           <view class="info-grid">
             <view class="info-item">
-              <text class="label">备件名称：</text>
+              <text class="label">保外备件名称：</text>
               <text class="value">{{
                 getPartNameLabel(item.name) || item.name || "-"
               }}</text>
