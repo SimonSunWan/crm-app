@@ -247,6 +247,10 @@
               <text class="label">费用金额(元)：</text>
               <text class="value">{{ item.amount || "-" }}</text>
             </view>
+            <view class="info-item">
+              <text class="label">备注：</text>
+              <text class="value">{{ item.remark || "-" }}</text>
+            </view>
           </view>
         </view>
       </view>

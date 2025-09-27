@@ -372,6 +372,17 @@
                     />
                   </view>
                 </view>
+
+                <view class="form-row">
+                  <view class="form-item">
+                    <text class="label">备注</text>
+                    <input
+                      v-model="item.remark"
+                      class="input-field"
+                      placeholder="请输入备注"
+                    />
+                  </view>
+                </view>
               </view>
             </view>
           </view>
@@ -534,6 +545,7 @@ const costs = ref([
     categoryIndex: 0,
     categoryText: "",
     amount: "",
+    remark: "",
   },
 ]);
 
@@ -640,6 +652,7 @@ const getOrderDetail = async () => {
         costs.value = (detail.costs || []).map((cost) => ({
           category: cost.category || "",
           amount: cost.amount || "",
+          remark: cost.remark || "",
         }));
 
         if (costs.value.length === 0) {
@@ -647,6 +660,7 @@ const getOrderDetail = async () => {
             {
               category: "",
               amount: "",
+              remark: "",
             },
           ];
         }
@@ -876,6 +890,7 @@ const addCost = () => {
   costs.value.push({
     category: "",
     amount: "",
+    remark: "",
   });
 };
 

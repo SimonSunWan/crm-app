@@ -359,6 +359,16 @@
                   />
                 </view>
               </view>
+
+              <view class="form-row">
+                <view class="form-item">
+                  <text class="label">备注</text>
+                  <uni-easyinput
+                    v-model="item.remark"
+                    placeholder="请输入备注"
+                  />
+                </view>
+              </view>
             </view>
           </view>
         </view>
@@ -529,6 +539,7 @@ const costs = ref([
     categoryIndex: 0,
     categoryText: "",
     amount: "",
+    remark: "",
   },
 ]);
 
@@ -838,6 +849,7 @@ const addCost = () => {
     categoryIndex: 0,
     categoryText: "",
     amount: "",
+    remark: "",
   });
 };
 
