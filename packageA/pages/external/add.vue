@@ -25,11 +25,9 @@
         <view class="form-row">
           <view class="form-item">
             <text class="label">整车厂/车型</text>
-            <uni-data-picker
-              v-model="formData.carSelection"
-              :localdata="carModelData"
-              placeholder="请选择整车厂/车型"
-              @change="onCarChange"
+            <uni-easyinput
+              v-model="formData.carModelText"
+              placeholder="请输入整车厂/车型"
             />
           </view>
           <view class="form-item">
@@ -493,9 +491,7 @@ const dictionaryOptions = ref({
 });
 
 const formData = reactive({
-  carSelection: [], // 级联选择器：整车厂/车型
-  customer: "", // 整车厂
-  vehicleModel: "", // 车型
+  carModelText: "", // 整车厂/车型文本
   repairShop: "",
   reporterName: "",
   contactInfo: "",
@@ -593,12 +589,6 @@ const initOptionsArrays = () => {
   );
 };
 
-const onCarChange = (e) => {
-  if (e && e.detail && e.detail.value && Array.isArray(e.detail.value)) {
-    formData.customer = e.detail.value[0]?.value || "";
-    formData.vehicleModel = e.detail.value[1]?.value || "";
-  }
-};
 
 
 const onInsurerChange = (e) => {};
@@ -630,8 +620,8 @@ const onRepairProgressChange = (e, index) => {
 const validateStep0 = () => {
   const errors = [];
 
-  if (!formData.carSelection || formData.carSelection.length === 0) {
-    errors.push("请选择整车厂/车型");
+  if (!formData.carModelText || formData.carModelText.trim() === "") {
+    errors.push("请输入整车厂/车型");
   }
   if (!formData.repairShop || formData.repairShop.trim() === "") {
     errors.push("请输入维修店名称");
@@ -749,8 +739,8 @@ const buildSubmitData = () => {
     : null;
 
   return {
-    customer: formData.customer || null,
-    vehicleModel: formData.vehicleModel || null,
+    customer: formData.carModelText || null,
+    vehicleModel: formData.carModelText || null,
     repairShop: formData.repairShop || null,
     reporterName: formData.reporterName || null,
     contactInfo: formData.contactInfo || null,

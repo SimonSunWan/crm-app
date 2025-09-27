@@ -37,11 +37,9 @@
           <view class="form-row">
             <view class="form-item">
               <text class="label">整车厂/车型</text>
-              <uni-data-picker
-                v-model="formData.carSelection"
-                :localdata="carModelData"
-                placeholder="请选择整车厂/车型"
-                @change="onCarChange"
+              <uni-easyinput
+                v-model="formData.carModelText"
+                placeholder="请输入整车厂/车型"
               />
             </view>
             <view class="form-item">
@@ -501,7 +499,7 @@ const orderId = ref("");
 
 const formData = reactive({
   id: "",
-  carSelection: [], // 级联选择器：整车厂/车型
+  carModelText: "", // 整车厂/车型文本
   repairShop: "",
   reporterName: "",
   contactInfo: "",
@@ -590,36 +588,8 @@ const getOrderDetail = async () => {
       // 设置基本信息
       Object.assign(formData, response);
 
-      if (
-        response.customer &&
-        response.vehicleModel &&
-        carModelData.value.length > 0
-      ) {
-        const findCascaderPath = (data, targetCustomer, targetModel) => {
-          for (let i = 0; i < data.length; i++) {
-            const parent = data[i];
-
-            if (parent.value === targetCustomer && parent.children) {
-              for (let j = 0; j < parent.children.length; j++) {
-                const child = parent.children[j];
-                if (child.value === targetModel) {
-                  return [parent.value, child.value];
-                }
-              }
-            }
-          }
-          return null;
-        };
-
-        const cascaderPath = findCascaderPath(
-          carModelData.value,
-          response.customer,
-          response.vehicleModel
-        );
-        if (cascaderPath) {
-          formData.carSelection = cascaderPath;
-        }
-      }
+      // 设置整车厂/车型文本
+      formData.carModelText = response.customer || '';
 
       if (response.details && response.details.length > 0) {
         const detail = response.details[0];
@@ -759,12 +729,6 @@ const getLabel = (keyValue, options) => {
   return item ? item.dictValue : null;
 };
 
-const onCarChange = (e) => {
-  if (e && e.detail && e.detail.value && Array.isArray(e.detail.value)) {
-    formData.customer = e.detail.value[0]?.value || "";
-    formData.vehicleModel = e.detail.value[1]?.value || "";
-  }
-};
 
 const onInsurerChange = (e) => {};
 
@@ -798,8 +762,8 @@ const buildSubmitData = (isEnd = false) => {
     : null;
 
   const data = {
-    customer: formData.customer || null,
-    vehicleModel: formData.vehicleModel || null,
+    customer: formData.carModelText || null,
+    vehicleModel: formData.carModelText || null,
     repairShop: formData.repairShop || null,
     reporterName: formData.reporterName || null,
     contactInfo: formData.contactInfo || null,

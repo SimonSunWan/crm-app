@@ -74,16 +74,8 @@
 
             <view class="card-content">
               <view class="content-row">
-                <text class="label">整车厂：</text>
-                <text class="value">{{
-                  getCarModelLabel(item.customer) || "-"
-                }}</text>
-              </view>
-              <view class="content-row">
-                <text class="label">车型：</text>
-                <text class="value">{{
-                  getCarModelLabel(item.vehicleModel) || "-"
-                }}</text>
+                <text class="label">整车厂/车型：</text>
+                <text class="value">{{ item.customer || "-" }}</text>
               </view>
               <view class="content-row">
                 <text class="label">维修店(4S)：</text>
@@ -278,15 +270,6 @@ const loadDictionaryData = async () => {
   }
 };
 
-const getCarModelLabel = (value) => {
-  return (
-    DictionaryUtils.getDictionaryLabel(
-      value,
-      dictionaryOptions.value.carModel,
-      true
-    ) || value
-  );
-};
 
 const onRefresh = async () => {
   refreshing.value = true;

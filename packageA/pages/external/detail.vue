@@ -16,16 +16,8 @@
         <view class="section-title">客户信息</view>
         <view class="info-grid">
           <view class="info-item">
-            <text class="label">整车厂：</text>
-            <text class="value">{{
-              getCarModelLabel(orderData.customer) || "-"
-            }}</text>
-          </view>
-          <view class="info-item">
-            <text class="label">车型：</text>
-            <text class="value">{{
-              getCarModelLabel(orderData.vehicleModel) || "-"
-            }}</text>
+            <text class="label">整车厂/车型：</text>
+            <text class="value">{{ orderData.customer || "-" }}</text>
           </view>
           <view class="info-item">
             <text class="label">维修店(4S)：</text>
