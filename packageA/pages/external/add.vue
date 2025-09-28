@@ -392,6 +392,20 @@
           <text class="section-title">工时详情</text>
         </view>
 
+        <!-- 维修进度选择 -->
+        <view class="repair-progress-section">
+          <view class="form-row">
+            <view class="form-item">
+              <text class="label">维修进度</text>
+              <uni-data-select
+                v-model="repairProgress"
+                :localdata="repairProgressData"
+                placeholder="请选择维修进度"
+              />
+            </view>
+          </view>
+        </view>
+
         <view class="card-list">
           <view v-for="(item, index) in labors" :key="index" class="labor-card">
             <view class="card-header">
@@ -416,15 +430,6 @@
                     :localdata="repairItemsData"
                     placeholder="请选择保外维修项目"
                     @change="(e) => onRepairSelectionChange(e, index)"
-                  />
-                </view>
-                <view class="form-item">
-                  <text class="label">维修进度</text>
-                  <uni-data-select
-                    v-model="item.repairProgress"
-                    :localdata="repairProgressData"
-                    placeholder="请选择维修进度"
-                    @change="(e) => onRepairProgressChange(e, index)"
                   />
                 </view>
               </view>
@@ -566,13 +571,13 @@ const labors = ref([
     repairSelection: "",
     repairSelectionIndex: 0,
     repairSelectionText: "",
-    repairProgress: "",
-    repairProgressIndex: 0,
-    repairProgressText: "",
     quantity: "",
     coefficient: "",
   },
 ]);
+
+// 维修进度字段（从工时详情中移出）
+const repairProgress = ref("");
 
 const carModelData = ref([]);
 const faultLocationData = ref([]);
@@ -633,11 +638,6 @@ const onRepairSelectionChange = (e, index) => {
   }
 };
 
-const onRepairProgressChange = (e, index) => {
-  if (e && e.detail && e.detail.value && labors.value[index]) {
-    labors.value[index].repairProgress = e.detail.value;
-  }
-};
 
 const validateStep0 = () => {
   const errors = [];
@@ -789,6 +789,7 @@ const buildSubmitData = () => {
     spareParts: spareParts.value || null,
     costs: costs.value || null,
     labors: processedLabors,
+    repairProgress: repairProgress.value || null,
   };
 };
 
@@ -877,9 +878,6 @@ const addLabor = () => {
     repairSelection: "",
     repairSelectionIndex: 0,
     repairSelectionText: "",
-    repairProgress: "",
-    repairProgressIndex: 0,
-    repairProgressText: "",
     quantity: "",
     coefficient: "",
   });

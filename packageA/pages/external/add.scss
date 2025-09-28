@@ -228,6 +228,23 @@
         font-family: $uni-font-family;
         color: #333333;
       }
+    }
+
+    .repair-progress-section {
+      margin-bottom: 30rpx;
+      padding: 20rpx;
+      background-color: #f8f9fa;
+      border: 1rpx solid #e9ecef;
+      border-radius: 12rpx;
+
+      .form-row {
+        .form-item {
+          .label {
+            font-weight: 600;
+            color: #495057;
+          }
+        }
+      }
 
       .header-form-item {
         display: flex;

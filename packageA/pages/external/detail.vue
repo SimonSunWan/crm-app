@@ -233,6 +233,16 @@
       <view v-if="getLabors().length > 0" class="info-section">
         <view class="section-title">工时详情</view>
 
+        <!-- 维修进度显示 -->
+        <view class="repair-progress-section">
+          <view class="info-item">
+            <text class="label">维修进度：</text>
+            <text class="value">{{
+              getRepairProgressLabel(getRepairProgress()) || "-"
+            }}</text>
+          </view>
+        </view>
+
         <view
           v-for="(item, index) in getLabors()"
           :key="index"
@@ -244,12 +254,6 @@
               <text class="label">保外维修项目：</text>
               <text class="value">{{
                 getRepairSelectionText(item.repairSelection) || "-"
-              }}</text>
-            </view>
-            <view class="info-item">
-              <text class="label">维修进度：</text>
-              <text class="value">{{
-                getRepairProgressLabel(item.repairProgress) || "-"
               }}</text>
             </view>
             <view class="info-item">
@@ -393,6 +397,10 @@ const getCosts = () => {
 const getLabors = () => {
   const labors = getDetailValue("labors");
   return Array.isArray(labors) ? labors : [];
+};
+
+const getRepairProgress = () => {
+  return getDetailValue("repairProgress");
 };
 
 onLoad((options) => {

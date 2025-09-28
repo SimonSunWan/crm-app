@@ -406,6 +406,20 @@
             <text class="section-title">工时详情</text>
           </view>
 
+          <!-- 维修进度选择 -->
+          <view class="repair-progress-section">
+            <view class="form-row">
+              <view class="form-item">
+                <text class="label">维修进度</text>
+                <uni-data-select
+                  v-model="repairProgress"
+                  :localdata="repairProgressData"
+                  placeholder="请选择维修进度"
+                />
+              </view>
+            </view>
+          </view>
+
           <view class="card-list">
             <view
               v-for="(item, index) in labors"
@@ -426,26 +440,17 @@
               </view>
 
               <view class="card-content">
-              <view class="form-row">
-                <view class="form-item">
-                  <text class="label">保外维修项目</text>
-                  <uni-data-select
-                    v-model="item.repairSelection"
-                    :localdata="repairItemsData"
-                    placeholder="请选择保外维修项目"
-                    @change="(e) => onRepairSelectionChange(e, index)"
-                  />
+                <view class="form-row">
+                  <view class="form-item">
+                    <text class="label">保外维修项目</text>
+                    <uni-data-select
+                      v-model="item.repairSelection"
+                      :localdata="repairItemsData"
+                      placeholder="请选择保外维修项目"
+                      @change="(e) => onRepairSelectionChange(e, index)"
+                    />
+                  </view>
                 </view>
-                <view class="form-item">
-                  <text class="label">维修进度</text>
-                  <uni-data-select
-                    v-model="item.repairProgress"
-                    :localdata="repairProgressData"
-                    placeholder="请选择维修进度"
-                    @change="(e) => onRepairProgressChange(e, index)"
-                  />
-                </view>
-              </view>
 
                 <view class="form-row">
                   <view class="form-item">
@@ -574,13 +579,13 @@ const labors = ref([
     repairSelection: "",
     repairSelectionIndex: 0,
     repairSelectionText: "",
-    repairProgress: "",
-    repairProgressIndex: 0,
-    repairProgressText: "",
     quantity: "",
     coefficient: "",
   },
 ]);
+
+// 维修进度字段（从工时详情中移出）
+const repairProgress = ref("");
 
 const dictionaryOptions = ref({
   carModel: [],
@@ -660,7 +665,6 @@ const getOrderDetail = async () => {
     labors.value = (detail.labors || []).map((labor) => {
       return {
         repairSelection: labor.repairSelection || "",
-        repairProgress: labor.repairProgress || "",
         quantity: labor.quantity || "",
         coefficient: labor.coefficient || "",
       };
@@ -670,12 +674,14 @@ const getOrderDetail = async () => {
           labors.value = [
             {
               repairSelection: "",
-              repairProgress: "",
               quantity: "",
               coefficient: "",
             },
           ];
         }
+
+        // 设置维修进度（从第一个工时记录中获取，如果存在的话）
+        repairProgress.value = detail.labors && detail.labors.length > 0 ? detail.labors[0].repairProgress || "" : "";
       }
     }
   } catch (error) {
@@ -766,11 +772,6 @@ const onRepairSelectionChange = (e, index) => {
   }
 };
 
-const onRepairProgressChange = (e, index) => {
-  if (e && e.detail && e.detail.value && labors.value[index]) {
-    labors.value[index].repairProgress = e.detail.value;
-  }
-};
 
 // 构建提交数据
 const buildSubmitData = (isEnd = false) => {
@@ -812,6 +813,7 @@ const buildSubmitData = (isEnd = false) => {
     spareParts: spareParts.value || null,
     costs: costs.value || null,
     labors: processedLabors,
+    repairProgress: repairProgress.value || null,
   };
   
   // 只有最后一步才传递isEnd字段
@@ -890,7 +892,6 @@ const removeCost = (index) => {
 const addLabor = () => {
   labors.value.push({
     repairSelection: "",
-    repairProgress: "",
     quantity: "",
     coefficient: "",
   });
