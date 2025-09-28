@@ -93,6 +93,10 @@
                 <text class="label">报修人：</text>
                 <text class="value">{{ item.reporterName || "-" }}</text>
               </view>
+              <view class="content-row">
+                <text class="label">工单进度：</text>
+                <text class="value">{{ item.orderProgress || "-" }}</text>
+              </view>
             </view>
           </view>
         </view>
