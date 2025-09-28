@@ -13,6 +13,16 @@
 
     <view v-else class="detail-content">
       <view class="info-section">
+        <view class="section-title">工单进度</view>
+        <view class="info-grid">
+          <view class="info-item">
+            <text class="label">工单进度：</text>
+            <text class="value">{{ orderData.orderProgress || "-" }}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="info-section">
         <view class="section-title">客户信息</view>
         <view class="info-grid">
           <view class="info-item">

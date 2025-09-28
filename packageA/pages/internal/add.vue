@@ -21,6 +21,21 @@
 
     <view v-if="currentStep === 0" class="form-step">
       <view class="form-section">
+        <view class="section-title">工单进度</view>
+        <view class="form-row">
+          <view class="form-item full-width">
+            <text class="label">工单进度</text>
+            <uni-easyinput
+              v-model="formData.orderProgress"
+              type="textarea"
+              :disabled="!hasViewAllPermission"
+              placeholder="请输入工单进度"
+            />
+          </view>
+        </view>
+      </view>
+
+      <view class="form-section">
         <view class="section-title">客户信息</view>
         <view class="form-row">
           <view class="form-item">
@@ -500,14 +515,20 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { InternalOrderDataService } from "@/packageA/services/internalOrderDataService.js";
 import { DictionaryUtils } from "@/packageA/utils/dictionaryUtils.js";
+import { PermissionManager } from "@/packageA/utils/permissionManager.js";
 import SearchSelect from "@/packageA/components/search-select/index.vue";
 
 const currentStep = ref(0);
 const loading = ref(false);
+
+// 权限检查
+const hasViewAllPermission = computed(() => {
+  return PermissionManager.hasPagePermission('/order/internal', 'view_all');
+});
 
 const dictionaryOptions = ref({
   carModel: [],
@@ -542,6 +563,7 @@ const formData = reactive({
   sealCode: "",
   underWarranty: null,
   faultDescription: "",
+  orderProgress: "",
 });
 
 const repairData = reactive({
@@ -835,6 +857,7 @@ const buildSubmitData = () => {
     sealCode: formData.sealCode || null,
     underWarranty: formData.underWarranty ?? false,
     faultDescription: formData.faultDescription || null,
+    orderProgress: formData.orderProgress || null,
     repairPerson: repairData.repairPerson || null,
     repairDate: repairData.repairDate || null,
     avicResponsibility: repairData.avicResponsibility ?? false,
