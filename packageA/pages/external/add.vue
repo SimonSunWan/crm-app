@@ -736,7 +736,7 @@ const validateStep2 = () => {
   for (let i = 0; i < labors.value.length; i++) {
     const labor = labors.value[i];
     if (!labor.repairSelection || labor.repairSelection.length === 0) {
-      errors.push(`工时信息${i + 1}：请选择故障位置/维修项目`);
+      errors.push(`工时信息${i + 1}：请选择保外维修项目`);
     }
     if (!labor.quantity || labor.quantity.trim() === "") {
       errors.push(`工时信息${i + 1}：请输入维修数量`);
