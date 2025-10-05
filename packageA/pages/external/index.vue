@@ -235,11 +235,6 @@ const getOrderList = async (isLoadMore = false) => {
       size: pagination.value.size,
     };
 
-    // 检查权限，没有view_all权限则只查看自己创建的工单
-    if (!PermissionManager.hasPagePermission("/order/external", "view_all")) {
-      params.createdBy = userStore.userInfo.id;
-    }
-
     const result = await ExternalOrderDataService.getOrderList(params);
 
     if (result.success) {
