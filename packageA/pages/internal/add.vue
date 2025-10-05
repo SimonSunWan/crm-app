@@ -23,13 +23,21 @@
       <view class="form-section">
         <view class="section-title">工单进度</view>
         <view class="form-row">
-          <view class="form-item full-width">
+          <view class="form-item">
             <text class="label">工单进度</text>
             <uni-easyinput
               v-model="formData.orderProgress"
               type="textarea"
               :disabled="!hasViewAllPermission"
               placeholder="请输入工单进度"
+            />
+          </view>
+          <view class="form-item">
+            <text class="label">中航派工单号</text>
+            <uni-easyinput
+              v-model="formData.avicOrderNumber"
+              :disabled="!hasViewAllPermission"
+              placeholder="请输入中航派工单号"
             />
           </view>
         </view>
@@ -564,6 +572,7 @@ const formData = reactive({
   underWarranty: null,
   faultDescription: "",
   orderProgress: "",
+  avicOrderNumber: "",
 });
 
 const repairData = reactive({
@@ -858,6 +867,7 @@ const buildSubmitData = () => {
     underWarranty: formData.underWarranty ?? false,
     faultDescription: formData.faultDescription || null,
     orderProgress: formData.orderProgress || null,
+    avicOrderNumber: formData.avicOrderNumber || null,
     repairPerson: repairData.repairPerson || null,
     repairDate: repairData.repairDate || null,
     avicResponsibility: repairData.avicResponsibility ?? false,

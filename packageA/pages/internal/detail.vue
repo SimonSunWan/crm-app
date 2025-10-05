@@ -19,6 +19,10 @@
             <text class="label">工单进度：</text>
             <text class="value">{{ orderData.orderProgress || "-" }}</text>
           </view>
+          <view class="info-item">
+            <text class="label">中航派工单号：</text>
+            <text class="value">{{ orderData.avicOrderNumber || "-" }}</text>
+          </view>
         </view>
       </view>
 
