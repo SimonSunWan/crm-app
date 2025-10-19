@@ -7,7 +7,7 @@ const config = {
   },
   // 生产环境
   production: {
-    API_BASE_URL: "http://8.135.237.19:8000/api",
+    API_BASE_URL: "https://donglidianchi.com.cn/api",
     DEBUG: false,
   },
 };

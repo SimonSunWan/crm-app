@@ -94,7 +94,7 @@ export class ExternalOrderDataService {
       faultLocation: "order_fault_location",
       spareLocation: "order_spare_location",
       partNumber: "order_out_part_number",
-      feeType: "order_fee_type",
+      feeType: "order_out_fee_type",
     };
 
     const dictionaryOptions = {};
