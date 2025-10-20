@@ -425,7 +425,7 @@
               <view class="form-row">
                 <view class="form-item">
                   <text class="label">保外维修项目</text>
-                  <uni-data-select
+                  <uni-data-picker
                     v-model="item.repairSelection"
                     :localdata="repairItemsData"
                     placeholder="请选择保外维修项目"
@@ -568,9 +568,7 @@ const costs = ref([
 
 const labors = ref([
   {
-    repairSelection: "",
-    repairSelectionIndex: 0,
-    repairSelectionText: "",
+    repairSelection: [],
     quantity: "",
     coefficient: "",
   },
@@ -608,7 +606,7 @@ const initOptionsArrays = () => {
   feeTypeData.value = DictionaryUtils.convertToUniDataSelectFormat(
     dictionaryOptions.value.feeType || []
   );
-  repairItemsData.value = DictionaryUtils.convertToUniDataSelectFormat(
+  repairItemsData.value = DictionaryUtils.convertToUniDataPickerFormat(
     dictionaryOptions.value.outRepairItems || []
   );
   repairProgressData.value = DictionaryUtils.convertToUniDataSelectFormat(
@@ -633,7 +631,13 @@ const onPartNameChange = (value, index) => {
 const onCostCategoryChange = (e, index) => {};
 
 const onRepairSelectionChange = (e, index) => {
-  if (e && e.detail && e.detail.value && labors.value[index]) {
+  if (
+    e &&
+    e.detail &&
+    e.detail.value &&
+    Array.isArray(e.detail.value) &&
+    labors.value[index]
+  ) {
     labors.value[index].repairSelection = e.detail.value;
   }
 };
@@ -753,9 +757,15 @@ const validateStep2 = () => {
 const buildSubmitData = () => {
   const processedLabors = labors.value
     ? labors.value.map((labor) => {
+        const repairSelectionValues = Array.isArray(labor.repairSelection)
+          ? labor.repairSelection.map((item) =>
+              typeof item === "object" ? item.value : item
+            )
+          : [];
+
         return {
           ...labor,
-          repairSelection: labor.repairSelection || null,
+          repairSelection: repairSelectionValues,
         };
       })
     : null;
@@ -875,9 +885,7 @@ const removeCost = (index) => {
 
 const addLabor = () => {
   labors.value.push({
-    repairSelection: "",
-    repairSelectionIndex: 0,
-    repairSelectionText: "",
+    repairSelection: [],
     quantity: "",
     coefficient: "",
   });

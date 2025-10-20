@@ -1,44 +1,23 @@
 <template>
   <view class="search-select-container">
-    <view class="search-input-wrapper" @click="toggleDropdown">
-      <input
-        v-model="displayText"
+    <view class="search-input-wrapper" @click="navigateToSearchPage">
+      <view
         class="search-input"
-        :placeholder="placeholder"
-        readonly
-      />
-      <view class="dropdown-arrow" :class="{ active: showDropdown }">
+        :class="{ 'has-value': displayText }"
+      >
+        <text v-if="displayText" class="input-text">{{ displayText }}</text>
+        <text v-else class="input-placeholder">{{ placeholder }}</text>
+      </view>
+      <view class="dropdown-arrow">
         <uni-icons type="bottom" size="14" color="#999" />
       </view>
-    </view>
-    <view v-if="showDropdown" class="dropdown-list">
-      <view class="search-input-inner">
-        <input
-          v-model="searchKeyword"
-          class="search-input-inner"
-          placeholder="搜索选项"
-          @input="onSearchInput"
-        />
-      </view>
-      <scroll-view scroll-y="true" class="options-scroll">
-        <view
-          v-for="(option, optionIndex) in filteredData"
-          :key="optionIndex"
-          class="option-item"
-          @click="selectOption(option)"
-        >
-          <text>{{ option.text }}</text>
-        </view>
-        <view v-if="filteredData.length === 0" class="no-data">
-          <text>暂无数据</text>
-        </view>
-      </scroll-view>
     </view>
   </view>
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted, onUnmounted } from "vue";
+import { onShow } from "@dcloudio/uni-app";
 
 const props = defineProps({
   modelValue: {
@@ -65,9 +44,8 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "change"]);
 
-const showDropdown = ref(false);
-const searchKeyword = ref("");
 const selectedOption = ref(null);
+const callbackId = ref("");
 
 const displayText = computed(() => {
   if (selectedOption.value) {
@@ -76,33 +54,44 @@ const displayText = computed(() => {
   return "";
 });
 
-const filteredData = computed(() => {
-  const keyword = searchKeyword.value.toLowerCase();
-  if (!keyword) {
-    return props.localdata;
-  }
-  return props.localdata.filter((item) =>
-    item[props.textKey].toLowerCase().includes(keyword)
-  );
-});
-
-const toggleDropdown = () => {
-  showDropdown.value = !showDropdown.value;
-  if (showDropdown.value) {
-    searchKeyword.value = "";
-  }
+const generateCallbackId = () => {
+  return Date.now().toString() + Math.random().toString(36).substr(2, 9);
 };
 
-const onSearchInput = (e) => {
-  searchKeyword.value = e.detail.value;
+const navigateToSearchPage = () => {
+  callbackId.value = generateCallbackId();
+  
+  const params = {
+    localdata: encodeURIComponent(JSON.stringify(props.localdata)),
+    valueKey: props.valueKey,
+    textKey: props.textKey,
+    callbackId: callbackId.value
+  };
+  
+  const queryString = Object.keys(params)
+    .map(key => `${key}=${params[key]}`)
+    .join('&');
+  
+  uni.navigateTo({
+    url: `/packageA/pages/search-select/index?${queryString}`
+  });
 };
 
-const selectOption = (option) => {
-  selectedOption.value = option;
-  showDropdown.value = false;
-  searchKeyword.value = "";
-  emit("update:modelValue", option[props.valueKey]);
-  emit("change", option[props.valueKey]);
+const handleSearchResult = (result) => {
+  if (result.callbackId === callbackId.value) {
+    if (result.selectedOption) {
+      selectedOption.value = result.selectedOption;
+    } else {
+      const option = props.localdata.find(
+        item => item[props.valueKey] === result.selectedValue
+      );
+      if (option) {
+        selectedOption.value = option;
+      }
+    }
+    emit("update:modelValue", result.selectedValue);
+    emit("change", result.selectedValue);
+  }
 };
 
 watch(
@@ -121,6 +110,40 @@ watch(
   },
   { immediate: true }
 );
+
+onMounted(() => {
+  uni.$on('search-select-result', handleSearchResult);
+});
+
+onUnmounted(() => {
+  uni.$off('search-select-result', handleSearchResult);
+});
+
+onShow(() => {
+  checkGlobalResult();
+});
+
+const checkGlobalResult = () => {
+  // 检查全局数据
+  const app = getApp();
+  if (app.globalData && app.globalData.searchSelectResult) {
+    const result = app.globalData.searchSelectResult;
+    handleSearchResult(result);
+    delete app.globalData.searchSelectResult;
+    return;
+  }
+  
+  // 检查存储数据
+  try {
+    const result = uni.getStorageSync('searchSelectResult');
+    if (result) {
+      handleSearchResult(result);
+      uni.removeStorageSync('searchSelectResult');
+    }
+  } catch (e) {
+    // 忽略存储错误
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -142,13 +165,16 @@ watch(
     .search-input {
       flex: 1;
       height: 100%;
-      border: none;
-      outline: none;
+      display: flex;
+      align-items: center;
       font-size: 28rpx;
-      color: #333333;
       background: transparent;
 
-      &::placeholder {
+      .input-text {
+        color: #333333;
+      }
+
+      .input-placeholder {
         color: #9ca3af;
       }
     }
@@ -156,77 +182,6 @@ watch(
     .dropdown-arrow {
       display: flex;
       align-items: center;
-      transition: transform 0.3s ease;
-
-      &.active {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
-  .dropdown-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: #ffffff;
-    border: 2rpx solid #e5e7eb;
-    border-top: none;
-    border-radius: 0 0 12rpx 12rpx;
-    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    max-height: 400rpx;
-
-    .search-input-inner {
-      padding: 20rpx;
-      border-bottom: 1rpx solid #f0f0f0;
-
-      .search-input-inner {
-        width: 100%;
-        height: 60rpx;
-        padding: 0 15rpx;
-        border: 2rpx solid #e5e7eb;
-        border-radius: 8rpx;
-        font-size: 26rpx;
-        background: #ffffff;
-        box-sizing: border-box;
-
-        &:focus {
-          border-color: #3b82f6;
-          outline: none;
-        }
-
-        &::placeholder {
-          color: #9ca3af;
-        }
-      }
-    }
-
-    .options-scroll {
-      max-height: 300rpx;
-
-      .option-item {
-        padding: 20rpx;
-        border-bottom: 1rpx solid #f0f0f0;
-        font-size: 26rpx;
-        color: #333333;
-        transition: background-color 0.2s ease;
-
-        &:last-child {
-          border-bottom: none;
-        }
-
-        &:active {
-          background-color: #f8f9fa;
-        }
-      }
-
-      .no-data {
-        padding: 40rpx 20rpx;
-        text-align: center;
-        font-size: 24rpx;
-        color: #9ca3af;
-      }
     }
   }
 }

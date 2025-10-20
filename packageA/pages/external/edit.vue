@@ -443,7 +443,7 @@
                 <view class="form-row">
                   <view class="form-item">
                     <text class="label">保外维修项目</text>
-                    <uni-data-select
+                    <uni-data-picker
                       v-model="item.repairSelection"
                       :localdata="repairItemsData"
                       placeholder="请选择保外维修项目"
@@ -663,8 +663,23 @@ const getOrderDetail = async () => {
         }
 
     labors.value = (detail.labors || []).map((labor) => {
+      // 将后端返回的数组格式转换为级联选择器需要的对象格式
+      let repairSelection = [];
+      if (Array.isArray(labor.repairSelection) && labor.repairSelection.length > 0) {
+        // 如果后端返回的是字符串数组，需要转换为对象格式
+        if (typeof labor.repairSelection[0] === 'string') {
+          repairSelection = labor.repairSelection.map((value, index) => {
+            // 这里需要根据实际的字典数据来构建对象
+            // 暂时使用简单的格式，实际应该根据字典数据匹配
+            return { value: value, text: value };
+          });
+        } else {
+          repairSelection = labor.repairSelection;
+        }
+      }
+
       return {
-        repairSelection: labor.repairSelection || "",
+        repairSelection: repairSelection,
         quantity: labor.quantity || "",
         coefficient: labor.coefficient || "",
       };
@@ -673,15 +688,15 @@ const getOrderDetail = async () => {
         if (labors.value.length === 0) {
           labors.value = [
             {
-              repairSelection: "",
+              repairSelection: [],
               quantity: "",
               coefficient: "",
             },
           ];
         }
 
-        // 设置维修进度（从第一个工时记录中获取，如果存在的话）
-        repairProgress.value = detail.labors && detail.labors.length > 0 ? detail.labors[0].repairProgress || "" : "";
+        // 设置维修进度（从详情记录中获取）
+        repairProgress.value = detail.repairProgress || "";
       }
     }
   } catch (error) {
@@ -737,11 +752,8 @@ const initOptionsArrays = () => {
     value: item.keyValue,
     text: item.dictValue,
   }));
-  repairItemsData.value = (dictionaryOptions.value.outRepairItems || []).map(
-    (item) => ({
-      value: item.keyValue,
-      text: item.dictValue,
-    })
+  repairItemsData.value = convertToUniDataPickerFormat(
+    dictionaryOptions.value.outRepairItems || []
   );
   repairProgressData.value = (dictionaryOptions.value.repairProgress || []).map(
     (item) => ({
@@ -767,7 +779,13 @@ const onPartNameChange = (value, index) => {
 };
 
 const onRepairSelectionChange = (e, index) => {
-  if (e && e.detail && e.detail.value && labors.value[index]) {
+  if (
+    e &&
+    e.detail &&
+    e.detail.value &&
+    Array.isArray(e.detail.value) &&
+    labors.value[index]
+  ) {
     labors.value[index].repairSelection = e.detail.value;
   }
 };
@@ -777,9 +795,15 @@ const onRepairSelectionChange = (e, index) => {
 const buildSubmitData = (isEnd = false) => {
   const processedLabors = labors.value
     ? labors.value.map((labor) => {
+        const repairSelectionValues = Array.isArray(labor.repairSelection)
+          ? labor.repairSelection.map((item) =>
+              typeof item === "object" ? item.value : item
+            )
+          : [];
+
         return {
           ...labor,
-          repairSelection: labor.repairSelection || null,
+          repairSelection: repairSelectionValues,
         };
       })
     : null;

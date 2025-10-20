@@ -82,6 +82,12 @@
           "style": {
             "navigationBarTitleText": "编辑保外工单"
           }
+        },
+        {
+          "path": "pages/search-select/index",
+          "style": {
+            "navigationBarTitleText": "选择选项"
+          }
         }
       ]
     },
