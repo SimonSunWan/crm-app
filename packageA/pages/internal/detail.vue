@@ -282,7 +282,7 @@
             <view class="info-item">
               <text class="label">故障位置/维修项目：</text>
               <text class="value">{{
-                getRepairSelectionText(item.repairSelection) || "-"
+                getRepairSelectionText(item.repairSelection, orderData.projectType) || "-"
               }}</text>
             </view>
             <view class="info-item">
@@ -321,6 +321,8 @@ const dictionaryOptions = ref({
   partNumber: [],
   feeType: [],
   repairItems: [],
+  commercialRepairItems: [],
+  energyRepairItems: [],
 });
 
 const getOrderDetail = async (id) => {
@@ -393,14 +395,32 @@ const getPartNameLabel = (keyValue) =>
   );
 const getFeeTypeLabel = (keyValue) =>
   DictionaryUtils.getDictionaryLabel(keyValue, dictionaryOptions.value.feeType);
-const getRepairItemLabel = (keyValue) =>
-  DictionaryUtils.getDictionaryLabel(
+const getRepairItemLabel = (keyValue, projectType) => {
+  let repairItemsSource = [];
+  
+  // 获取项目类型的中文标签值，与PC端保持一致
+  const projectTypeLabel = DictionaryUtils.getDictionaryLabel(
+    projectType, 
+    dictionaryOptions.value.projectType || []
+  );
+  
+  if (projectTypeLabel === '乘用车') {
+    repairItemsSource = dictionaryOptions.value.repairItems || [];
+  } else if (projectTypeLabel === '商用车') {
+    repairItemsSource = dictionaryOptions.value.commercialRepairItems || [];
+  } else {
+    // 其他情况（包括储能）使用储能字典
+    repairItemsSource = dictionaryOptions.value.energyRepairItems || [];
+  }
+  
+  return DictionaryUtils.getDictionaryLabel(
     keyValue,
-    dictionaryOptions.value.repairItems,
+    repairItemsSource,
     true
   );
+};
 
-const getRepairSelectionText = (repairSelection) => {
+const getRepairSelectionText = (repairSelection, projectType) => {
   if (!repairSelection) return null;
 
   if (Array.isArray(repairSelection)) {
@@ -410,7 +430,7 @@ const getRepairSelectionText = (repairSelection) => {
           return item.text;
         }
         if (typeof item === "string") {
-          return getRepairItemLabel(item);
+          return getRepairItemLabel(item, projectType);
         }
         return item;
       })

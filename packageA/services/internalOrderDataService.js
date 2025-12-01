@@ -15,6 +15,8 @@ export class InternalOrderDataService {
       partNumber: "order_part_number",
       feeType: "order_fee_type",
       repairItems: "order_repair_items",
+      commercialRepairItems: "order_commercial_repair_items",
+      energyRepairItems: "order_energy_repair_items",
     };
 
     const dictionaryOptions = {
@@ -28,6 +30,8 @@ export class InternalOrderDataService {
       partNumber: [],
       feeType: [],
       repairItems: [],
+      commercialRepairItems: [],
+      energyRepairItems: [],
     };
 
     const loadPromises = Object.entries(dictionaryCodes).map(

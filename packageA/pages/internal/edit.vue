@@ -548,6 +548,7 @@ import {
   DictionaryService,
 } from "@/packageA/api/orderApi.js";
 import { InternalOrderDataService } from "@/packageA/services/internalOrderDataService.js";
+import { DictionaryUtils } from "@/packageA/utils/dictionaryUtils.js";
 import { PermissionManager } from "@/packageA/utils/permissionManager.js";
 import SearchSelect from "@/packageA/components/search-select/index.vue";
 
@@ -640,6 +641,8 @@ const dictionaryOptions = ref({
   partNumber: [],
   feeType: [],
   repairItems: [],
+  commercialRepairItems: [],
+  energyRepairItems: [],
 });
 
 const carModelData = ref([]);
@@ -755,41 +758,23 @@ const getOrderDetail = async () => {
 
         labors.value = (detail.labors || []).map((labor) => {
           let repairSelection = [];
-          if (labor.repairSelection && repairItemsData.value.length > 0) {
-            if (Array.isArray(labor.repairSelection)) {
-              repairSelection = labor.repairSelection;
-            } else {
-              const findRepairCascaderPath = (data, targetValue) => {
-                for (let i = 0; i < data.length; i++) {
-                  const parent = data[i];
-
-                  if (parent.children) {
-                    for (let j = 0; j < parent.children.length; j++) {
-                      const child = parent.children[j];
-                      if (child.value === targetValue) {
-                        return [parent.value, child.value];
-                      }
-                    }
-                  }
-                  if (parent.value === targetValue) {
-                    return [parent.value];
-                  }
-                }
-                return null;
-              };
-
-              const repairCascaderPath = findRepairCascaderPath(
-                repairItemsData.value,
-                labor.repairSelection
-              );
-              if (repairCascaderPath) {
-                repairSelection = repairCascaderPath;
-              }
-            }
+          
+          // 优先使用已有的 repairSelection 数组
+          if (Array.isArray(labor.repairSelection)) {
+            repairSelection = labor.repairSelection;
+          } else if (labor.faultLocation && labor.repairItem) {
+            // 如果有 faultLocation 和 repairItem 字段，构建数组
+            repairSelection = [labor.faultLocation, labor.repairItem];
+          } else if (labor.repairSelection) {
+            // 单个值的情况，尝试在字典中查找完整路径
+            // 这里先设置为空数组，后续在 updateRepairItemsData 后再处理
+            repairSelection = [];
           }
 
           return {
             repairSelection: repairSelection,
+            faultLocation: labor.faultLocation || null,
+            repairItem: labor.repairItem || null,
             quantity: labor.quantity || "",
             coefficient: labor.coefficient || "",
           };
@@ -805,6 +790,9 @@ const getOrderDetail = async () => {
           ];
         }
       }
+      
+      // 根据订单的项目类型更新维修项目字典
+      updateRepairItemsData();
     }
   } catch (error) {
     uni.showToast({
@@ -874,9 +862,9 @@ const initOptionsArrays = () => {
     value: item.keyValue,
     text: item.dictValue,
   }));
-  repairItemsData.value = convertToUniDataPickerFormat(
-    dictionaryOptions.value.repairItems || []
-  );
+  
+  // 初始化维修项目数据，根据项目类型动态选择
+  updateRepairItemsData();
 };
 
 const getLabel = (keyValue, options) => {
@@ -889,6 +877,51 @@ const onCarChange = (e) => {
   if (e && e.detail && e.detail.value && Array.isArray(e.detail.value)) {
     formData.customer = e.detail.value[0]?.value || "";
     formData.vehicleModel = e.detail.value[1]?.value || "";
+  }
+};
+
+const onProjectTypeChange = (e) => {
+  // 根据项目类型更新维修项目字典
+  updateRepairItemsData();
+};
+
+const updateRepairItemsData = () => {
+  let repairItemsSource = [];
+  
+  // 获取项目类型的中文标签值，与PC端保持一致
+  const projectTypeLabel = DictionaryUtils.getDictionaryLabel(
+    formData.projectType, 
+    dictionaryOptions.value.projectType || []
+  );
+  
+  if (projectTypeLabel === '乘用车') {
+    repairItemsSource = dictionaryOptions.value.repairItems || [];
+  } else if (projectTypeLabel === '商用车') {
+    repairItemsSource = dictionaryOptions.value.commercialRepairItems || [];
+  } else {
+    // 其他所有情况（包括储能）都使用储能的字典作为通用字典
+    repairItemsSource = dictionaryOptions.value.energyRepairItems || [];
+  }
+  
+  // 使用 DictionaryUtils 的转换方法
+  repairItemsData.value = DictionaryUtils.convertToUniDataPickerFormat(repairItemsSource);
+  
+  // 在字典数据更新后，重新处理 labors 的回显
+  if (labors.value && labors.value.length > 0) {
+    labors.value.forEach((labor) => {
+      // 如果 repairSelection 为空但有 faultLocation 和 repairItem，尝试构建路径
+      if ((!labor.repairSelection || labor.repairSelection.length === 0) && 
+          labor.faultLocation && labor.repairItem) {
+        // 使用 DictionaryUtils 的查找方法
+        const cascaderPath = DictionaryUtils.findCascaderPath(
+          repairItemsData.value,
+          [labor.faultLocation, labor.repairItem]
+        );
+        if (cascaderPath) {
+          labor.repairSelection = cascaderPath;
+        }
+      }
+    });
   }
 };
 
@@ -914,6 +947,12 @@ const onRepairSelectionChange = (e, index) => {
     labors.value[index]
   ) {
     labors.value[index].repairSelection = e.detail.value;
+    // 与前端保持一致，设置 faultLocation 和 repairItem 字段
+    // 提取字符串值，而不是对象
+    if (e.detail.value.length >= 2) {
+      labors.value[index].faultLocation = e.detail.value[0]?.value || "";
+      labors.value[index].repairItem = e.detail.value[1]?.value || "";
+    }
   }
 };
 
@@ -930,8 +969,8 @@ const buildSubmitData = (isEnd = false) => {
         return {
           ...labor,
           repairSelection: repairSelectionValues,
-          faultLocation: repairSelectionValues[0] || null,
-          repairItem: repairSelectionValues[1] || null,
+          faultLocation: labor.faultLocation || null,
+          repairItem: labor.repairItem || null,
         };
       })
     : null;
@@ -1106,6 +1145,8 @@ onLoad((options) => {
     partNumber: parsedParams.partNumber || [],
     feeType: parsedParams.feeType || [],
     repairItems: parsedParams.repairItems || [],
+    commercialRepairItems: parsedParams.commercialRepairItems || [],
+    energyRepairItems: parsedParams.energyRepairItems || [],
   };
 
   initOptionsArrays();

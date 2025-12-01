@@ -549,6 +549,8 @@ const dictionaryOptions = ref({
   partNumber: [],
   feeType: [],
   repairItems: [],
+  commercialRepairItems: [],
+  energyRepairItems: [],
 });
 
 const formData = reactive({
@@ -660,9 +662,9 @@ const initOptionsArrays = () => {
   feeTypeData.value = DictionaryUtils.convertToUniDataSelectFormat(
     dictionaryOptions.value.feeType || []
   );
-  repairItemsData.value = DictionaryUtils.convertToUniDataPickerFormat(
-    dictionaryOptions.value.repairItems || []
-  );
+  
+  // 初始化维修项目数据，根据项目类型动态选择
+  updateRepairItemsData();
 };
 
 const onCarChange = (e) => {
@@ -672,7 +674,31 @@ const onCarChange = (e) => {
   }
 };
 
-const onProjectTypeChange = (e) => {};
+const onProjectTypeChange = (e) => {
+  // 根据项目类型更新维修项目字典
+  updateRepairItemsData();
+};
+
+const updateRepairItemsData = () => {
+  let repairItemsSource = [];
+  
+  // 获取项目类型的中文标签值，与PC端保持一致
+  const projectTypeLabel = DictionaryUtils.getDictionaryLabel(
+    formData.projectType, 
+    dictionaryOptions.value.projectType || []
+  );
+  
+  if (projectTypeLabel === '乘用车') {
+    repairItemsSource = dictionaryOptions.value.repairItems || [];
+  } else if (projectTypeLabel === '商用车') {
+    repairItemsSource = dictionaryOptions.value.commercialRepairItems || [];
+  } else {
+    // 其他所有情况（包括储能）都使用储能的字典作为通用字典
+    repairItemsSource = dictionaryOptions.value.energyRepairItems || [];
+  }
+  
+  repairItemsData.value = DictionaryUtils.convertToUniDataPickerFormat(repairItemsSource);
+};
 
 const onProjectStageChange = (e) => {};
 
@@ -706,6 +732,12 @@ const onRepairSelectionChange = (e, index) => {
     labors.value[index]
   ) {
     labors.value[index].repairSelection = e.detail.value;
+    // 与前端保持一致，设置 faultLocation 和 repairItem 字段
+    // 提取字符串值，而不是对象
+    if (e.detail.value.length >= 2) {
+      labors.value[index].faultLocation = e.detail.value[0]?.value || "";
+      labors.value[index].repairItem = e.detail.value[1]?.value || "";
+    }
   }
 };
 
@@ -841,8 +873,8 @@ const buildSubmitData = () => {
         return {
           ...labor,
           repairSelection: repairSelectionValues,
-          faultLocation: repairSelectionValues[0] || null,
-          repairItem: repairSelectionValues[1] || null,
+          faultLocation: labor.faultLocation || null,
+          repairItem: labor.repairItem || null,
         };
       })
     : null;
