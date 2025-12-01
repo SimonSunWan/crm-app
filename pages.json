@@ -88,6 +88,12 @@
           "style": {
             "navigationBarTitleText": "选择选项"
           }
+        },
+        {
+          "path": "pages/cascader-picker/index",
+          "style": {
+            "navigationBarTitleText": "选择维修项目"
+          }
         }
       ]
     },

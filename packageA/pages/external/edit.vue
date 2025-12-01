@@ -443,12 +443,13 @@
                 <view class="form-row">
                   <view class="form-item">
                     <text class="label">保外维修项目</text>
-                    <uni-data-picker
-                      v-model="item.repairSelection"
-                      :localdata="repairItemsData"
-                      placeholder="请选择保外维修项目"
-                      @change="(e) => onRepairSelectionChange(e, index)"
-                    />
+                    <view class="picker-input" @click="openCascaderPicker(index)">
+                      <text v-if="getRepairSelectionText(item.repairSelection)" class="picker-value">
+                        {{ getRepairSelectionText(item.repairSelection) }}
+                      </text>
+                      <text v-else class="picker-placeholder">请选择保外维修项目</text>
+                      <text class="picker-arrow">›</text>
+                    </view>
                   </view>
                 </view>
 
@@ -506,8 +507,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from "vue";
-import { onLoad } from "@dcloudio/uni-app";
+import { ref, reactive, onMounted, onUnmounted, computed } from "vue";
+import { onLoad, onShow } from "@dcloudio/uni-app";
 import { ExternalOrderService } from "@/packageA/api/orderApi.js";
 import { ExternalOrderDataService } from "@/packageA/services/externalOrderDataService.js";
 import { PermissionManager } from "@/packageA/utils/permissionManager.js";
@@ -778,16 +779,89 @@ const onPartNameChange = (value, index) => {
   }
 };
 
-const onRepairSelectionChange = (e, index) => {
-  if (
-    e &&
-    e.detail &&
-    e.detail.value &&
-    Array.isArray(e.detail.value) &&
-    labors.value[index]
-  ) {
-    labors.value[index].repairSelection = e.detail.value;
+// 当前正在编辑的工时项索引
+const currentLaborIndex = ref(-1);
+const callbackId = ref('');
+
+// 生成唯一回调ID
+const generateCallbackId = () => {
+  return Date.now().toString() + Math.random().toString(36).substr(2, 9);
+};
+
+// 打开级联选择器
+const openCascaderPicker = (index) => {
+  currentLaborIndex.value = index;
+  callbackId.value = generateCallbackId();
+  const currentSelection = labors.value[index].repairSelection || [];
+
+  const params = {
+    localdata: encodeURIComponent(JSON.stringify(repairItemsData.value)),
+    selected: encodeURIComponent(JSON.stringify(currentSelection)),
+    title: encodeURIComponent('选择保外维修项目'),
+    callbackId: callbackId.value
+  };
+
+  const queryString = Object.keys(params)
+    .map(key => `${key}=${params[key]}`)
+    .join('&');
+
+  uni.navigateTo({
+    url: `/packageA/pages/cascader-picker/index?${queryString}`
+  });
+};
+
+// 处理级联选择器结果
+const handleCascaderResult = (result) => {
+  if (result.callbackId === callbackId.value) {
+    if (currentLaborIndex.value >= 0 && labors.value[currentLaborIndex.value]) {
+      labors.value[currentLaborIndex.value].repairSelection = result.selectedValues;
+    }
   }
+};
+
+// 检查全局结果
+const checkCascaderResult = () => {
+  // 检查全局数据
+  const app = getApp();
+  if (app.globalData && app.globalData.cascaderPickerResult) {
+    const result = app.globalData.cascaderPickerResult;
+    handleCascaderResult(result);
+    delete app.globalData.cascaderPickerResult;
+    return;
+  }
+
+  // 检查存储数据
+  try {
+    const result = uni.getStorageSync('cascaderPickerResult');
+    if (result) {
+      handleCascaderResult(result);
+      uni.removeStorageSync('cascaderPickerResult');
+    }
+  } catch (e) {
+    // 忽略存储错误
+  }
+};
+
+// 获取保外维修项目的显示文本
+const getRepairSelectionText = (selection) => {
+  if (!selection || selection.length === 0) {
+    return '';
+  }
+
+  const texts = [];
+  let options = repairItemsData.value;
+
+  for (const value of selection) {
+    const found = options.find(opt => opt.value === value);
+    if (found) {
+      texts.push(found.text);
+      if (found.children) {
+        options = found.children;
+      }
+    }
+  }
+
+  return texts.join(' / ');
 };
 
 
@@ -990,7 +1064,18 @@ onLoad((options) => {
   }
 });
 
-onMounted(async () => {});
+onMounted(async () => {
+  // 监听级联选择器结果
+  uni.$on('cascader-picker-result', handleCascaderResult);
+});
+
+onUnmounted(() => {
+  uni.$off('cascader-picker-result', handleCascaderResult);
+});
+
+onShow(() => {
+  checkCascaderResult();
+});
 </script>
 
 <style lang="scss" scoped>
