@@ -2,7 +2,7 @@
 const config = {
   // 开发环境
   development: {
-    API_BASE_URL: "https://donglidianchi.com.cn/api",
+    API_BASE_URL: "http://127.0.0.1:8000/api",
     DEBUG: true,
   },
   // 生产环境

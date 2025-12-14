@@ -1,6 +1,7 @@
 import { InternalOrderService } from "@/packageA/api/orderApi.js";
 import { DictionaryService } from "@/packageA/api/orderApi.js";
 import { DictionaryUtils } from "@/packageA/utils/dictionaryUtils.js";
+import { userStore } from "@/store/userStore.js";
 
 export class InternalOrderDataService {
   static async loadDictionaryData() {
@@ -51,6 +52,31 @@ export class InternalOrderDataService {
 
   static async getOrderList(params) {
     try {
+      // 根据用户角色自动添加项目类型过滤
+      const roles = userStore.userInfo.roles;
+      
+      // 如果用户只有一个特定角色且没有手动设置projectType，则自动添加
+      if (roles.length === 1 && !params.projectType) {
+        const roleCode = roles[0];
+        let projectTypeValue = '';
+        
+        switch (roleCode) {
+          case 'cycwf':
+            projectTypeValue = 'cy';
+            break;
+          case 'sycwf':
+            projectTypeValue = 'sy';
+            break;
+          case 'cnwf':
+            projectTypeValue = 'cn';
+            break;
+        }
+        
+        if (projectTypeValue) {
+          params.projectType = projectTypeValue;
+        }
+      }
+      
       const response = await InternalOrderService.getOrderList(params);
       return {
         success: true,
